@@ -18,7 +18,7 @@
 	--warning: oklch(0.95 0.08 85);
 	--warning-fg: oklch(0.45 0.15 85);
 
-	--font: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+	--font: "neue-haas-grotesk-text", "Inter", Helvetica, sans-serif;
 	--font-mono: ui-monospace, "SF Mono", Menlo, monospace;
 
 	--text-sm: 0.875rem;
