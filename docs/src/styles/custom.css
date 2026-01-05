@@ -1,0 +1,43 @@
+@import "../../../dist/styles.css";
+
+:root {
+	--sl-color-bg: var(--bg);
+	--sl-color-bg-nav: var(--bg);
+	--sl-color-bg-sidebar: var(--bg-alt);
+	--sl-color-text: var(--fg-muted);
+	--sl-color-text-accent: var(--accent);
+	--sl-color-hairline: var(--border);
+	--sl-color-hairline-light: var(--border);
+	--sl-font: var(--font);
+	--sl-font-mono: var(--font-mono);
+	--sl-color-accent-low: var(--bg-alt);
+	--sl-color-accent: var(--accent);
+	--sl-color-accent-high: var(--fg);
+	--sl-color-white: var(--fg);
+	--sl-color-gray-1: var(--fg-muted);
+	--sl-color-gray-2: var(--fg-subtle);
+	--sl-color-gray-3: var(--fg-faint);
+	--sl-color-gray-4: var(--border);
+	--sl-color-gray-5: var(--bg-alt);
+	--sl-color-gray-6: var(--bg);
+	--sl-color-black: var(--bg);
+}
+
+.demo-container {
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	padding: var(--space-md);
+	margin: var(--space-md) 0;
+}
+
+.demo-preview {
+	padding: var(--space-md);
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-sm);
+	align-items: center;
+	justify-content: center;
+	background: var(--bg-alt);
+	border-radius: var(--radius);
+	margin-bottom: var(--space-md);
+}
