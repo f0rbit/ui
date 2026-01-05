@@ -1,0 +1,48 @@
+---
+title: Clamp
+description: A text clamping component with expand/collapse functionality.
+---
+
+import { ClampDemo } from '../../../components/demos/ClampDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<ClampDemo client:load />
+
+## Usage
+
+```tsx
+import { Clamp } from "@f0rbit/ui";
+
+<Clamp lines={3}>
+  <p>Long text content that will be clamped after 3 lines...</p>
+</Clamp>
+```
+
+## Different Line Counts
+
+```tsx
+<Clamp lines={2}>
+  <p>Clamped to 2 lines...</p>
+</Clamp>
+
+<Clamp lines={4}>
+  <p>Clamped to 4 lines...</p>
+</Clamp>
+```
+
+## Custom Toggle Text
+
+```tsx
+<Clamp
+  lines={2}
+  showMoreText="Read more"
+  showLessText="Read less"
+>
+  <p>Content with custom toggle labels...</p>
+</Clamp>
+```
+
+## Props
+
+<PropsTable props={getComponent("Clamp").props} client:load />

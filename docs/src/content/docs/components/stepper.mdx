@@ -1,0 +1,64 @@
+---
+title: Stepper
+description: A multi-step progress indicator for wizards and multi-step forms.
+---
+
+import { StepperDemo } from '../../../components/demos/StepperDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<StepperDemo client:load />
+
+## Usage
+
+```tsx
+import { Stepper, Step } from "@f0rbit/ui";
+
+<Stepper>
+  <Step title="Step 1" status="completed" />
+  <Step title="Step 2" status="current" />
+  <Step title="Step 3" status="upcoming" />
+</Stepper>
+```
+
+## With Descriptions
+
+Add descriptions to provide more context for each step:
+
+```tsx
+<Stepper>
+  <Step title="Account" description="Create your account" status="completed" />
+  <Step title="Profile" description="Set up your profile" status="current" />
+  <Step title="Review" description="Review and submit" status="upcoming" />
+</Stepper>
+```
+
+## Vertical Orientation
+
+Use `orientation="vertical"` for vertical layouts:
+
+```tsx
+<Stepper orientation="vertical">
+  <Step title="Order placed" status="completed" />
+  <Step title="Processing" status="completed" />
+  <Step title="Shipping" status="current" />
+  <Step title="Delivered" status="upcoming" />
+</Stepper>
+```
+
+## Step Status
+
+Each step can have one of three statuses:
+- `completed` - Step has been finished
+- `current` - Currently active step
+- `upcoming` - Step not yet reached
+
+## Props
+
+### Stepper
+
+<PropsTable props={getComponent("Stepper").props} client:load />
+
+### Step
+
+<PropsTable props={getComponent("Step").props} client:load />

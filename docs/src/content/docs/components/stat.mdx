@@ -1,0 +1,52 @@
+---
+title: Stat
+description: A display component for statistics with value and label.
+---
+
+import { StatDemo } from '../../../components/demos/StatDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<StatDemo client:load />
+
+## Usage
+
+```tsx
+import { Stat } from "@f0rbit/ui";
+
+<Stat value={42} label="Total Users" />
+```
+
+## Numeric Values
+
+```tsx
+<Stat value={1234} label="Total Users" />
+<Stat value={99.9} label="Success Rate" />
+```
+
+## String Values
+
+Formatted values can be passed as strings:
+
+```tsx
+<Stat value="99.9%" label="Uptime" />
+<Stat value="$12,345" label="Revenue" />
+<Stat value="1.2M" label="Downloads" />
+```
+
+## Stats Grid
+
+Display multiple stats in a grid layout:
+
+```tsx
+<div class="stats-grid">
+  <Stat value={42} label="Active Projects" />
+  <Stat value={128} label="Team Members" />
+  <Stat value="2.5k" label="Commits" />
+  <Stat value="99%" label="Test Coverage" />
+</div>
+```
+
+## Props
+
+<PropsTable props={getComponent("Stat").props} client:load />

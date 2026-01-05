@@ -1,0 +1,33 @@
+---
+title: Spinner
+description: A loading indicator animation for async operations.
+---
+
+import { SpinnerDemo } from '../../../components/demos/SpinnerDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<SpinnerDemo client:load />
+
+## Usage
+
+```tsx
+import { Spinner } from "@f0rbit/ui";
+
+<Spinner />
+<Spinner size="sm" />
+<Spinner size="lg" />
+```
+
+## Inline with Text
+
+```tsx
+<span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+  <Spinner size="sm" />
+  Loading...
+</span>
+```
+
+## Props
+
+<PropsTable props={getComponent("Spinner").props} client:load />

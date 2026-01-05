@@ -1,0 +1,60 @@
+---
+title: Collapsible
+description: An expandable/collapsible content section with animated transitions.
+---
+
+import { CollapsibleDemo } from '../../../components/demos/CollapsibleDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<CollapsibleDemo client:load />
+
+## Usage
+
+```tsx
+import { Collapsible } from "@f0rbit/ui";
+
+<Collapsible trigger="Click to expand">
+  <p>Hidden content revealed on click.</p>
+</Collapsible>
+```
+
+## Uncontrolled Mode
+
+By default, Collapsible manages its own open state internally:
+
+```tsx
+<Collapsible trigger="Click me">
+  <p>This content toggles when you click the trigger.</p>
+</Collapsible>
+```
+
+## Default Open
+
+Use `defaultOpen` to have the content visible initially:
+
+```tsx
+<Collapsible trigger="Already expanded" defaultOpen>
+  <p>This is visible by default.</p>
+</Collapsible>
+```
+
+## Controlled Mode
+
+For full control over the open state, use `open` and `onOpenChange`:
+
+```tsx
+const [isOpen, setIsOpen] = createSignal(false);
+
+<Collapsible 
+  trigger="Controlled" 
+  open={isOpen()} 
+  onOpenChange={setIsOpen}
+>
+  <p>Controlled by external state.</p>
+</Collapsible>
+```
+
+## Props
+
+<PropsTable props={getComponent("Collapsible").props} client:load />

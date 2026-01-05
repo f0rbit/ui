@@ -1,5 +1,5 @@
 import { type JSX, splitProps, Show, onMount, onCleanup, createContext, useContext } from "solid-js";
-import { Portal } from "solid-js/web";
+import { Portal, isServer } from "solid-js/web";
 
 type ModalContextValue = { onClose: () => void };
 const ModalContext = createContext<ModalContextValue>();
@@ -30,10 +30,12 @@ export function Modal(props: ModalProps) {
 	};
 
 	onMount(() => {
+		if (isServer) return;
 		document.addEventListener("keydown", handleKeyDown);
 	});
 
 	onCleanup(() => {
+		if (isServer) return;
 		document.removeEventListener("keydown", handleKeyDown);
 	});
 

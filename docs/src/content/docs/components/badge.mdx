@@ -1,0 +1,84 @@
+---
+title: Badge
+description: A small label for categorization or status indication
+---
+
+import { BadgeDemo } from '../../../components/demos/BadgeDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<BadgeDemo client:load />
+
+## Usage
+
+```tsx
+import { Badge } from "@f0rbit/ui";
+
+<Badge>Default</Badge>
+<Badge variant="success">Active</Badge>
+```
+
+## Props
+
+<PropsTable props={getComponent("Badge").props} client:load />
+
+## Variants
+
+Badges support multiple semantic variants:
+
+```tsx
+<Badge>Default</Badge>
+<Badge variant="success">Success</Badge>
+<Badge variant="error">Error</Badge>
+<Badge variant="warning">Warning</Badge>
+<Badge variant="info">Info</Badge>
+<Badge variant="accent">Accent</Badge>
+```
+
+- **Default**: Neutral labeling without semantic meaning
+- **Success**: Positive states like "Completed" or "Active"
+- **Error**: Negative states like "Failed" or "Rejected"
+- **Warning**: Caution states like "Pending review"
+- **Info**: Informational states
+- **Accent**: Highlighted or featured items
+
+## With Icons
+
+Combine badges with icons for enhanced visual communication:
+
+```tsx
+<Badge variant="success">
+  <span>✓</span> Completed
+</Badge>
+<Badge variant="error">
+  <span>✕</span> Failed
+</Badge>
+<Badge variant="warning">
+  <span>⚠</span> Warning
+</Badge>
+```
+
+## Common Use Cases
+
+### Status Indicators
+
+```tsx
+<Badge variant="success">Online</Badge>
+<Badge variant="error">Offline</Badge>
+<Badge variant="warning">Away</Badge>
+```
+
+### Labels
+
+```tsx
+<Badge>New</Badge>
+<Badge variant="accent">Featured</Badge>
+<Badge variant="info">Beta</Badge>
+```
+
+### Counts
+
+```tsx
+<Badge>3 items</Badge>
+<Badge variant="error">5 errors</Badge>
+```

@@ -1,0 +1,112 @@
+---
+title: Utility Classes
+description: Layout primitives and helper classes
+---
+
+## Layout Primitives
+
+### Stack
+
+Vertical layout with consistent spacing.
+
+```html
+<div class="stack">
+  <div>Item 1</div>
+  <div>Item 2</div>
+</div>
+```
+
+| Class | Gap |
+|-------|-----|
+| `.stack` | `--space-md` (1rem) |
+| `.stack-sm` | `--space-sm` (0.5rem) |
+| `.stack-lg` | `--space-lg` (1.5rem) |
+
+### Row
+
+Horizontal layout with alignment.
+
+```html
+<div class="row">
+  <span>Left</span>
+  <span>Right</span>
+</div>
+```
+
+| Class | Description |
+|-------|-------------|
+| `.row` | Horizontal flex with center alignment |
+| `.row-between` | Space between items |
+| `.row-end` | Align to end |
+| `.row-start` | Align items to start |
+
+### Grid
+
+Responsive auto-fit grid.
+
+```html
+<div class="grid">
+  <div>Card 1</div>
+  <div>Card 2</div>
+  <div>Card 3</div>
+</div>
+```
+
+| Class | Columns |
+|-------|---------|
+| `.grid` | Auto-fit (min 250px) |
+| `.grid-2` | 2 columns |
+| `.grid-3` | 3 columns |
+| `.grid-4` | 4 columns |
+
+### Center
+
+Max-width centered content.
+
+```html
+<div class="center">
+  Centered content with max-width
+</div>
+```
+
+| Class | Max Width |
+|-------|-----------|
+| `.center` | 65ch |
+| `.center-narrow` | 45ch |
+| `.center-wide` | 90ch |
+
+### Cluster
+
+Wrapping horizontal layout for tags/buttons.
+
+```html
+<div class="cluster">
+  <span class="badge">Tag 1</span>
+  <span class="badge">Tag 2</span>
+</div>
+```
+
+## Text Utilities
+
+| Class | Description |
+|-------|-------------|
+| `.text-primary` | Primary text color |
+| `.text-muted` | Muted text |
+| `.text-subtle` | Subtle text |
+| `.text-faint` | Faint text |
+| `.text-sm` | Small text |
+| `.text-lg` | Large text |
+| `.font-medium` | Medium weight |
+| `.font-bold` | Bold weight |
+| `.font-mono` | Monospace font |
+| `.truncate` | Truncate with ellipsis |
+
+## Other
+
+| Class | Description |
+|-------|-------------|
+| `.hidden` | Display none |
+| `.sr-only` | Screen reader only |
+| `.hover-reveal` | Show on parent hover |
+| `.animate-spin` | Spinning animation |
+| `.animate-pulse` | Pulsing animation |

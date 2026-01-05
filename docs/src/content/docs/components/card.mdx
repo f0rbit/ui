@@ -1,0 +1,106 @@
+---
+title: Card
+description: A container component for grouping related content
+---
+
+import { CardDemo } from '../../../components/demos/CardDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<CardDemo client:load />
+
+## Usage
+
+```tsx
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@f0rbit/ui";
+
+<Card>
+  <CardHeader>
+    <CardTitle>Card Title</CardTitle>
+    <CardDescription>Card description text</CardDescription>
+  </CardHeader>
+  <CardContent>
+    Main content goes here
+  </CardContent>
+  <CardFooter>
+    Footer content
+  </CardFooter>
+</Card>
+```
+
+## Props
+
+<PropsTable props={getComponent("Card").props} client:load />
+
+## Structure
+
+Cards are composed of several sub-components:
+
+- **Card**: The outer container
+- **CardHeader**: Contains the title and description
+- **CardTitle**: The main heading
+- **CardDescription**: Secondary descriptive text
+- **CardContent**: The main content area
+- **CardFooter**: Actions or metadata at the bottom
+
+All sub-components are optional. Use only what you need.
+
+## Interactive Cards
+
+Add hover effects for clickable cards:
+
+```tsx
+<Card interactive onClick={() => handleClick()}>
+  <CardContent>
+    Click me!
+  </CardContent>
+</Card>
+```
+
+Interactive cards show visual feedback on hover and can be used for selectable items or navigation.
+
+## Examples
+
+### Simple Card
+
+```tsx
+<Card>
+  <CardContent>
+    <p>A simple card with just content.</p>
+  </CardContent>
+</Card>
+```
+
+### Card with Actions
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle>Confirm Action</CardTitle>
+    <CardDescription>Are you sure you want to proceed?</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <p>This action will update your settings.</p>
+  </CardContent>
+  <CardFooter>
+    <Button variant="secondary">Cancel</Button>
+    <Button>Confirm</Button>
+  </CardFooter>
+</Card>
+```
+
+### Grid of Cards
+
+```tsx
+<div class="card-grid">
+  <Card interactive>
+    <CardContent>Option 1</CardContent>
+  </Card>
+  <Card interactive>
+    <CardContent>Option 2</CardContent>
+  </Card>
+  <Card interactive>
+    <CardContent>Option 3</CardContent>
+  </Card>
+</div>
+```

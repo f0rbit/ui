@@ -3,13 +3,44 @@
 	"version": "0.1.0",
 	"description": "A minimal, composable UI component library for SolidJS",
 	"type": "module",
-	"main": "./dist/index.js",
-	"module": "./dist/index.js",
+	"main": "./dist/server.js",
+	"module": "./dist/server.js",
 	"types": "./dist/index.d.ts",
 	"exports": {
 		".": {
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js"
+			"worker": {
+				"solid": "./dist/server.jsx",
+				"import": {
+					"types": "./dist/index.d.ts",
+					"default": "./dist/server.js"
+				}
+			},
+			"browser": {
+				"solid": "./dist/index.jsx",
+				"import": {
+					"types": "./dist/index.d.ts",
+					"default": "./dist/index.js"
+				}
+			},
+			"deno": {
+				"solid": "./dist/server.jsx",
+				"import": {
+					"types": "./dist/index.d.ts",
+					"default": "./dist/server.js"
+				}
+			},
+			"node": {
+				"solid": "./dist/server.jsx",
+				"import": {
+					"types": "./dist/index.d.ts",
+					"default": "./dist/server.js"
+				}
+			},
+			"solid": "./dist/index.jsx",
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			}
 		},
 		"./styles": "./dist/styles.css",
 		"./styles/tokens": "./dist/tokens.css",
@@ -29,6 +60,7 @@
 		"solid-js": "^1.8.0"
 	},
 	"devDependencies": {
+		"esbuild-plugin-solid": "^0.6.0",
 		"solid-js": "^1.9.3",
 		"tsup": "^8.3.5",
 		"tsup-preset-solid": "^2.2.0",
@@ -40,5 +72,9 @@
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/f0rbit/ui.git"
-	}
+	},
+	"browser": {
+		"./dist/server.js": "./dist/index.js"
+	},
+	"typesVersions": {}
 }

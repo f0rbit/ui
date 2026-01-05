@@ -1,0 +1,50 @@
+---
+title: Empty
+description: A placeholder component for empty states with optional icon, message, and actions.
+---
+
+import { EmptyDemo } from '../../../components/demos/EmptyDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<EmptyDemo client:load />
+
+## Usage
+
+```tsx
+import { Empty } from "@f0rbit/ui";
+
+<Empty
+  title="No items found"
+  description="Try adjusting your search or filters."
+/>
+```
+
+## With Action Button
+
+```tsx
+import { Empty, Button } from "@f0rbit/ui";
+
+<Empty
+  title="No projects yet"
+  description="Get started by creating your first project."
+>
+  <Button>Create Project</Button>
+</Empty>
+```
+
+## With Custom Icon
+
+```tsx
+import { Empty } from "@f0rbit/ui";
+
+<Empty
+  icon={<InboxIcon />}
+  title="Inbox is empty"
+  description="You're all caught up!"
+/>
+```
+
+## Props
+
+<PropsTable props={getComponent("Empty").props} client:load />

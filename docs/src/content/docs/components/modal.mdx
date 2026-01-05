@@ -1,0 +1,118 @@
+---
+title: Modal
+description: A dialog overlay for focused user interactions
+---
+
+import { ModalDemo } from '../../../components/demos/ModalDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<ModalDemo client:load />
+
+## Usage
+
+```tsx
+import { createSignal } from "solid-js";
+import { Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter, Button } from "@f0rbit/ui";
+
+const [open, setOpen] = createSignal(false);
+
+<Button onClick={() => setOpen(true)}>Open Modal</Button>
+
+<Modal open={open()} onClose={() => setOpen(false)}>
+  <ModalHeader>
+    <ModalTitle>Modal Title</ModalTitle>
+  </ModalHeader>
+  <ModalBody>
+    Modal content goes here
+  </ModalBody>
+  <ModalFooter>
+    <Button variant="secondary" onClick={() => setOpen(false)}>Cancel</Button>
+    <Button onClick={() => setOpen(false)}>Confirm</Button>
+  </ModalFooter>
+</Modal>
+```
+
+## Props
+
+<PropsTable props={getComponent("Modal").props} client:load />
+
+## Structure
+
+Modals are composed of several sub-components:
+
+- **Modal**: The overlay and container
+- **ModalHeader**: Contains the title
+- **ModalTitle**: The modal heading
+- **ModalBody**: The main content area
+- **ModalFooter**: Action buttons
+
+## Closing the Modal
+
+The modal can be closed by:
+
+- Calling the `onClose` callback
+- Pressing the Escape key
+- Clicking outside the modal (on the overlay)
+
+## Examples
+
+### Confirmation Modal
+
+```tsx
+<Modal open={confirmOpen()} onClose={() => setConfirmOpen(false)}>
+  <ModalHeader>
+    <ModalTitle>Delete Item?</ModalTitle>
+  </ModalHeader>
+  <ModalBody>
+    <p>This action cannot be undone.</p>
+  </ModalBody>
+  <ModalFooter>
+    <Button variant="secondary" onClick={() => setConfirmOpen(false)}>
+      Cancel
+    </Button>
+    <Button variant="danger" onClick={handleDelete}>
+      Delete
+    </Button>
+  </ModalFooter>
+</Modal>
+```
+
+### Form Modal
+
+```tsx
+<Modal open={formOpen()} onClose={() => setFormOpen(false)}>
+  <ModalHeader>
+    <ModalTitle>Create New Item</ModalTitle>
+  </ModalHeader>
+  <ModalBody>
+    <Input placeholder="Name" />
+    <Textarea placeholder="Description" />
+  </ModalBody>
+  <ModalFooter>
+    <Button variant="secondary" onClick={() => setFormOpen(false)}>
+      Cancel
+    </Button>
+    <Button onClick={handleSubmit}>Create</Button>
+  </ModalFooter>
+</Modal>
+```
+
+### Simple Alert
+
+```tsx
+<Modal open={alertOpen()} onClose={() => setAlertOpen(false)}>
+  <ModalBody>
+    <p>Your changes have been saved.</p>
+  </ModalBody>
+  <ModalFooter>
+    <Button onClick={() => setAlertOpen(false)}>OK</Button>
+  </ModalFooter>
+</Modal>
+```
+
+## Accessibility
+
+- Focus is trapped within the modal when open
+- Pressing Escape closes the modal
+- The modal is announced to screen readers

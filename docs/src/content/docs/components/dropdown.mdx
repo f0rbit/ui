@@ -1,0 +1,138 @@
+---
+title: Dropdown
+description: A floating menu triggered by a button or element
+---
+
+import { DropdownDemo } from '../../../components/demos/DropdownDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<DropdownDemo client:load />
+
+## Usage
+
+```tsx
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, DropdownDivider } from "@f0rbit/ui";
+
+<Dropdown>
+  <DropdownTrigger>
+    <Button>Open Menu</Button>
+  </DropdownTrigger>
+  <DropdownMenu>
+    <DropdownItem onClick={() => console.log("Edit")}>Edit</DropdownItem>
+    <DropdownItem onClick={() => console.log("Duplicate")}>Duplicate</DropdownItem>
+    <DropdownDivider />
+    <DropdownItem onClick={() => console.log("Delete")}>Delete</DropdownItem>
+  </DropdownMenu>
+</Dropdown>
+```
+
+## Props
+
+<PropsTable props={getComponent("Dropdown").props} client:load />
+
+## Structure
+
+Dropdowns are composed of several sub-components:
+
+- **Dropdown**: The container managing open/close state
+- **DropdownTrigger**: The element that opens the menu
+- **DropdownMenu**: The floating menu container
+- **DropdownItem**: Individual menu items
+- **DropdownDivider**: Visual separator between groups
+
+## Active Items
+
+Mark the currently selected item with the `active` prop:
+
+```tsx
+<DropdownItem active={selected() === "Option 1"} onClick={() => setSelected("Option 1")}>
+  Option 1
+</DropdownItem>
+```
+
+## With Icons
+
+Add icons to menu items for better visual recognition:
+
+```tsx
+<DropdownMenu>
+  <DropdownItem>
+    <span>📝</span> Edit
+  </DropdownItem>
+  <DropdownItem>
+    <span>📋</span> Copy
+  </DropdownItem>
+  <DropdownItem>
+    <span>🗑️</span> Delete
+  </DropdownItem>
+</DropdownMenu>
+```
+
+## Examples
+
+### Actions Menu
+
+```tsx
+<Dropdown>
+  <DropdownTrigger>
+    <Button>Actions</Button>
+  </DropdownTrigger>
+  <DropdownMenu>
+    <DropdownItem onClick={handleEdit}>Edit</DropdownItem>
+    <DropdownItem onClick={handleDuplicate}>Duplicate</DropdownItem>
+    <DropdownItem onClick={handleArchive}>Archive</DropdownItem>
+    <DropdownDivider />
+    <DropdownItem onClick={handleDelete}>Delete</DropdownItem>
+  </DropdownMenu>
+</Dropdown>
+```
+
+### Selection Menu
+
+```tsx
+const [sort, setSort] = createSignal("date");
+
+<Dropdown>
+  <DropdownTrigger>
+    <Button variant="secondary">Sort by: {sort()}</Button>
+  </DropdownTrigger>
+  <DropdownMenu>
+    <DropdownItem active={sort() === "date"} onClick={() => setSort("date")}>
+      Date
+    </DropdownItem>
+    <DropdownItem active={sort() === "name"} onClick={() => setSort("name")}>
+      Name
+    </DropdownItem>
+    <DropdownItem active={sort() === "size"} onClick={() => setSort("size")}>
+      Size
+    </DropdownItem>
+  </DropdownMenu>
+</Dropdown>
+```
+
+### User Menu
+
+```tsx
+<Dropdown>
+  <DropdownTrigger>
+    <Button variant="ghost">
+      <Avatar src={user.avatar} />
+    </Button>
+  </DropdownTrigger>
+  <DropdownMenu>
+    <DropdownItem onClick={() => navigate("/profile")}>Profile</DropdownItem>
+    <DropdownItem onClick={() => navigate("/settings")}>Settings</DropdownItem>
+    <DropdownDivider />
+    <DropdownItem onClick={handleLogout}>Log out</DropdownItem>
+  </DropdownMenu>
+</Dropdown>
+```
+
+## Accessibility
+
+- Menu opens on click or Enter/Space key
+- Arrow keys navigate between items
+- Enter or Space selects the focused item
+- Escape closes the menu
+- Focus returns to trigger when menu closes

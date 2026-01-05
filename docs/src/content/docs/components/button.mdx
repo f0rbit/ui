@@ -1,0 +1,75 @@
+---
+title: Button
+description: A clickable button with multiple variants and sizes
+---
+
+import { ButtonDemo } from '../../../components/demos/ButtonDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<ButtonDemo client:load />
+
+## Usage
+
+```tsx
+import { Button } from "@f0rbit/ui";
+
+<Button variant="primary">Click me</Button>
+```
+
+## Props
+
+<PropsTable props={getComponent("Button").props} client:load />
+
+## Variants
+
+Buttons come in four variants to communicate different levels of emphasis:
+
+```tsx
+<Button variant="primary">Primary</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="ghost">Ghost</Button>
+<Button variant="danger">Danger</Button>
+```
+
+- **Primary**: Use for main actions like "Save" or "Submit"
+- **Secondary**: Use for alternative actions
+- **Ghost**: Use for subtle actions that don't need emphasis
+- **Danger**: Use for destructive actions like "Delete"
+
+## Sizes
+
+Three sizes are available:
+
+```tsx
+<Button size="sm">Small</Button>
+<Button size="md">Medium</Button>
+<Button size="lg">Large</Button>
+```
+
+## States
+
+### Loading
+
+Show a loading spinner when an action is in progress:
+
+```tsx
+<Button loading>Saving...</Button>
+```
+
+### Disabled
+
+Disable interaction when the action is not available:
+
+```tsx
+<Button disabled>Not available</Button>
+```
+
+## Icon Button
+
+Use the `icon` prop for square icon-only buttons:
+
+```tsx
+<Button icon>+</Button>
+<Button icon variant="ghost">x</Button>
+```

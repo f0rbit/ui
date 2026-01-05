@@ -11,6 +11,6 @@
 		"astro": "^5.1.0",
 		"@astrojs/solid-js": "^5.0.0",
 		"solid-js": "^1.9.0",
-		"@f0rbit/ui": "link:.."
+		"@f0rbit/ui": "file:.."
 	}
 }

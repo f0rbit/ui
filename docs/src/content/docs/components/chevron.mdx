@@ -1,0 +1,54 @@
+---
+title: Chevron
+description: An animated chevron icon for expand/collapse indicators.
+---
+
+import { ChevronDemo } from '../../../components/demos/ChevronDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<ChevronDemo client:load />
+
+## Usage
+
+```tsx
+import { Chevron } from "@f0rbit/ui";
+
+<Chevron />
+<Chevron expanded />
+```
+
+## Facing Direction
+
+The chevron can point right (default) or down:
+
+```tsx
+<Chevron facing="right" />
+<Chevron facing="down" />
+```
+
+## Expanded State
+
+When `expanded` is true, the chevron rotates 90 degrees:
+
+```tsx
+const [expanded, setExpanded] = createSignal(false);
+
+<button onClick={() => setExpanded(e => !e)}>
+  <Chevron expanded={expanded()} />
+  Toggle
+</button>
+```
+
+## Sizes
+
+```tsx
+<Chevron size="0.75em" />
+<Chevron size="1em" />
+<Chevron size="1.5em" />
+<Chevron size={24} />
+```
+
+## Props
+
+<PropsTable props={getComponent("Chevron").props} client:load />

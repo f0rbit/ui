@@ -1,0 +1,92 @@
+---
+title: Input
+description: Form input components including text input, textarea, and select.
+---
+
+import { InputDemo } from '../../../components/demos/InputDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<InputDemo client:load />
+
+## Usage
+
+```tsx
+import { Input, Textarea, Select } from "@f0rbit/ui";
+```
+
+## Input
+
+Basic text input for single-line content:
+
+```tsx
+<Input placeholder="Enter your name..." />
+```
+
+### Error State
+
+```tsx
+<Input placeholder="Invalid input" error />
+```
+
+### Disabled
+
+```tsx
+<Input placeholder="Disabled" disabled />
+```
+
+### Password
+
+```tsx
+<Input type="password" placeholder="Password" />
+```
+
+## Textarea
+
+Multi-line text input for longer content:
+
+```tsx
+<Textarea placeholder="Enter your message..." />
+```
+
+### With Error
+
+```tsx
+<Textarea placeholder="Invalid content" error />
+```
+
+## Select
+
+Dropdown for selecting from predefined options:
+
+```tsx
+<Select>
+  <option value="">Select an option</option>
+  <option value="1">Option 1</option>
+  <option value="2">Option 2</option>
+  <option value="3">Option 3</option>
+</Select>
+```
+
+### With Error
+
+```tsx
+<Select error>
+  <option value="">Selection required</option>
+  <option value="1">Option 1</option>
+</Select>
+```
+
+## Props
+
+### Input
+
+<PropsTable props={getComponent("Input").props} client:load />
+
+### Textarea
+
+<PropsTable props={getComponent("Textarea").props} client:load />
+
+### Select
+
+<PropsTable props={getComponent("Select").props} client:load />

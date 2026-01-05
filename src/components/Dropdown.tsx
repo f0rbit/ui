@@ -1,4 +1,5 @@
 import { type JSX, splitProps, createSignal, Show, onMount, onCleanup, createContext, useContext } from "solid-js";
+import { isServer } from "solid-js/web";
 
 type DropdownContextValue = {
 	open: () => boolean;
@@ -45,18 +46,20 @@ export function Dropdown(props: DropdownProps) {
 	};
 
 	onMount(() => {
+		if (isServer) return;
 		document.addEventListener("click", handleClickOutside);
 		document.addEventListener("keydown", handleKeyDown);
 	});
 
 	onCleanup(() => {
+		if (isServer) return;
 		document.removeEventListener("click", handleClickOutside);
 		document.removeEventListener("keydown", handleKeyDown);
 	});
 
 	return (
 		<DropdownContext.Provider value={{ open, setOpen, close }}>
-			<div ref={containerRef} class="dropdown">
+			<div ref={el => (containerRef = el)} class="dropdown">
 				{props.children}
 			</div>
 		</DropdownContext.Provider>

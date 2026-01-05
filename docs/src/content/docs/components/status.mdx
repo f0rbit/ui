@@ -1,0 +1,63 @@
+---
+title: Status
+description: A status indicator with colored dot and label for displaying state.
+---
+
+import { StatusDemo } from '../../../components/demos/StatusDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<StatusDemo client:load />
+
+## Usage
+
+```tsx
+import { Status } from "@f0rbit/ui";
+
+<Status state="active" />
+```
+
+## States
+
+Four built-in states with appropriate colors:
+
+```tsx
+<Status state="active" />   {/* Green */}
+<Status state="inactive" /> {/* Gray */}
+<Status state="error" />    {/* Red */}
+<Status state="pending" />  {/* Yellow */}
+```
+
+## Custom Labels
+
+Override the default label with custom text:
+
+```tsx
+<Status state="active" label="Online" />
+<Status state="inactive" label="Offline" />
+<Status state="error" label="Failed" />
+<Status state="pending" label="Processing" />
+```
+
+## In Context
+
+Status works well in lists and tables:
+
+```tsx
+<div>
+  <span>API Server</span>
+  <Status state="active" label="Healthy" />
+</div>
+<div>
+  <span>Database</span>
+  <Status state="pending" label="Connecting" />
+</div>
+<div>
+  <span>Cache</span>
+  <Status state="error" label="Down" />
+</div>
+```
+
+## Props
+
+<PropsTable props={getComponent("Status").props} client:load />

@@ -16,6 +16,13 @@ export default defineConfig({
 						{ label: "Theming", slug: "getting-started/theming" },
 					],
 				},
+				{
+					label: "CSS",
+					items: [
+						{ label: "Design Tokens", slug: "css/tokens" },
+						{ label: "Utility Classes", slug: "css/utilities" },
+					],
+				},
 			],
 		}),
 	],

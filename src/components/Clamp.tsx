@@ -37,7 +37,7 @@ export function Clamp(props: ClampProps) {
 					requestAnimationFrame(checkOverflow);
 				}}
 				class={contentClasses()}
-				style={{ "--clamp-lines": lines() }}
+				style={`--clamp-lines: ${lines()}`}
 			>
 				{local.children}
 			</div>
