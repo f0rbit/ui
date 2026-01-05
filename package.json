@@ -54,7 +54,10 @@
 		"build:css": "node scripts/build-css.js",
 		"dev": "tsup --watch",
 		"typecheck": "tsc --noEmit",
-		"prepublishOnly": "npm run build"
+		"prepublishOnly": "npm run build",
+		"docs": "bun run build && cd docs && bun run dev",
+		"docs:dev": "cd docs && bun run dev",
+		"docs:build": "cd docs && bun run build"
 	},
 	"peerDependencies": {
 		"solid-js": "^1.8.0"
