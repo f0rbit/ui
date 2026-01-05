@@ -1,0 +1,239 @@
+---
+const themes = [
+	{ label: "Light", value: "light" },
+	{ label: "Dark", value: "dark" },
+	{ label: "Auto", value: "auto" },
+];
+---
+
+<starlight-theme-select>
+	<div class="dropdown theme-dropdown">
+		<button class="dropdown-trigger theme-trigger" aria-label="Select theme">
+			<svg class="chevron" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="m9 18 6-6-6-6" />
+			</svg>
+			<span class="theme-label">Auto</span>
+		</button>
+		<div class="dropdown-menu theme-menu" hidden>
+			{themes.map((theme) => (
+				<button class="dropdown-item theme-item" data-theme-value={theme.value}>
+					{theme.label}
+				</button>
+			))}
+		</div>
+	</div>
+</starlight-theme-select>
+
+<script is:inline>
+	StarlightThemeProvider.updatePickers();
+</script>
+
+<script>
+	declare const StarlightThemeProvider: {
+		updatePickers: (theme?: string) => void;
+	};
+
+	type Theme = "auto" | "dark" | "light";
+
+	const storageKey = "starlight-theme";
+
+	const parseTheme = (theme: unknown): Theme =>
+		theme === "auto" || theme === "dark" || theme === "light" ? theme : "auto";
+
+	const loadTheme = (): Theme =>
+		parseTheme(typeof localStorage !== "undefined" && localStorage.getItem(storageKey));
+
+	const storeTheme = (theme: Theme): void => {
+		if (typeof localStorage !== "undefined") {
+			localStorage.setItem(storageKey, theme === "light" || theme === "dark" ? theme : "");
+		}
+	};
+
+	const getPreferredColorScheme = (): Theme =>
+		matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+
+	const themeLabels: Record<Theme, string> = {
+		light: "Light",
+		dark: "Dark",
+		auto: "Auto",
+	};
+
+	const onThemeChange = (theme: Theme): void => {
+		StarlightThemeProvider.updatePickers(theme);
+		document.documentElement.dataset.theme = theme === "auto" ? getPreferredColorScheme() : theme;
+		storeTheme(theme);
+	};
+
+	matchMedia("(prefers-color-scheme: light)").addEventListener("change", () => {
+		if (loadTheme() === "auto") onThemeChange("auto");
+	});
+
+	class StarlightThemeSelect extends HTMLElement {
+		private dropdown: HTMLElement | null = null;
+		private trigger: HTMLElement | null = null;
+		private menu: HTMLElement | null = null;
+		private chevron: HTMLElement | null = null;
+		private label: HTMLElement | null = null;
+		private isOpen = false;
+
+		constructor() {
+			super();
+			this.dropdown = this.querySelector(".theme-dropdown");
+			this.trigger = this.querySelector(".theme-trigger");
+			this.menu = this.querySelector(".theme-menu");
+			this.chevron = this.querySelector(".chevron");
+			this.label = this.querySelector(".theme-label");
+
+			this.initTheme();
+			this.bindEvents();
+		}
+
+		private initTheme(): void {
+			const theme = loadTheme();
+			onThemeChange(theme);
+			this.updateLabel(theme);
+			this.updateActiveItem(theme);
+		}
+
+		private bindEvents(): void {
+			this.trigger?.addEventListener("click", (e) => {
+				e.stopPropagation();
+				this.toggle();
+			});
+
+			this.menu?.querySelectorAll(".theme-item").forEach((item) => {
+				item.addEventListener("click", () => {
+					const value = (item as HTMLElement).dataset.themeValue as Theme;
+					onThemeChange(value);
+					this.updateLabel(value);
+					this.updateActiveItem(value);
+					this.close();
+				});
+			});
+
+			document.addEventListener("click", (e) => {
+				if (!this.dropdown?.contains(e.target as Node)) {
+					this.close();
+				}
+			});
+
+			document.addEventListener("keydown", (e) => {
+				if (e.key === "Escape" && this.isOpen) {
+					this.close();
+				}
+			});
+		}
+
+		private toggle(): void {
+			this.isOpen ? this.close() : this.open();
+		}
+
+		private open(): void {
+			this.isOpen = true;
+			this.menu?.removeAttribute("hidden");
+			this.chevron?.classList.add("chevron-expanded");
+		}
+
+		private close(): void {
+			this.isOpen = false;
+			this.menu?.setAttribute("hidden", "");
+			this.chevron?.classList.remove("chevron-expanded");
+		}
+
+		private updateLabel(theme: Theme): void {
+			if (this.label) {
+				this.label.textContent = themeLabels[theme];
+			}
+		}
+
+		private updateActiveItem(theme: Theme): void {
+			this.menu?.querySelectorAll(".theme-item").forEach((item) => {
+				const value = (item as HTMLElement).dataset.themeValue;
+				item.classList.toggle("dropdown-item-active", value === theme);
+			});
+		}
+	}
+
+	customElements.define("starlight-theme-select", StarlightThemeSelect);
+</script>
+
+<style>
+	.theme-dropdown {
+		position: relative;
+		display: inline-block;
+	}
+
+	.theme-trigger {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--space-sm);
+		padding: var(--space-xs) var(--space-md);
+		min-width: 6rem;
+		font-size: var(--text-sm);
+		color: var(--fg-muted);
+		background: transparent;
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		cursor: pointer;
+		transition: border-color var(--transition), color var(--transition);
+	}
+
+	.theme-trigger:hover {
+		border-color: var(--fg-faint);
+		color: var(--fg);
+	}
+
+	.theme-label {
+		flex: 1;
+		text-align: center;
+	}
+
+	.chevron {
+		transition: transform var(--transition);
+		color: var(--fg-faint);
+	}
+
+	.chevron-expanded {
+		transform: rotate(90deg);
+	}
+
+	.theme-menu {
+		position: absolute;
+		top: calc(100% + var(--space-xs));
+		right: 0;
+		min-width: 100%;
+		background: var(--bg);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		box-shadow: var(--shadow-lg);
+		padding: var(--space-xs) 0;
+		z-index: 100;
+	}
+
+	.theme-item {
+		display: flex;
+		align-items: center;
+		width: 100%;
+		padding: var(--space-sm);
+		padding-left: calc(var(--space-sm) + 2px);
+		font-size: var(--text-sm);
+		color: var(--fg-muted);
+		background: transparent;
+		border: none;
+		border-left: 2px solid transparent;
+		cursor: pointer;
+		text-align: left;
+		transition: border-color var(--transition), color var(--transition);
+	}
+
+	.theme-item:hover {
+		border-left-color: var(--accent);
+		color: var(--fg);
+	}
+
+	.dropdown-item-active {
+		color: var(--fg);
+		font-weight: 500;
+	}
+</style>

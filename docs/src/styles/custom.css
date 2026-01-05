@@ -1,9 +1,11 @@
 @import "../../../dist/styles.css";
 
 :root {
+	--code-background: oklch(from var(--bg) calc(l - 0.03) c h);
+	--ec-codeBg: var(--code-background);
 	--sl-color-bg: var(--bg);
 	--sl-color-bg-nav: var(--bg);
-	--sl-color-bg-sidebar: var(--bg-alt);
+	--sl-color-bg-sidebar: var(--bg);
 	--sl-color-text: var(--fg-muted);
 	--sl-color-text-accent: var(--accent);
 	--sl-color-hairline: var(--border);
@@ -11,7 +13,7 @@
 	--sl-font: var(--font);
 	--sl-font-system: var(--font);
 	--sl-font-mono: var(--font-mono);
-	--sl-color-accent-low: var(--bg-alt);
+	--sl-color-accent-low: var(--bg);
 	--sl-color-accent: var(--accent);
 	--sl-color-accent-high: var(--fg);
 	--sl-color-white: var(--fg);
@@ -24,6 +26,71 @@
 	--sl-color-black: var(--bg);
 }
 
+/* Header border */
+header.header {
+	border-bottom: 1px solid var(--border);
+}
+
+/* Sidebar border */
+nav .sidebar-pane {
+	border-right: 1px solid var(--border);
+}
+
+/* Remove content max-width constraint */
+.main-pane .sl-container {
+	max-width: unset;
+}
+
+/* Cap "On this page" TOC width and adjust main pane on large screens */
+@media (min-width: 72rem) {
+	.right-sidebar-panel .sl-container {
+		max-width: 25rem;
+		width: 25rem;
+	}
+
+	[data-has-sidebar][data-has-toc] .main-pane {
+		width: 100%;
+	}
+
+	.right-sidebar-container {
+		width: 25rem;
+	}
+}
+
+/* Selected sidebar item - override Starlight defaults */
+[aria-current="page"],
+[aria-current="page"]:hover,
+[aria-current="page"]:focus {
+	background-color: transparent !important;
+	color: var(--fg) !important;
+	text-decoration: underline;
+	font-weight: 500 !important;
+}
+
+/* Reduce title sizes */
+h1#_top,
+.content-panel h1 {
+	font-size: 1.5rem;
+}
+
+.sl-markdown-content h1 {
+	font-size: 1.5rem;
+}
+
+.sl-markdown-content h2 {
+	font-size: 1.25rem;
+}
+
+.sl-markdown-content h3 {
+	font-size: 1.125rem;
+}
+
+.sl-markdown-content h4,
+.sl-markdown-content h5,
+.sl-markdown-content h6 {
+	font-size: 1rem;
+}
+
 .demo-container {
 	border: 1px solid var(--border);
 	border-radius: var(--radius-lg);
@@ -33,7 +100,6 @@
 
 .demo-header {
 	padding: var(--space-sm) var(--space-md);
-	background: var(--bg-alt);
 	border-bottom: 1px solid var(--border);
 }
 
@@ -46,10 +112,65 @@
 .demo-preview {
 	padding: var(--space-lg);
 	display: flex;
+	flex-direction: column;
+	gap: var(--space-md);
+	align-items: stretch;
+}
+
+.demo-section {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-sm);
+	width: 100%;
+	text-align: left;
+}
+
+.demo-section h4 {
+	font-size: var(--text-sm);
+	font-weight: 600;
+	color: var(--fg);
+	margin: 0 0 var(--space-xs) 0;
+}
+
+.demo-section + .demo-section {
+	margin-top: var(--space-md);
+	padding-top: var(--space-md);
+	border-top: 1px solid var(--border);
+}
+
+.demo-row {
+	display: flex;
 	flex-wrap: wrap;
 	gap: var(--space-sm);
 	align-items: center;
-	justify-content: center;
+}
+
+.demo-row-between {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+}
+
+.demo-stack {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-sm);
+	width: 100%;
+	max-width: 320px;
+}
+
+.demo-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+	gap: var(--space-sm);
+	width: 100%;
+}
+
+.demo-hint {
+	font-size: var(--text-sm);
+	color: var(--fg-subtle);
+	margin: 0;
 }
 
 .code-block {
@@ -64,7 +185,6 @@
 	justify-content: space-between;
 	align-items: center;
 	padding: var(--space-xs) var(--space-sm);
-	background: var(--bg-alt);
 	border-bottom: 1px solid var(--border);
 }
 
@@ -82,10 +202,12 @@
 	border-radius: var(--radius);
 	cursor: pointer;
 	color: var(--fg-muted);
+	transition: border-color var(--transition), color var(--transition);
 }
 
 .code-copy:hover {
-	background: var(--bg);
+	border-color: var(--fg-faint);
+	color: var(--fg);
 }
 
 .code-content {
@@ -93,7 +215,15 @@
 	padding: var(--space-md);
 	overflow-x: auto;
 	font-size: var(--text-sm);
-	background: var(--bg);
+	background: var(--code-background);
+}
+
+/* Override expressive-code backgrounds */
+.expressive-code,
+.expressive-code pre,
+.expressive-code code,
+.expressive-code .frame {
+	background: var(--code-background) !important;
 }
 
 .props-table-wrapper {
@@ -116,8 +246,7 @@
 
 .props-table th {
 	font-weight: 500;
-	color: var(--fg-muted);
-	background: var(--bg-alt);
+	color: var(--fg);
 }
 
 .props-table code {

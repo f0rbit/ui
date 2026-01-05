@@ -9,7 +9,7 @@
 	border-radius: var(--radius);
 	border: 1px solid transparent;
 	cursor: pointer;
-	transition: all var(--transition);
+	transition: border-color var(--transition), filter var(--transition), color var(--transition);
 	white-space: nowrap;
 }
 
@@ -40,10 +40,11 @@
 .btn-ghost {
 	background: transparent;
 	color: var(--fg-muted);
+	border-color: transparent;
 }
 
 .btn-ghost:hover:not(:disabled) {
-	background: var(--bg-alt);
+	border-color: var(--border);
 }
 
 .btn-danger {
@@ -250,14 +251,15 @@
 	padding: var(--space-xs);
 	color: var(--fg-faint);
 	background: transparent;
-	border: none;
+	border: 1px solid transparent;
 	border-radius: var(--radius);
 	cursor: pointer;
+	transition: border-color var(--transition), color var(--transition);
 }
 
 .modal-close:hover {
 	color: var(--fg);
-	background: var(--bg-alt);
+	border-color: var(--border);
 }
 
 .modal-body {
@@ -408,16 +410,19 @@
 	gap: var(--space-sm);
 	width: 100%;
 	padding: var(--space-sm);
+	padding-left: calc(var(--space-sm) + 2px);
 	font-size: var(--text-sm);
 	color: var(--fg-muted);
 	background: transparent;
 	border: none;
+	border-left: 2px solid transparent;
 	cursor: pointer;
 	text-align: left;
+	transition: border-color var(--transition), color var(--transition);
 }
 
 .dropdown-item:hover {
-	background: var(--bg-alt);
+	border-left-color: var(--accent);
 	color: var(--fg);
 }
 
@@ -466,10 +471,11 @@
 	color: var(--accent);
 	cursor: pointer;
 	width: fit-content;
+	transition: filter var(--transition);
 }
 
 .clamp-toggle:hover {
-	text-decoration: underline;
+	filter: var(--hover-filter);
 }
 
 .collapsible {
@@ -491,6 +497,7 @@
 	font-weight: 500;
 	color: var(--fg-muted);
 	text-align: left;
+	transition: color var(--transition);
 }
 
 .collapsible-trigger:hover {

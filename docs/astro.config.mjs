@@ -10,6 +10,9 @@ export default defineConfig({
 		starlight({
 			title: "@f0rbit/ui",
 			customCss: ["./src/styles/custom.css"],
+			components: {
+				ThemeSelect: "./src/components/ThemeSelect.astro",
+			},
 			social: [{ icon: "github", label: "GitHub", href: "https://github.com/f0rbit/ui" }],
 			editLink: {
 				baseUrl: "https://github.com/f0rbit/ui/edit/main/docs/",

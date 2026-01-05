@@ -39,6 +39,8 @@
 	--shadow-lg: 0 10px 25px rgb(0 0 0 / 0.15);
 
 	--transition: 150ms ease;
+
+	--hover-filter: brightness(0.8);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -63,5 +65,7 @@
 
 		--shadow: 0 1px 3px rgb(0 0 0 / 0.3);
 		--shadow-lg: 0 10px 25px rgb(0 0 0 / 0.4);
+
+		--hover-filter: brightness(1.2);
 	}
 }

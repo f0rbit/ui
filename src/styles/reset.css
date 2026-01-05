@@ -11,7 +11,7 @@
 body {
 	line-height: var(--leading-normal, 1.5);
 	-webkit-font-smoothing: antialiased;
-	font-family: var(--font-sans);
+	font-family: var(--font);
 	background: var(--bg);
 	color: var(--fg-muted);
 }
@@ -55,11 +55,11 @@ h6 {
 a {
 	color: var(--accent);
 	text-decoration: none;
-	transition: color var(--duration-base) var(--ease-default);
+	transition: filter var(--transition);
 }
 
 a:hover {
-	color: var(--accent-hover);
+	filter: var(--hover-filter);
 }
 
 ul,
