@@ -9,56 +9,56 @@ Build a Starlight-based documentation site for `@f0rbit/ui` with interactive dem
 
 ## Phase 0: Foundation
 
-- [ ] 0.1 Initialize Astro + Starlight project in `docs/`
-- [ ] 0.2 Configure workspace linking to parent `@f0rbit/ui`
-- [ ] 0.3 Create CSS token mapping layer (`custom.css`)
-- [ ] 0.4 Verify SolidJS integration works with `client:` directives
+- [x] 0.1 Initialize Astro + Starlight project in `docs/`
+- [x] 0.2 Configure workspace linking to parent `@f0rbit/ui`
+- [x] 0.3 Create CSS token mapping layer (`custom.css`)
+- [x] 0.4 Verify SolidJS integration works with `client:` directives
 
 ## Phase 1: Core Infrastructure
 
-- [ ] 1.1 Create `DemoContainer.tsx` — wrapper with border, title
-- [ ] 1.2 Create `CodeBlock.tsx` — syntax highlighted, copyable code
-- [ ] 1.3 Create `PropsTable.tsx` — renders props from metadata
-- [ ] 1.4 Create `data/components.ts` — component metadata schema & data
+- [x] 1.1 Create `DemoContainer.tsx` — wrapper with border, title
+- [x] 1.2 Create `CodeBlock.tsx` — syntax highlighted, copyable code
+- [x] 1.3 Create `PropsTable.tsx` — renders props from metadata
+- [x] 1.4 Create `data/components.ts` — component metadata schema & data
 
 ## Phase 2: Content Pages
 
 ### Getting Started
-- [ ] 2.A.1 Homepage (`index.mdx`)
-- [ ] 2.A.2 Installation guide (`installation.mdx`)
-- [ ] 2.A.3 Theming guide (`theming.mdx`)
+- [x] 2.A.1 Homepage (`index.mdx`)
+- [x] 2.A.2 Installation guide (`installation.mdx`)
+- [x] 2.A.3 Theming guide (`theming.mdx`)
 
 ### Component Pages
-- [ ] 2.B.1 `ButtonDemo.tsx` + `button.mdx`
-- [ ] 2.B.2 `BadgeDemo.tsx` + `badge.mdx`
-- [ ] 2.B.3 `CardDemo.tsx` + `card.mdx`
-- [ ] 2.B.4 `ModalDemo.tsx` + `modal.mdx`
-- [ ] 2.B.5 `DropdownDemo.tsx` + `dropdown.mdx`
-- [ ] 2.B.6 `CollapsibleDemo.tsx` + `collapsible.mdx`
-- [ ] 2.B.7 `StepperDemo.tsx` + `stepper.mdx`
-- [ ] 2.B.8 `InputDemo.tsx` + `input.mdx`
-- [ ] 2.B.9 `StatusDemo.tsx` + `status.mdx`
-- [ ] 2.B.10 `StatDemo.tsx` + `stat.mdx`
-- [ ] 2.B.11 `SpinnerDemo.tsx` + `spinner.mdx`
-- [ ] 2.B.12 `EmptyDemo.tsx` + `empty.mdx`
-- [ ] 2.B.13 `ClampDemo.tsx` + `clamp.mdx`
-- [ ] 2.B.14 `ChevronDemo.tsx` + `chevron.mdx`
+- [x] 2.B.1 `ButtonDemo.tsx` + `button.mdx`
+- [x] 2.B.2 `BadgeDemo.tsx` + `badge.mdx`
+- [x] 2.B.3 `CardDemo.tsx` + `card.mdx`
+- [x] 2.B.4 `ModalDemo.tsx` + `modal.mdx`
+- [x] 2.B.5 `DropdownDemo.tsx` + `dropdown.mdx`
+- [x] 2.B.6 `CollapsibleDemo.tsx` + `collapsible.mdx`
+- [x] 2.B.7 `StepperDemo.tsx` + `stepper.mdx`
+- [x] 2.B.8 `InputDemo.tsx` + `input.mdx`
+- [x] 2.B.9 `StatusDemo.tsx` + `status.mdx`
+- [x] 2.B.10 `StatDemo.tsx` + `stat.mdx`
+- [x] 2.B.11 `SpinnerDemo.tsx` + `spinner.mdx`
+- [x] 2.B.12 `EmptyDemo.tsx` + `empty.mdx`
+- [x] 2.B.13 `ClampDemo.tsx` + `clamp.mdx`
+- [x] 2.B.14 `ChevronDemo.tsx` + `chevron.mdx`
 
 ### CSS Documentation
-- [ ] 2.C.1 `tokens.mdx` — design token reference
-- [ ] 2.C.2 `utilities.mdx` — layout primitives reference
+- [x] 2.C.1 `tokens.mdx` — design token reference
+- [x] 2.C.2 `utilities.mdx` — layout primitives reference
 
 ## Phase 3: LLM Endpoint
 
-- [ ] 3.1 Create helper function to generate LLM content from metadata
-- [ ] 3.2 Create `llms.txt.ts` — plain text endpoint
-- [ ] 3.3 Create `api/llms.json.ts` — structured JSON endpoint
+- [x] 3.1 Create helper function to generate LLM content from metadata
+- [x] 3.2 Create `llms.txt.ts` — plain text endpoint
+- [x] 3.3 Create `api/llms.json.ts` — structured JSON endpoint
 
 ## Phase 4: Polish & Configuration
 
-- [ ] 4.1 Configure Starlight sidebar navigation
-- [ ] 4.2 Add search configuration
-- [ ] 4.3 Configure social links / footer
+- [x] 4.1 Configure Starlight sidebar navigation
+- [x] 4.2 Add search configuration
+- [x] 4.3 Configure social links / footer
 
 ---
 

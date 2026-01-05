@@ -8,6 +8,19 @@ export default defineConfig({
 		starlight({
 			title: "@f0rbit/ui",
 			customCss: ["./src/styles/custom.css"],
+			social: [{ icon: "github", label: "GitHub", href: "https://github.com/f0rbit/ui" }],
+			editLink: {
+				baseUrl: "https://github.com/f0rbit/ui/edit/main/docs/",
+			},
+			head: [
+				{
+					tag: "meta",
+					attrs: {
+						property: "og:image",
+						content: "/og-image.png",
+					},
+				},
+			],
 			sidebar: [
 				{
 					label: "Getting Started",
@@ -17,10 +30,29 @@ export default defineConfig({
 					],
 				},
 				{
+					label: "Components",
+					items: [
+						{ label: "Button", slug: "components/button" },
+						{ label: "Badge", slug: "components/badge" },
+						{ label: "Card", slug: "components/card" },
+						{ label: "Modal", slug: "components/modal" },
+						{ label: "Dropdown", slug: "components/dropdown" },
+						{ label: "Collapsible", slug: "components/collapsible" },
+						{ label: "Stepper", slug: "components/stepper" },
+						{ label: "Input", slug: "components/input" },
+						{ label: "Status", slug: "components/status" },
+						{ label: "Stat", slug: "components/stat" },
+						{ label: "Spinner", slug: "components/spinner" },
+						{ label: "Empty", slug: "components/empty" },
+						{ label: "Clamp", slug: "components/clamp" },
+						{ label: "Chevron", slug: "components/chevron" },
+					],
+				},
+				{
 					label: "CSS",
 					items: [
 						{ label: "Design Tokens", slug: "css/tokens" },
-						{ label: "Utility Classes", slug: "css/utilities" },
+						{ label: "Utilities", slug: "css/utilities" },
 					],
 				},
 			],
