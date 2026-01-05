@@ -3,6 +3,8 @@ import starlight from "@astrojs/starlight";
 import solidJs from "@astrojs/solid-js";
 
 export default defineConfig({
+	site: "https://f0rbit.github.io",
+	base: "/ui",
 	integrations: [
 		solidJs(),
 		starlight({
@@ -17,7 +19,7 @@ export default defineConfig({
 					tag: "meta",
 					attrs: {
 						property: "og:image",
-						content: "/og-image.png",
+						content: "/ui/og-image.png",
 					},
 				},
 			],
