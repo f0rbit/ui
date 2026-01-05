@@ -9,6 +9,7 @@
 	--sl-color-hairline: var(--border);
 	--sl-color-hairline-light: var(--border);
 	--sl-font: var(--font);
+	--sl-font-system: var(--font);
 	--sl-font-mono: var(--font-mono);
 	--sl-color-accent-low: var(--bg-alt);
 	--sl-color-accent: var(--accent);
