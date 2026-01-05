@@ -1,0 +1,199 @@
+.stack {
+	display: flex;
+	flex-direction: column;
+	gap: var(--stack-gap, var(--space-md));
+}
+
+.stack-sm {
+	--stack-gap: var(--space-sm);
+}
+
+.stack-lg {
+	--stack-gap: var(--space-lg);
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--row-gap, var(--space-sm));
+}
+
+.row-sm {
+	--row-gap: var(--space-xs);
+}
+
+.row-lg {
+	--row-gap: var(--space-md);
+}
+
+.row-between {
+	justify-content: space-between;
+}
+
+.row-end {
+	justify-content: flex-end;
+}
+
+.row-start {
+	align-items: flex-start;
+}
+
+.cluster {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-sm);
+	align-items: center;
+}
+
+.center {
+	max-width: var(--center-width, 65ch);
+	margin-inline: auto;
+	padding-inline: var(--space-md);
+}
+
+.center-narrow {
+	--center-width: 45ch;
+}
+
+.center-wide {
+	--center-width: 90ch;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(var(--grid-min, 250px), 1fr));
+	gap: var(--space-md);
+}
+
+.grid-2 {
+	grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-3 {
+	grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4 {
+	grid-template-columns: repeat(4, 1fr);
+}
+
+.text-primary {
+	color: var(--fg);
+}
+
+.text-muted {
+	color: var(--fg-muted);
+}
+
+.text-subtle {
+	color: var(--fg-subtle);
+}
+
+.text-faint {
+	color: var(--fg-faint);
+}
+
+.text-accent {
+	color: var(--accent);
+}
+
+.text-sm {
+	font-size: var(--text-sm);
+}
+
+.text-lg {
+	font-size: var(--text-lg);
+}
+
+.text-xl {
+	font-size: var(--text-xl);
+}
+
+.font-medium {
+	font-weight: 500;
+}
+
+.font-bold {
+	font-weight: 700;
+}
+
+.font-mono {
+	font-family: var(--font-mono);
+}
+
+.truncate {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
+}
+
+.hidden {
+	display: none;
+}
+
+.hover-reveal {
+	opacity: 0;
+	transition: opacity var(--transition);
+}
+
+*:hover > .hover-reveal,
+*:focus-within > .hover-reveal {
+	opacity: 1;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes pulse {
+	50% {
+		opacity: 0.5;
+	}
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+}
+
+.animate-spin {
+	animation: spin 1s linear infinite;
+}
+
+.animate-pulse {
+	animation: pulse 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.animate-spin,
+	.animate-pulse {
+		animation: none;
+	}
+}
+
+@media (max-width: 768px) {
+	.hide-mobile {
+		display: none;
+	}
+
+	.grid-2,
+	.grid-3,
+	.grid-4 {
+		grid-template-columns: 1fr;
+	}
+}
