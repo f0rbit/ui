@@ -34,6 +34,3 @@ export function Chevron(props: ChevronProps) {
 		</svg>
 	);
 }
-
-// Keep the old type name as alias for backwards compatibility
-export type ChevronDirection = ChevronFacing;

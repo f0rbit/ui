@@ -41,5 +41,3 @@ export function Status(props: StatusProps) {
 		</span>
 	);
 }
-
-export { Status as StatusBadge };

@@ -11,10 +11,10 @@ export {
 	type CardProps,
 } from "./components/Card";
 export { Input, Textarea, Select, type InputProps, type TextareaProps, type SelectProps } from "./components/Input";
-export { Status, StatusBadge, type StatusProps, type StatusState } from "./components/Status";
+export { Status, type StatusProps, type StatusState } from "./components/Status";
 export { Stat, type StatProps } from "./components/Stat";
 export { Spinner, type SpinnerProps, type SpinnerSize } from "./components/Spinner";
-export { Chevron, type ChevronProps, type ChevronFacing, type ChevronDirection } from "./components/Chevron";
+export { Chevron, type ChevronProps, type ChevronFacing } from "./components/Chevron";
 export { Empty, type EmptyProps } from "./components/Empty";
 export {
 	Modal,
