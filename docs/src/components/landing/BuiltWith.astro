@@ -1,0 +1,91 @@
+---
+import Section from './Section.astro';
+
+const projects = [
+  {
+    name: "Media Timeline",
+    url: "https://media.devpad.tools",
+    description: "Aggregate activity from GitHub, Reddit, Twitter and more into a unified timeline."
+  },
+  {
+    name: "devpad blog",
+    url: "https://blog.devpad.tools",
+    description: "Technical writing and project updates."
+  },
+  {
+    name: "devpad",
+    url: "https://devpad.tools",
+    description: "Developer tools and utilities."
+  }
+];
+---
+
+<Section title="Built With" bordered>
+  <p class="section-intro">Projects using @f0rbit/ui in production.</p>
+  <div class="projects-grid">
+    {projects.map((project) => (
+      <a href={project.url} class="project-card" target="_blank" rel="noopener noreferrer">
+        <h3 class="project-name">{project.name}</h3>
+        <p class="project-description">{project.description}</p>
+        <span class="project-link">{project.url.replace('https://', '')} →</span>
+      </a>
+    ))}
+  </div>
+</Section>
+
+<style>
+  .section-intro {
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+    margin: 0 0 var(--space-md) 0;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+  }
+
+  .project-card {
+    padding: var(--space-md);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    transition: border-color var(--transition);
+  }
+
+  .project-card:hover {
+    border-color: var(--fg-faint);
+    filter: none;
+  }
+
+  .project-name {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--fg);
+    margin: 0;
+  }
+
+  .project-description {
+    font-size: var(--text-sm);
+    line-height: var(--text-sm-lh);
+    color: var(--fg-muted);
+    margin: 0;
+    flex: 1;
+  }
+
+  .project-link {
+    font-size: var(--text-sm);
+    color: var(--accent);
+    margin-top: var(--space-xs);
+  }
+
+  @media (max-width: 768px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
