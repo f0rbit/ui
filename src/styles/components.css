@@ -336,6 +336,10 @@
 	color: var(--error-fg);
 }
 
+.status-pending {
+	color: var(--warning-fg);
+}
+
 .empty {
 	display: flex;
 	flex-direction: column;
