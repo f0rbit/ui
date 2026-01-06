@@ -7,9 +7,9 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
   <div class="dot-grid" aria-hidden="true"></div>
   <div class="hero-content">
     <div class="badge-row">
-      <span class="badge">SolidJS</span>
-      <span class="badge">v0.1.0</span>
-      <span class="badge">MIT License</span>
+      {["SolidJS", "v0.1.0", "MIT License"].map((text, i) => (
+        <span class="badge" style={`--badge-index: ${i}`}>{text}</span>
+      ))}
     </div>
 
     <h1 class="hero-title">
@@ -31,15 +31,15 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
 
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="hero-stat-value">15+</div>
+        <div class="hero-stat-value" data-count-to="15" data-suffix="+">15+</div>
         <div class="hero-stat-label">Components</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-value">OKLCH</div>
+        <div class="hero-stat-value" data-fade-in>OKLCH</div>
         <div class="hero-stat-label">Colors</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-value">Zero</div>
+        <div class="hero-stat-value" data-fade-in>Zero</div>
         <div class="hero-stat-label">Runtime Deps</div>
       </div>
     </div>
@@ -98,6 +98,10 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
       transform: none;
       animation: none;
     }
+
+    .badge {
+      animation: none;
+    }
   }
 
   .hero-content {
@@ -113,6 +117,20 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
     gap: var(--space-sm);
     justify-content: center;
     margin-bottom: var(--space-lg);
+  }
+
+  .badge {
+    animation: badge-float 3.5s ease-in-out infinite;
+    animation-delay: calc(var(--badge-index) * 0.4s);
+  }
+
+  @keyframes badge-float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-3px);
+    }
   }
 
   .hero-title {
@@ -170,6 +188,28 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
     font-size: var(--text-lg);
     font-weight: 600;
     color: var(--fg);
+  }
+
+  .hero-stat-value[data-count-to],
+  .hero-stat-value[data-fade-in] {
+    opacity: 0;
+    transform: translateY(0.5em);
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  }
+
+  .hero-stat-value[data-count-to].animated,
+  .hero-stat-value[data-fade-in].animated {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-stat-value[data-count-to],
+    .hero-stat-value[data-fade-in] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
 
   .hero-stat-label {
