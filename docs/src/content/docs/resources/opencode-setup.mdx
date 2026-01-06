@@ -1,0 +1,114 @@
+---
+title: "OpenCode Setup"
+description: Integrate @f0rbit/ui with OpenCode AI coding assistant
+---
+
+This guide explains how to set up @f0rbit/ui with [OpenCode](https://opencode.ai), an AI coding assistant.
+
+## Quick Setup
+
+Run this command in your terminal to automatically install and configure @f0rbit/ui with OpenCode:
+
+```bash
+curl -fsSL https://f0rbit.github.io/ui/opencode/setup.sh | bash
+```
+
+This script will:
+1. Detect your package manager (bun, pnpm, or npm)
+2. Install `@f0rbit/ui`
+3. Download the OpenCode skill for AI assistance
+
+## Manual Setup
+
+### Step 1: Install the Package
+
+```bash
+# bun
+bun add @f0rbit/ui
+
+# npm
+npm install @f0rbit/ui
+
+# pnpm
+pnpm add @f0rbit/ui
+```
+
+### Step 2: Add the OpenCode Skill
+
+Create the skill directory and download the skill file:
+
+```bash
+mkdir -p .opencode/skill/f0rbit-ui
+curl -sL https://f0rbit.github.io/ui/opencode/skill.md \
+  -o .opencode/skill/f0rbit-ui/SKILL.md
+```
+
+### Step 3: (Optional) Add the Setup Command
+
+If you want a reusable command for setting up @f0rbit/ui in other projects:
+
+```bash
+mkdir -p ~/.config/opencode/command
+curl -sL https://f0rbit.github.io/ui/opencode/setup-ui.md \
+  -o ~/.config/opencode/command/setup-ui.md
+```
+
+Now you can run `/setup-ui` in any OpenCode session.
+
+## Using with OpenCode
+
+Once set up, OpenCode will automatically discover the `f0rbit-ui` skill. When you're working on a task that involves @f0rbit/ui, the agent can load the skill to get full context about:
+
+- Available components and their props
+- CSS design tokens for theming
+- Utility classes
+- Code examples
+
+### Example Prompts
+
+```
+Help me create a login form using @f0rbit/ui components
+```
+
+```
+Explain the theming system in @f0rbit/ui and how to customize colors
+```
+
+```
+Create a dashboard layout with Card, Stat, and Status components
+```
+
+## Monorepo Support
+
+The setup script automatically detects monorepo structures. If you're in a monorepo, it will prompt you to choose which package to install @f0rbit/ui in.
+
+For manual monorepo setup:
+
+```bash
+# Install in a specific workspace
+cd packages/web
+bun add @f0rbit/ui
+
+# The skill should be at the repo root
+cd ../..
+mkdir -p .opencode/skill/f0rbit-ui
+curl -sL https://f0rbit.github.io/ui/opencode/skill.md \
+  -o .opencode/skill/f0rbit-ui/SKILL.md
+```
+
+## Updating the Skill
+
+To update the skill with the latest documentation:
+
+```bash
+curl -sL https://f0rbit.github.io/ui/opencode/skill.md \
+  -o .opencode/skill/f0rbit-ui/SKILL.md
+```
+
+## Files Reference
+
+| File | URL | Purpose |
+|------|-----|---------|
+| SKILL.md | `/ui/opencode/skill.md` | OpenCode skill with full library context |
+| Setup Command | `/ui/opencode/setup-ui.md` | OpenCode command for project setup |
+| Setup Script | `/ui/opencode/setup.sh` | Shell script for quick setup |

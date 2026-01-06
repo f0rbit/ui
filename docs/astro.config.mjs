@@ -65,6 +65,7 @@ export default defineConfig({
 				label: "Resources",
 				items: [
 					{ label: "LLM Documentation", slug: "llms" },
+					{ label: "OpenCode Setup", slug: "resources/opencode-setup" },
 				],
 			},
 		],
