@@ -19,7 +19,8 @@ for (const file of cssFiles) {
 	console.log(`✓ ${file}`);
 }
 
-// Create combined styles.css
+// Create combined styles.css with layer order declaration
+const layerOrder = "@layer reset, tokens, components, utilities;\n\n";
 const combined = cssFiles
 	.map(file => {
 		const content = readFileSync(join(srcDir, file), "utf-8");
@@ -27,7 +28,7 @@ const combined = cssFiles
 	})
 	.join("\n\n");
 
-writeFileSync(join(distDir, "styles.css"), combined);
+writeFileSync(join(distDir, "styles.css"), layerOrder + combined);
 console.log("✓ styles.css (combined)");
 
 console.log("\nCSS build complete!");

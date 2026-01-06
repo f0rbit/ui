@@ -1,91 +1,93 @@
-*,
-*::before,
-*::after {
-	box-sizing: border-box;
-}
-
-* {
-	margin: 0;
-}
-
-body {
-	line-height: var(--leading-normal, 1.5);
-	-webkit-font-smoothing: antialiased;
-	font-family: var(--font);
-	background: var(--bg);
-	color: var(--fg-muted);
-}
-
-img,
-picture,
-video,
-canvas,
-svg {
-	display: block;
-	max-width: 100%;
-}
-
-input,
-button,
-textarea,
-select {
-	font: inherit;
-	font-size: var(--text-sm);
-	line-height: var(--text-sm-lh);
-}
-
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	overflow-wrap: break-word;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	color: var(--fg);
-	font-weight: var(--font-semibold, 600);
-}
-
-a {
-	color: var(--accent);
-	text-decoration: none;
-	transition: filter var(--transition);
-}
-
-a:hover {
-	filter: var(--hover-filter);
-}
-
-ul,
-ol {
-	list-style: none;
-	padding: 0;
-}
-
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-:focus-visible {
-	outline: 2px solid var(--accent);
-	outline-offset: 2px;
-}
-
-@media (prefers-reduced-motion: reduce) {
+@layer reset {
 	*,
 	*::before,
 	*::after {
-		animation-duration: 0.01ms !important;
-		animation-iteration-count: 1 !important;
-		transition-duration: 0.01ms !important;
+		box-sizing: border-box;
+	}
+
+	* {
+		margin: 0;
+	}
+
+	body {
+		line-height: var(--leading-normal, 1.5);
+		-webkit-font-smoothing: antialiased;
+		font-family: var(--font);
+		background: var(--bg);
+		color: var(--fg-muted);
+	}
+
+	img,
+	picture,
+	video,
+	canvas,
+	svg {
+		display: block;
+		max-width: 100%;
+	}
+
+	input,
+	button,
+	textarea,
+	select {
+		font: inherit;
+		font-size: var(--text-sm);
+		line-height: var(--text-sm-lh);
+	}
+
+	p,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		overflow-wrap: break-word;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		color: var(--fg);
+		font-weight: var(--font-semibold, 600);
+	}
+
+	a {
+		color: var(--accent);
+		text-decoration: none;
+		transition: filter var(--transition);
+	}
+
+	a:hover {
+		filter: var(--hover-filter);
+	}
+
+	ul,
+	ol {
+		list-style: none;
+		padding: 0;
+	}
+
+	table {
+		border-collapse: collapse;
+		border-spacing: 0;
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		*,
+		*::before,
+		*::after {
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.01ms !important;
+		}
 	}
 }
