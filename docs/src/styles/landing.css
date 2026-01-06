@@ -150,26 +150,6 @@
   text-align: center;
 }
 
-/* Grids */
-.two-column-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-md);
-}
-
-.three-column-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-md);
-}
-
-@media (max-width: 768px) {
-  .two-column-grid,
-  .three-column-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* Badge row for hero */
 .badge-row {
   display: flex;
