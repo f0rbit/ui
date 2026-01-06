@@ -1,6 +1,13 @@
 ---
 import Section from './Section.astro';
 
+const highlight = (code: string): string => {
+  return code
+    .replace(/(\/\/.*$)/gm, '<span class="hl-comment">$1</span>')
+    .replace(/("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')/g, '<span class="hl-string">$1</span>')
+    .replace(/\b(import|from|const|let|var|export|default)\b/g, '<span class="hl-keyword">$1</span>');
+};
+
 const steps = [
   {
     title: "Install the package",
@@ -31,7 +38,7 @@ const steps = [
         <div class="step-indicator" set:html={step.icon} />
         <div class="step-content">
           <div class="step-title">{step.title}</div>
-          <code class="landing-code">{step.code}</code>
+          <code class="landing-code" set:html={highlight(step.code)} />
         </div>
         {index < steps.length - 1 && <div class="step-connector" />}
       </div>
@@ -52,5 +59,18 @@ const steps = [
     overflow-x: auto;
     white-space: pre;
     margin-top: var(--space-sm);
+  }
+
+  .landing-code :global(.hl-comment) {
+    color: var(--fg-faint);
+  }
+
+  .landing-code :global(.hl-string) {
+    color: var(--accent);
+  }
+
+  .landing-code :global(.hl-keyword) {
+    color: var(--fg);
+    font-weight: 500;
   }
 </style>
