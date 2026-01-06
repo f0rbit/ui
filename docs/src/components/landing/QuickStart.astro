@@ -35,9 +35,7 @@ const steps = [
         <div class="step-indicator" set:html={step.icon} />
         <div class="step-content">
           <div class="step-title">{step.title}</div>
-          <div class="landing-code">
-            <Code code={step.code} lang={step.lang} />
-          </div>
+          <Code code={step.code} lang={step.lang} />
         </div>
         {index < steps.length - 1 && <div class="step-connector" />}
       </div>
@@ -46,21 +44,17 @@ const steps = [
 </Section>
 
 <style>
-  .landing-code {
-    margin-top: var(--space-sm);
+  .step-content :global(.expressive-code) {
+    margin: var(--space-sm) 0 0 0;
   }
 
-  .landing-code :global(.expressive-code) {
-    margin: 0;
-  }
-
-  .landing-code :global(.expressive-code .frame) {
+  .step-content :global(.expressive-code .frame) {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: none;
   }
 
-  .landing-code :global(.expressive-code pre) {
+  .step-content :global(.expressive-code pre) {
     background: var(--code-background, var(--bg-alt)) !important;
     border: none;
   }
