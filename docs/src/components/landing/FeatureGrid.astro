@@ -4,19 +4,23 @@ import Section from './Section.astro';
 const features = [
   {
     title: "Minimal by Design",
-    description: "No bloat. Each component is focused and does one thing well. Import only what you need."
+    description: "No bloat. Each component is focused and does one thing well. Import only what you need.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" x2="21" y1="10" y2="3"/><line x1="3" x2="10" y1="21" y2="14"/></svg>`
   },
   {
     title: "OKLCH Color System",
-    description: "Modern perceptually uniform colors with automatic dark mode that just works."
+    description: "Modern perceptually uniform colors with automatic dark mode that just works.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="0.5" fill="currentColor"/><circle cx="17.5" cy="10.5" r="0.5" fill="currentColor"/><circle cx="8.5" cy="7.5" r="0.5" fill="currentColor"/><circle cx="6.5" cy="12.5" r="0.5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2z"/></svg>`
   },
   {
     title: "Border-First Design",
-    description: "Subtle borders over heavy backgrounds. Clean visual hierarchy that scales."
+    description: "Subtle borders over heavy backgrounds. Clean visual hierarchy that scales.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>`
   },
   {
     title: "TypeScript Native",
-    description: "Built with TypeScript from day one. Full autocomplete and type inference."
+    description: "Built with TypeScript from day one. Full autocomplete and type inference.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12.5 8 15l2 2.5"/><path d="m14 12.5 2 2.5-2 2.5"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/></svg>`
   }
 ];
 ---
@@ -25,6 +29,7 @@ const features = [
   <div class="feature-grid">
     {features.map((feature) => (
       <div class="feature-card">
+        <div class="feature-card-icon" set:html={feature.icon} />
         <h3 class="feature-card-title">{feature.title}</h3>
         <p class="feature-card-description">{feature.description}</p>
       </div>
@@ -43,6 +48,12 @@ const features = [
     padding: var(--space-md);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
+  }
+
+  .feature-card-icon {
+    color: var(--fg-muted);
+    margin-bottom: var(--space-sm);
+    line-height: 0;
   }
 
   .feature-card-title {
