@@ -10,13 +10,11 @@ export default defineConfig({
 		starlight({
 			title: "@f0rbit/ui",
 			customCss: ["./src/styles/custom.css"],
-			components: {
-				ThemeSelect: "./src/components/ThemeSelect.astro",
-			},
-			social: [{ icon: "github", label: "GitHub", href: "https://github.com/f0rbit/ui" }],
-			editLink: {
-				baseUrl: "https://github.com/f0rbit/ui/edit/main/docs/",
-			},
+		components: {
+			ThemeSelect: "./src/components/ThemeSelect.astro",
+			PageTitle: "./src/components/PageTitle.astro",
+		},
+		social: [{ icon: "github", label: "GitHub", href: "https://github.com/f0rbit/ui" }],
 			head: [
 				{
 					tag: "meta",
@@ -53,14 +51,20 @@ export default defineConfig({
 						{ label: "Chevron", slug: "components/chevron" },
 					],
 				},
-				{
-					label: "CSS",
-					items: [
-						{ label: "Design Tokens", slug: "css/tokens" },
-						{ label: "Utilities", slug: "css/utilities" },
-					],
-				},
-			],
+			{
+				label: "CSS",
+				items: [
+					{ label: "Design Tokens", slug: "css/tokens" },
+					{ label: "Utilities", slug: "css/utilities" },
+				],
+			},
+			{
+				label: "Resources",
+				items: [
+					{ label: "LLM Documentation", slug: "llms" },
+				],
+			},
+		],
 		}),
 	],
 });
