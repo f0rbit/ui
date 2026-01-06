@@ -13,6 +13,8 @@ export default defineConfig({
 		components: {
 			ThemeSelect: "./src/components/ThemeSelect.astro",
 			PageTitle: "./src/components/PageTitle.astro",
+			SiteTitle: "./src/components/SiteTitle.astro",
+			Footer: "./src/components/Footer.astro",
 		},
 		social: [{ icon: "github", label: "GitHub", href: "https://github.com/f0rbit/ui" }],
 			head: [

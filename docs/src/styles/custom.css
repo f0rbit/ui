@@ -26,7 +26,17 @@
 	--sl-color-black: var(--bg);
 }
 
-/* Header border */
+/* Header - smaller height and border */
+:root {
+	--sl-nav-height: 2.75rem;
+}
+
+@media (min-width: 50rem) {
+	:root {
+		--sl-nav-height: 3rem;
+	}
+}
+
 header.header {
 	border-bottom: 1px solid var(--border);
 }
