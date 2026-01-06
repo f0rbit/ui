@@ -52,5 +52,45 @@ const steps = [
     overflow-x: auto;
     white-space: pre;
     margin-top: var(--space-sm);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .landing-code::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 30%;
+    background: var(--accent);
+    border-radius: 1px;
+    animation: scan-border 2.5s ease-in-out infinite;
+  }
+
+  @keyframes scan-border {
+    0% {
+      top: -30%;
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      top: 100%;
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .landing-code::before {
+      animation: none;
+      top: 0;
+      height: 100%;
+      opacity: 0.6;
+    }
   }
 </style>
