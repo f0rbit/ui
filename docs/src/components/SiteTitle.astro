@@ -3,7 +3,7 @@ import config from 'virtual:starlight/user-config';
 const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
 ---
 
-<a href={siteTitleHref} class="site-title sl-flex">
+<a href={siteTitleHref} class="site-title row sl-flex">
 	<svg class="site-logo" viewBox="0 0 32 32" aria-hidden="true">
 		<rect width="32" height="32" rx="6" fill="currentColor" fill-opacity="0.1"/>
 		<rect width="32" height="32" rx="6" fill="none" stroke="currentColor" stroke-opacity="0.3"/>
@@ -34,7 +34,8 @@ const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
 		flex-shrink: 0;
 	}
 	
-	span {
+	.site-title span {
 		overflow: hidden;
+		height: 1.1rem;
 	}
 </style>
