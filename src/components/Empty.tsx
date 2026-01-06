@@ -7,7 +7,7 @@ type EmptyProps = {
 	children?: JSX.Element;
 };
 
-const Empty = (props: EmptyProps): JSX.Element => {
+export function Empty(props: EmptyProps): JSX.Element {
 	const [local] = splitProps(props, ["icon", "title", "description", "children"]);
 
 	return (
@@ -18,7 +18,5 @@ const Empty = (props: EmptyProps): JSX.Element => {
 			{local.children}
 		</div>
 	);
-};
-
-export { Empty };
+}
 export type { EmptyProps };

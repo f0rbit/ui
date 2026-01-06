@@ -5,7 +5,7 @@ type StatProps = {
 	label: string;
 } & Omit<JSX.HTMLAttributes<HTMLDivElement>, "children">;
 
-const Stat = (props: StatProps): JSX.Element => {
+export function Stat(props: StatProps): JSX.Element {
 	const [local, rest] = splitProps(props, ["value", "label", "class"]);
 
 	return (
@@ -14,7 +14,5 @@ const Stat = (props: StatProps): JSX.Element => {
 			<span class="stat-label">{local.label}</span>
 		</div>
 	);
-};
-
-export { Stat };
+}
 export type { StatProps };
