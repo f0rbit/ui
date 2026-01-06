@@ -408,6 +408,7 @@
 		color: var(--fg-faint);
 	}
 
+	.chevron.expanded,
 	.chevron-expanded {
 		transform: rotate(90deg);
 	}
@@ -416,6 +417,7 @@
 		transform: rotate(90deg);
 	}
 
+	.chevron-down.expanded,
 	.chevron-down.chevron-expanded {
 		transform: rotate(180deg);
 	}
@@ -464,6 +466,7 @@
 		display: inline-flex;
 	}
 
+	.dropdown-item.active,
 	.dropdown-item-active {
 		color: var(--fg);
 		font-weight: 500;
@@ -539,6 +542,7 @@
 		transition: transform var(--transition);
 	}
 
+	.collapsible-chevron.open,
 	.collapsible-chevron-open {
 		transform: rotate(90deg);
 	}
