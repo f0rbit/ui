@@ -127,10 +127,18 @@ h1#_top,
 	font-size: 1rem;
 }
 
-/* Styled lists in markdown content */
+/* Apply library .list styles to markdown content lists */
 .sl-markdown-content ul,
 .sl-markdown-content ol {
 	padding-left: var(--space-lg);
+}
+
+.sl-markdown-content ul {
+	list-style-type: disc;
+}
+
+.sl-markdown-content ol {
+	list-style-type: decimal;
 }
 
 .sl-markdown-content li {
@@ -147,35 +155,24 @@ h1#_top,
 	margin-bottom: 0;
 }
 
-.sl-markdown-content ul {
-	list-style-type: disc;
+.sl-markdown-content :is(ul, ol) :is(ul, ol) {
+	margin-top: var(--space-xs);
 }
 
 .sl-markdown-content ul ul {
 	list-style-type: circle;
-	margin-top: var(--space-xs);
 }
 
 .sl-markdown-content ul ul ul {
 	list-style-type: square;
 }
 
-.sl-markdown-content ol {
-	list-style-type: decimal;
-}
-
 .sl-markdown-content ol ol {
 	list-style-type: lower-alpha;
-	margin-top: var(--space-xs);
 }
 
 .sl-markdown-content ol ol ol {
 	list-style-type: lower-roman;
-}
-
-.sl-markdown-content li > ul,
-.sl-markdown-content li > ol {
-	margin-top: var(--space-xs);
 }
 
 .demo-container {
