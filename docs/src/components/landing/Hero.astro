@@ -237,3 +237,54 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
     }
   }
 </style>
+
+<script>
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const animateCount = (el: HTMLElement, target: number, suffix: string, duration: number) => {
+    const start = performance.now();
+    const step = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(eased * target);
+      el.textContent = current + (progress >= 1 ? suffix : '');
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    el.textContent = '0';
+    el.classList.add('animated');
+    requestAnimationFrame(step);
+  };
+
+  const statsContainer = document.querySelector('.hero-stats');
+  if (statsContainer) {
+    const countElements = statsContainer.querySelectorAll<HTMLElement>('[data-count-to]');
+    const fadeElements = statsContainer.querySelectorAll<HTMLElement>('[data-fade-in]');
+
+    if (prefersReducedMotion) {
+      countElements.forEach(el => el.classList.add('animated'));
+      fadeElements.forEach(el => el.classList.add('animated'));
+    } else {
+      let hasAnimated = false;
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting || hasAnimated) return;
+          hasAnimated = true;
+          observer.disconnect();
+
+          countElements.forEach(el => {
+            const target = parseInt(el.dataset.countTo || '0', 10);
+            const suffix = el.dataset.suffix || '';
+            animateCount(el, target, suffix, 1200);
+          });
+
+          fadeElements.forEach((el, i) => {
+            setTimeout(() => el.classList.add('animated'), i * 100);
+          });
+        });
+      }, { threshold: 0.5 });
+
+      observer.observe(statsContainer);
+    }
+  }
+</script>
