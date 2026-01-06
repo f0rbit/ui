@@ -39,9 +39,7 @@
 }
 
 .color-presets {
-  display: flex;
   gap: var(--space-sm);
-  flex-wrap: wrap;
 }
 
 .color-swatch {
@@ -95,8 +93,6 @@
 }
 
 .slider-labels {
-  display: flex;
-  justify-content: space-between;
   font-size: var(--text-xs);
   color: var(--fg-faint);
 }
@@ -136,20 +132,6 @@
   color: var(--fg);
 }
 
-.preview-close {
-  background: none;
-  border: none;
-  color: var(--fg-faint);
-  font-size: var(--text-lg);
-  cursor: pointer;
-  padding: 0;
-  line-height: 1;
-}
-
-.preview-close:hover {
-  color: var(--fg);
-}
-
 .preview-card-body {
   padding: var(--space-md);
   display: flex;
@@ -158,8 +140,6 @@
 }
 
 .preview-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-sm);
 }
 
@@ -168,16 +148,11 @@
 }
 
 .preview-actions {
-  display: flex;
-  align-items: center;
   gap: var(--space-sm);
-  flex-wrap: wrap;
 }
 
 .preview-badges {
-  display: flex;
   gap: var(--space-xs);
-  flex-wrap: wrap;
 }
 
 .preview-text {
@@ -205,9 +180,5 @@
   .theme-controls {
     border-right: none;
     border-bottom: 1px solid var(--border);
-  }
-
-  .preview-stats {
-    grid-template-columns: repeat(3, 1fr);
   }
 }

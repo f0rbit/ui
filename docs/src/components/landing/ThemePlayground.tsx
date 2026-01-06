@@ -70,7 +70,7 @@ export function ThemePlayground() {
 			<div class="theme-controls">
 				<div class="control-section">
 					<label class="control-label">Accent Color</label>
-					<div class="color-presets">
+					<div class="cluster color-presets">
 						{colorPresets.map(preset => (
 							<button
 								type="button"
@@ -99,10 +99,10 @@ export function ThemePlayground() {
 						onInput={(e) => updateSetting("radius", parseFloat(e.currentTarget.value))}
 						class="control-slider"
 					/>
-					<div class="slider-labels">
-						<span>Sharp</span>
-						<span>Round</span>
-					</div>
+				<div class="row row-between slider-labels">
+					<span>Sharp</span>
+					<span>Round</span>
+				</div>
 				</div>
 
 				<div class="control-section">
@@ -119,10 +119,10 @@ export function ThemePlayground() {
 						onInput={(e) => updateSetting("spacing", parseFloat(e.currentTarget.value))}
 						class="control-slider"
 					/>
-					<div class="slider-labels">
-						<span>Compact</span>
-						<span>Spacious</span>
-					</div>
+				<div class="row row-between slider-labels">
+					<span>Compact</span>
+					<span>Spacious</span>
+				</div>
 				</div>
 
 				<Button 
@@ -151,7 +151,7 @@ export function ThemePlayground() {
 						</Dropdown>
 					</div>
 					<div class="preview-card-body">
-						<div class="preview-stats">
+						<div class="grid grid-3 preview-stats">
 							<Stat value="423" label="Users" />
 							<Stat value="98%" label="Uptime" />
 							<Stat value="12" label="Tasks" />
@@ -159,13 +159,13 @@ export function ThemePlayground() {
 
 						<Input placeholder="Search users..." />
 
-						<div class="preview-actions">
+						<div class="cluster preview-actions">
 							<Button>Submit</Button>
 							<Button variant="secondary">Cancel</Button>
 							<Spinner />
 						</div>
 
-						<div class="preview-badges">
+						<div class="cluster preview-badges">
 							<Badge>Default</Badge>
 							<Badge variant="success">Success</Badge>
 							<Badge variant="warning">Warning</Badge>
