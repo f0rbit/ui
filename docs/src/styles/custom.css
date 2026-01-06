@@ -276,13 +276,13 @@ h1#_top,
 }
 
 .code-lang {
-	font-size: 0.75rem;
+	font-size: var(--text-xs);
 	color: var(--fg-faint);
 	font-family: var(--font-mono);
 }
 
 .code-copy {
-	font-size: 0.75rem;
+	font-size: var(--text-xs);
 	padding: 2px 8px;
 	background: transparent;
 	border: 1px solid var(--border);
