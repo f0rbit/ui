@@ -1,0 +1,233 @@
+/* Starlight Theme Overrides */
+
+/* Map library tokens to Starlight variables */
+:root {
+	--code-background: oklch(from var(--bg) calc(l - 0.03) c h);
+	--ec-codeBg: var(--code-background);
+	--sl-color-bg: var(--bg);
+	--sl-color-bg-nav: var(--bg);
+	--sl-color-bg-sidebar: var(--bg);
+	--sl-color-text: var(--fg-muted);
+	--sl-color-text-accent: var(--accent);
+	--sl-color-hairline: var(--border);
+	--sl-color-hairline-light: var(--border);
+	--sl-font: var(--font);
+	--sl-font-system: var(--font);
+	--sl-font-mono: var(--font-mono);
+	--sl-color-accent-low: var(--bg);
+	--sl-color-accent: var(--accent);
+	--sl-color-accent-high: var(--fg);
+	--sl-color-white: var(--fg);
+	--sl-color-gray-1: var(--fg-muted);
+	--sl-color-gray-2: var(--fg-subtle);
+	--sl-color-gray-3: var(--fg-faint);
+	--sl-color-gray-4: var(--border);
+	--sl-color-gray-5: var(--bg-alt);
+	--sl-color-gray-6: var(--bg);
+	--sl-color-black: var(--bg);
+}
+
+/* Header - smaller height and border */
+:root {
+	--sl-nav-height: 2.75rem;
+}
+
+@media (min-width: 50rem) {
+	:root {
+		--sl-nav-height: 3rem;
+	}
+}
+
+header.header {
+	border-bottom: 1px solid var(--border);
+}
+
+/* Override Starlight's aggressive content margin rules */
+@layer starlight.content {
+	.sl-markdown-content :not(h1, h2, h3, h4, h5, h6) + :is(h1, h2, h3, h4, h5, h6):not(:where(.not-content *)) {
+		margin-top: 0;
+	}
+	.sl-markdown-content :not(a, strong, em, del, span, input, code, br) + :not(a, strong, em, del, span, input, code, br, :where(.not-content *)) {
+		margin-top: 0;
+	}
+}
+
+/* Hide Starlight's default splash hero/tagline/banner/title on landing page */
+.sl-hero,
+.tagline,
+.sl-banner {
+	display: none;
+}
+
+/* Hide the content panel containing the splash page title placeholder */
+.content-panel:has(.splash-title-placeholder) {
+	display: none;
+}
+
+.splash-title-placeholder {
+	display: none;
+}
+
+/* Sidebar border */
+nav .sidebar-pane {
+	border-right: 1px solid var(--border);
+}
+
+/* Remove content max-width constraint */
+.main-pane .sl-container {
+	max-width: unset;
+}
+
+main {
+	padding-bottom: unset;
+}
+
+/* Cap "On this page" TOC width and adjust main pane on large screens */
+@media (min-width: 72rem) {
+	.right-sidebar-panel .sl-container {
+		max-width: 25rem;
+		width: 25rem;
+	}
+
+	[data-has-sidebar][data-has-toc] .main-pane {
+		width: 100%;
+	}
+
+	.right-sidebar-container {
+		width: 25rem;
+	}
+}
+
+/* Selected sidebar item - override Starlight defaults */
+[aria-current="page"],
+[aria-current="page"]:hover,
+[aria-current="page"]:focus {
+	background-color: transparent;
+	color: var(--fg);
+	text-decoration: underline;
+	font-weight: 500;
+}
+
+/* Reduce title sizes */
+h1#_top,
+.content-panel h1 {
+	font-size: 1.5rem;
+}
+
+.sl-markdown-content h1 {
+	font-size: 1.5rem;
+}
+
+.sl-markdown-content h2 {
+	font-size: 1.25rem;
+}
+
+.sl-markdown-content h3 {
+	font-size: 1.125rem;
+}
+
+.sl-markdown-content h4,
+.sl-markdown-content h5,
+.sl-markdown-content h6 {
+	font-size: 1rem;
+}
+
+/* Apply library .list styles to markdown content lists */
+.sl-markdown-content ul,
+.sl-markdown-content ol {
+	padding-left: var(--space-lg);
+}
+
+.sl-markdown-content ul {
+	list-style-type: disc;
+}
+
+.sl-markdown-content ol {
+	list-style-type: decimal;
+}
+
+.sl-markdown-content li {
+	position: relative;
+	padding-left: var(--space-sm);
+	margin-bottom: var(--space-xs);
+}
+
+.sl-markdown-content li::marker {
+	color: var(--fg-faint);
+}
+
+.sl-markdown-content li:last-child {
+	margin-bottom: 0;
+}
+
+.sl-markdown-content :is(ul, ol) :is(ul, ol) {
+	margin-top: var(--space-xs);
+}
+
+.sl-markdown-content ul ul {
+	list-style-type: circle;
+}
+
+.sl-markdown-content ul ul ul {
+	list-style-type: square;
+}
+
+.sl-markdown-content ol ol {
+	list-style-type: lower-alpha;
+}
+
+.sl-markdown-content ol ol ol {
+	list-style-type: lower-roman;
+}
+
+/* Override expressive-code backgrounds */
+.expressive-code,
+.expressive-code pre,
+.expressive-code code,
+.expressive-code .frame {
+	background: var(--code-background);
+}
+
+/* Pagination - compact button style */
+.pagination-links {
+	gap: var(--space-sm);
+}
+
+.pagination-links a {
+	padding: var(--space-sm) var(--space-md);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: none;
+	color: var(--fg-muted);
+	background: transparent;
+	transition: border-color var(--transition), color var(--transition);
+}
+
+.pagination-links a:hover {
+	border-color: var(--fg-faint);
+	color: var(--fg);
+}
+
+/* Hide "Previous"/"Next" text, keep only the page title */
+.pagination-links a > span {
+	font-size: 0;
+	line-height: 0;
+	height: 1.35rem;
+}
+
+.pagination-links a > span br {
+	display: none;
+}
+
+.pagination-links .link-title {
+	font-size: var(--text-sm);
+	color: var(--fg);
+	font-weight: 500;
+	line-height: var(--sl-line-height);
+}
+
+.pagination-links svg {
+	width: 1rem;
+	height: 1rem;
+	color: var(--fg-faint);
+}
