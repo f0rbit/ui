@@ -1,4 +1,3 @@
-import { createSignal } from "solid-js";
 import { Button } from "@f0rbit/ui";
 import { DemoContainer } from "../shared/DemoContainer";
 

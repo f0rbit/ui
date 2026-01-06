@@ -16,13 +16,13 @@ export function SpinnerDemo() {
 			<div class="demo-section">
 				<h4>Inline with Text</h4>
 				<div class="demo-row">
-					<span style={{ display: "flex", "align-items": "center", gap: "0.5rem" }}>
+					<span class="row">
 						<Spinner size="sm" />
 						Loading content...
 					</span>
 				</div>
 				<div class="demo-row">
-					<span style={{ display: "flex", "align-items": "center", gap: "0.5rem" }}>
+					<span class="row">
 						Fetching data
 						<Spinner size="sm" />
 					</span>

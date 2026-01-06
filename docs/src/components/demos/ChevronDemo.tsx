@@ -11,11 +11,11 @@ export function ChevronDemo() {
 			<div class="demo-section">
 				<h4>Default (Right-facing)</h4>
 				<div class="demo-row">
-					<span style={{ display: "flex", "align-items": "center", gap: "0.5rem" }}>
+					<span class="row">
 						<Chevron />
 						Collapsed
 					</span>
-					<span style={{ display: "flex", "align-items": "center", gap: "0.5rem" }}>
+					<span class="row">
 						<Chevron expanded />
 						Expanded
 					</span>
@@ -25,11 +25,11 @@ export function ChevronDemo() {
 			<div class="demo-section">
 				<h4>Down-facing Variant</h4>
 				<div class="demo-row">
-					<span style={{ display: "flex", "align-items": "center", gap: "0.5rem" }}>
+					<span class="row">
 						<Chevron facing="down" />
 						Collapsed
 					</span>
-					<span style={{ display: "flex", "align-items": "center", gap: "0.5rem" }}>
+					<span class="row">
 						<Chevron facing="down" expanded />
 						Expanded
 					</span>
