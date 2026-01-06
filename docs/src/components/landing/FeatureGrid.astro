@@ -32,12 +32,12 @@ const features = [
 <Section title="Why @f0rbit/ui?" bordered>
   <div class="feature-grid">
     {features.map((feature) => (
-      <div class="feature-card">
+      <div class="card card-flat">
         <div class="row">
-          <div class="feature-card-icon" set:html={feature.icon} />
-          <h3 class="feature-card-title">{feature.title}</h3>
+          <div class="card-icon" set:html={feature.icon} />
+          <h3 class="card-title">{feature.title}</h3>
         </div>
-        <p class="feature-card-description">{feature.description}</p>
+        <p class="card-description">{feature.description}</p>
       </div>
     ))}
   </div>
@@ -50,30 +50,12 @@ const features = [
     gap: var(--space-md);
   }
 
-  .feature-card {
-    padding: var(--space-md);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-  }
-
-  .feature-card-icon {
-    color: var(--fg-muted);
+  .card-icon {
     margin-bottom: var(--space-sm);
-    line-height: 0;
   }
 
-  .feature-card-title {
-    font-size: var(--text-base);
-    font-weight: 600;
-    color: var(--fg);
-    margin: 0 0 var(--space-xs) 0;
-  }
-
-  .feature-card-description {
-    font-size: var(--text-sm);
-    line-height: var(--text-sm-lh);
-    color: var(--fg-muted);
-    margin: 0;
+  .card-title {
+    margin-bottom: var(--space-xs);
   }
 
   @media (max-width: 600px) {

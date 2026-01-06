@@ -123,6 +123,15 @@
 		box-shadow: var(--shadow);
 	}
 
+	.card-flat {
+		box-shadow: none;
+	}
+
+	.card-icon {
+		color: var(--fg-muted);
+		line-height: 0;
+	}
+
 	.card-interactive {
 		cursor: pointer;
 		transition: border-color var(--transition), box-shadow var(--transition);
