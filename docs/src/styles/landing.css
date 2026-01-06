@@ -191,21 +191,6 @@
   border-top: 1px solid var(--border);
 }
 
-.hero-stat {
-  text-align: center;
-}
-
-.hero-stat-value {
-  font-size: var(--text-lg);
-  font-weight: 600;
-  color: var(--fg);
-}
-
-.hero-stat-label {
-  font-size: var(--text-sm);
-  color: var(--fg-muted);
-}
-
 /* Theme Playground */
 .theme-playground {
   display: grid;

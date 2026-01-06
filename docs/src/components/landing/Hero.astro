@@ -30,17 +30,17 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
     </div>
 
     <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="hero-stat-value" data-count-to="15" data-suffix="+">15+</div>
-        <div class="hero-stat-label">Components</div>
+      <div class="stat hero-stat">
+        <div class="stat-value hero-stat-value" data-count-to="15" data-suffix="+">15+</div>
+        <div class="stat-label hero-stat-label">Components</div>
       </div>
-      <div class="hero-stat">
-        <div class="hero-stat-value" data-fade-in>OKLCH</div>
-        <div class="hero-stat-label">Colors</div>
+      <div class="stat hero-stat">
+        <div class="stat-value hero-stat-value" data-fade-in>OKLCH</div>
+        <div class="stat-label hero-stat-label">Colors</div>
       </div>
-      <div class="hero-stat">
-        <div class="hero-stat-value" data-fade-in>Zero</div>
-        <div class="hero-stat-label">Runtime Deps</div>
+      <div class="stat hero-stat">
+        <div class="stat-value hero-stat-value" data-fade-in>Zero</div>
+        <div class="stat-label hero-stat-label">Runtime Deps</div>
       </div>
     </div>
   </div>
@@ -181,13 +181,12 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
   }
 
   .hero-stat {
-    text-align: center;
+    padding: 0;
+    border: none;
   }
 
   .hero-stat-value {
     font-size: var(--text-lg);
-    font-weight: 600;
-    color: var(--fg);
   }
 
   .hero-stat-value[data-count-to],
