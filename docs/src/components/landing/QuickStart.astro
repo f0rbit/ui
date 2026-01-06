@@ -1,6 +1,6 @@
 ---
 import Section from './Section.astro';
-import { Code } from 'astro:components';
+import { Code } from 'astro-expressive-code/components';
 
 const steps = [
   {
@@ -36,7 +36,7 @@ const steps = [
         <div class="step-content">
           <div class="step-title">{step.title}</div>
           <div class="landing-code">
-            <Code code={step.code} lang={step.lang} theme="css-variables" />
+            <Code code={step.code} lang={step.lang} />
           </div>
         </div>
         {index < steps.length - 1 && <div class="step-connector" />}
@@ -48,19 +48,20 @@ const steps = [
 <style>
   .landing-code {
     margin-top: var(--space-sm);
+  }
+
+  .landing-code :global(.expressive-code) {
+    margin: 0;
+  }
+
+  .landing-code :global(.expressive-code .frame) {
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    overflow: hidden;
+    box-shadow: none;
   }
 
-  .landing-code :global(pre) {
-    margin: 0;
-    padding: var(--space-sm) var(--space-md);
+  .landing-code :global(.expressive-code pre) {
     background: var(--code-background, var(--bg-alt)) !important;
-    font-size: var(--text-sm);
-  }
-
-  .landing-code :global(code) {
-    font-family: var(--font-mono);
+    border: none;
   }
 </style>
