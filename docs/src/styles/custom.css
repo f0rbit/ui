@@ -31,6 +31,22 @@ header.header {
 	border-bottom: 1px solid var(--border);
 }
 
+/* Hide Starlight's default splash hero/tagline/banner/title on landing page */
+.sl-hero,
+.tagline,
+.sl-banner {
+	display: none !important;
+}
+
+/* Hide the content panel containing the splash page title placeholder */
+.content-panel:has(.splash-title-placeholder) {
+	display: none !important;
+}
+
+.splash-title-placeholder {
+	display: none;
+}
+
 /* Sidebar border */
 nav .sidebar-pane {
 	border-right: 1px solid var(--border);
@@ -89,6 +105,57 @@ h1#_top,
 .sl-markdown-content h5,
 .sl-markdown-content h6 {
 	font-size: 1rem;
+}
+
+/* Styled lists in markdown content */
+.sl-markdown-content ul,
+.sl-markdown-content ol {
+	padding-left: var(--space-lg);
+}
+
+.sl-markdown-content li {
+	position: relative;
+	padding-left: var(--space-sm);
+	margin-bottom: var(--space-xs);
+}
+
+.sl-markdown-content li::marker {
+	color: var(--fg-faint);
+}
+
+.sl-markdown-content li:last-child {
+	margin-bottom: 0;
+}
+
+.sl-markdown-content ul {
+	list-style-type: disc;
+}
+
+.sl-markdown-content ul ul {
+	list-style-type: circle;
+	margin-top: var(--space-xs);
+}
+
+.sl-markdown-content ul ul ul {
+	list-style-type: square;
+}
+
+.sl-markdown-content ol {
+	list-style-type: decimal;
+}
+
+.sl-markdown-content ol ol {
+	list-style-type: lower-alpha;
+	margin-top: var(--space-xs);
+}
+
+.sl-markdown-content ol ol ol {
+	list-style-type: lower-roman;
+}
+
+.sl-markdown-content li > ul,
+.sl-markdown-content li > ol {
+	margin-top: var(--space-xs);
 }
 
 .demo-container {
