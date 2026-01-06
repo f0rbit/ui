@@ -226,6 +226,8 @@
 }
 
 .modal {
+	position: relative;
+	margin: 0;
 	background: var(--bg);
 	border: 1px solid var(--border);
 	border-radius: var(--radius-lg);
@@ -623,6 +625,7 @@
 	flex-direction: column;
 	gap: 2px;
 	padding-bottom: var(--space-md);
+	padding-top: var(--space-sm);
 }
 
 .step:last-child .step-content {
