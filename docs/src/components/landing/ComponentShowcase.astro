@@ -93,73 +93,17 @@ const components = [
   }
 
   .component-card {
-    position: relative;
     padding: var(--space-md);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     transition: border-color var(--transition);
     text-decoration: none;
     display: block;
-    background: var(--bg);
-  }
-
-  .component-card::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: var(--radius-lg);
-    padding: 1px;
-    background: conic-gradient(
-      from var(--scan-angle, 0deg),
-      transparent 0deg,
-      transparent 330deg,
-      color-mix(in srgb, var(--accent) 40%, transparent) 345deg,
-      color-mix(in srgb, var(--accent) 60%, transparent) 355deg,
-      color-mix(in srgb, var(--accent) 40%, transparent) 360deg
-    );
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: exclude;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    opacity: 0;
-    transition: opacity var(--transition);
-    pointer-events: none;
-  }
-
-  .component-card:hover::before {
-    opacity: 1;
-    animation: scan-border 2s linear infinite;
   }
 
   .component-card:hover {
     border-color: var(--fg-faint);
     filter: none;
-  }
-
-  @keyframes scan-border {
-    from {
-      --scan-angle: 0deg;
-    }
-    to {
-      --scan-angle: 360deg;
-    }
-  }
-
-  @property --scan-angle {
-    syntax: '<angle>';
-    initial-value: 0deg;
-    inherits: false;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .component-card:hover::before {
-      animation: none;
-      background: linear-gradient(
-        135deg,
-        color-mix(in srgb, var(--accent) 30%, transparent),
-        color-mix(in srgb, var(--accent) 10%, transparent)
-      );
-    }
   }
 
   .component-card-name {
