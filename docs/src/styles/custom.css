@@ -1,4 +1,5 @@
 @import "../../../dist/styles.css";
+@import "./landing.css";
 
 :root {
 	--code-background: oklch(from var(--bg) calc(l - 0.03) c h);
@@ -70,6 +71,10 @@ nav .sidebar-pane {
 /* Remove content max-width constraint */
 .main-pane .sl-container {
 	max-width: unset;
+}
+
+main {
+	padding-bottom: unset !important;
 }
 
 /* Cap "On this page" TOC width and adjust main pane on large screens */
@@ -336,4 +341,48 @@ h1#_top,
 	padding: 2px 6px;
 	background: var(--bg-alt);
 	border-radius: var(--radius);
+}
+
+/* Pagination - compact button style */
+.pagination-links {
+	gap: var(--space-sm) !important;
+}
+
+.pagination-links a {
+	padding: var(--space-sm) var(--space-md) !important;
+	border: 1px solid var(--border) !important;
+	border-radius: var(--radius) !important;
+	box-shadow: none !important;
+	color: var(--fg-muted) !important;
+	background: transparent !important;
+	transition: border-color var(--transition), color var(--transition) !important;
+}
+
+.pagination-links a:hover {
+	border-color: var(--fg-faint) !important;
+	color: var(--fg) !important;
+}
+
+/* Hide "Previous"/"Next" text, keep only the page title */
+.pagination-links a > span {
+	font-size: 0;
+	line-height: 0;
+	height: 1.35rem;
+}
+
+.pagination-links a > span br {
+	display: none;
+}
+
+.pagination-links .link-title {
+	font-size: var(--text-sm) !important;
+	color: var(--fg) !important;
+	font-weight: 500 !important;
+	line-height: var(--sl-line-height) !important;
+}
+
+.pagination-links svg {
+	width: 1rem !important;
+	height: 1rem !important;
+	color: var(--fg-faint) !important;
 }
