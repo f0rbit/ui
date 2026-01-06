@@ -41,6 +41,11 @@ header.header {
 	border-bottom: 1px solid var(--border);
 }
 
+/* Fix text alignment in row layouts */
+.row > span {
+	height: 1.1rem;
+}
+
 /* Hide Starlight's default splash hero/tagline/banner/title on landing page */
 .sl-hero,
 .tagline,
