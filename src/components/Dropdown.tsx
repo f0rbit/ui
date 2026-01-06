@@ -21,7 +21,7 @@ export interface DropdownMenuProps {
 	children: JSX.Element;
 }
 
-export interface DropdownItemProps {
+export interface DropdownItemProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
 	onClick?: () => void;
 	active?: boolean;
 	children: JSX.Element;
@@ -103,9 +103,9 @@ export function DropdownItem(props: DropdownItemProps) {
 	const classes = () => `dropdown-item ${local.active ? "dropdown-item-active" : ""}`.trim();
 
 	return (
-		<div class={classes()} onClick={handleClick}>
+		<button type="button" class={classes()} onClick={handleClick} {...rest}>
 			{local.children}
-		</div>
+		</button>
 	);
 }
 
