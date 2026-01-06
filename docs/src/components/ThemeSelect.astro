@@ -7,16 +7,16 @@ const themes = [
 ---
 
 <starlight-theme-select>
-	<div class="dropdown theme-dropdown">
-		<button class="dropdown-trigger theme-trigger" aria-label="Select theme">
-			<svg class="chevron" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+	<div class="dropdown">
+		<button class="btn btn-primary theme-trigger" aria-label="Select theme">
+			<svg style={{"margin-top": "-1px"}} class="chevron" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 				<path d="m9 18 6-6-6-6" />
 			</svg>
 			<span class="theme-label">Auto</span>
 		</button>
-		<div class="dropdown-menu theme-menu" hidden>
+		<div class="dropdown-menu" hidden>
 			{themes.map((theme) => (
-				<button class="dropdown-item theme-item" data-theme-value={theme.value}>
+				<button class="dropdown-item" data-theme-value={theme.value}>
 					{theme.label}
 				</button>
 			))}
@@ -78,9 +78,9 @@ const themes = [
 
 		constructor() {
 			super();
-			this.dropdown = this.querySelector(".theme-dropdown");
+			this.dropdown = this.querySelector(".dropdown");
 			this.trigger = this.querySelector(".theme-trigger");
-			this.menu = this.querySelector(".theme-menu");
+			this.menu = this.querySelector(".dropdown-menu");
 			this.chevron = this.querySelector(".chevron");
 			this.label = this.querySelector(".theme-label");
 
@@ -101,7 +101,7 @@ const themes = [
 				this.toggle();
 			});
 
-			this.menu?.querySelectorAll(".theme-item").forEach((item) => {
+			this.menu?.querySelectorAll(".dropdown-item").forEach((item) => {
 				item.addEventListener("click", () => {
 					const value = (item as HTMLElement).dataset.themeValue as Theme;
 					onThemeChange(value);
@@ -147,7 +147,7 @@ const themes = [
 		}
 
 		private updateActiveItem(theme: Theme): void {
-			this.menu?.querySelectorAll(".theme-item").forEach((item) => {
+			this.menu?.querySelectorAll(".dropdown-item").forEach((item) => {
 				const value = (item as HTMLElement).dataset.themeValue;
 				item.classList.toggle("dropdown-item-active", value === theme);
 			});
@@ -158,32 +158,6 @@ const themes = [
 </script>
 
 <style>
-	.theme-dropdown {
-		position: relative;
-		display: inline-block;
-	}
-
-	.theme-trigger {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: var(--space-sm);
-		padding: var(--space-xs) var(--space-md);
-		min-width: 6rem;
-		font-size: var(--text-sm);
-		color: var(--fg-muted);
-		background: transparent;
-		border: 1px solid var(--border);
-		border-radius: var(--radius);
-		cursor: pointer;
-		transition: border-color var(--transition), color var(--transition);
-	}
-
-	.theme-trigger:hover {
-		border-color: var(--fg-faint);
-		color: var(--fg);
-	}
-
 	.theme-label {
 		flex: 1;
 		text-align: center;
@@ -196,44 +170,5 @@ const themes = [
 
 	.chevron-expanded {
 		transform: rotate(90deg);
-	}
-
-	.theme-menu {
-		position: absolute;
-		top: calc(100% + var(--space-xs));
-		right: 0;
-		min-width: 100%;
-		background: var(--bg);
-		border: 1px solid var(--border);
-		border-radius: var(--radius-lg);
-		box-shadow: var(--shadow-lg);
-		padding: var(--space-xs) 0;
-		z-index: 100;
-	}
-
-	.theme-item {
-		display: flex;
-		align-items: center;
-		width: 100%;
-		padding: var(--space-sm);
-		padding-left: calc(var(--space-sm) + 2px);
-		font-size: var(--text-sm);
-		color: var(--fg-muted);
-		background: transparent;
-		border: none;
-		border-left: 2px solid transparent;
-		cursor: pointer;
-		text-align: left;
-		transition: border-color var(--transition), color var(--transition);
-	}
-
-	.theme-item:hover {
-		border-left-color: var(--accent);
-		color: var(--fg);
-	}
-
-	.dropdown-item-active {
-		color: var(--fg);
-		font-weight: 500;
 	}
 </style>
