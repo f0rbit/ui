@@ -1,0 +1,208 @@
+---
+import Section from './Section.astro';
+
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+
+const components = [
+  {
+    name: "Button",
+    href: `${base}components/button`,
+    preview: "buttons"
+  },
+  {
+    name: "Card",
+    href: `${base}components/card`,
+    preview: "card"
+  },
+  {
+    name: "Modal",
+    href: `${base}components/modal`,
+    preview: "modal"
+  },
+  {
+    name: "Input",
+    href: `${base}components/input`,
+    preview: "input"
+  },
+  {
+    name: "Badge",
+    href: `${base}components/badge`,
+    preview: "badges"
+  },
+  {
+    name: "Dropdown",
+    href: `${base}components/dropdown`,
+    preview: "dropdown"
+  }
+];
+---
+
+<Section title="Components" bordered>
+  <div class="component-grid">
+    {components.map((component) => (
+      <a href={component.href} class="component-card">
+        <h3 class="component-card-name">{component.name}</h3>
+        <div class="component-card-preview">
+          {component.preview === "buttons" && (
+            <>
+              <button class="btn btn-primary btn-sm">Primary</button>
+              <button class="btn btn-secondary btn-sm">Secondary</button>
+            </>
+          )}
+          {component.preview === "card" && (
+            <div class="preview-card">
+              <div class="preview-card-title">Card</div>
+              <div class="preview-card-text">Preview</div>
+            </div>
+          )}
+          {component.preview === "modal" && (
+            <div class="preview-modal">
+              <div class="preview-modal-icon">◻</div>
+              <span>Modal</span>
+            </div>
+          )}
+          {component.preview === "input" && (
+            <div class="preview-input">Text input</div>
+          )}
+          {component.preview === "badges" && (
+            <>
+              <span class="badge">Default</span>
+              <span class="badge badge-success">Success</span>
+            </>
+          )}
+          {component.preview === "dropdown" && (
+            <div class="preview-dropdown">
+              <span>Menu</span>
+              <span class="preview-chevron">▼</span>
+            </div>
+          )}
+        </div>
+      </a>
+    ))}
+  </div>
+  <div class="showcase-footer">
+    <a href={`${base}components/button`} class="view-all-link">View all 15+ components</a>
+  </div>
+</Section>
+
+<style>
+  .component-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+  }
+
+  .component-card {
+    padding: var(--space-md);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    transition: border-color var(--transition);
+    text-decoration: none;
+    display: block;
+  }
+
+  .component-card:hover {
+    border-color: var(--fg-faint);
+    filter: none;
+  }
+
+  .component-card-name {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--fg);
+    margin: 0 0 var(--space-sm) 0;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: var(--space-sm);
+  }
+
+  .component-card-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    align-items: center;
+    min-height: 40px;
+  }
+
+  /* Preview elements */
+  .preview-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 0.75rem;
+  }
+
+  .preview-card-title {
+    font-weight: 500;
+    color: var(--fg);
+  }
+
+  .preview-card-text {
+    color: var(--fg-faint);
+  }
+
+  .preview-modal {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    color: var(--fg-muted);
+    font-size: var(--text-sm);
+  }
+
+  .preview-modal-icon {
+    font-size: 1.25rem;
+    color: var(--fg-faint);
+  }
+
+  .preview-input {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 0.75rem;
+    color: var(--fg-faint);
+    background: var(--bg-alt);
+  }
+
+  .preview-dropdown {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 0.75rem;
+    color: var(--fg-muted);
+  }
+
+  .preview-chevron {
+    font-size: 0.625rem;
+    color: var(--fg-faint);
+  }
+
+  .showcase-footer {
+    margin-top: var(--space-md);
+    text-align: center;
+  }
+
+  .view-all-link {
+    font-size: var(--text-sm);
+    color: var(--accent);
+    text-decoration: none;
+    transition: filter var(--transition);
+  }
+
+  .view-all-link:hover {
+    filter: var(--hover-filter);
+  }
+
+  @media (max-width: 768px) {
+    .component-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .component-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

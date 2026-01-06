@@ -1,0 +1,99 @@
+---
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+
+const links = [
+  { label: "GitHub", href: "https://github.com/f0rbit/ui" },
+  { label: "Docs", href: `${base}getting-started/installation` },
+  { label: "Components", href: `${base}components/button` }
+];
+---
+
+<footer class="landing-footer">
+  <div class="footer-top">
+    <div class="footer-brand-section">
+      <h3 class="footer-brand">@f0rbit/ui</h3>
+      <p class="footer-tagline">A minimal UI library for SolidJS</p>
+    </div>
+    <nav class="footer-links">
+      {links.map((link) => (
+        <a href={link.href} class="footer-link">{link.label}</a>
+      ))}
+    </nav>
+  </div>
+  <div class="footer-bottom">
+    MIT License · {new Date().getFullYear()}
+  </div>
+</footer>
+
+<style>
+  .landing-footer {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: var(--space-xl) var(--space-lg);
+  }
+
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .footer-brand-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .footer-brand {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--fg);
+    margin: 0;
+  }
+
+  .footer-tagline {
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+    margin: 0;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: var(--space-md);
+  }
+
+  .footer-link {
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+    text-decoration: none;
+    transition: filter var(--transition);
+  }
+
+  .footer-link:hover {
+    filter: var(--hover-filter);
+  }
+
+  .footer-bottom {
+    padding-top: var(--space-md);
+    font-size: var(--text-sm);
+    color: var(--fg-faint);
+    text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    .footer-top {
+      flex-direction: column;
+      gap: var(--space-md);
+      align-items: center;
+      text-align: center;
+    }
+
+    .footer-links {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+</style>

@@ -1,25 +1,31 @@
 ---
 title: "@f0rbit/ui"
-description: A minimal SolidJS component library
+description: A minimal, composable UI component library for SolidJS
 template: splash
-hero:
-  title: "@f0rbit/ui"
-  tagline: A minimal, composable UI component library for SolidJS
-  actions:
-    - text: Get Started
-      link: /getting-started/installation/
-      icon: right-arrow
-    - text: View Components
-      link: /components/button/
-      variant: minimal
+tableOfContents: false
 ---
 
-import { Card, CardContent } from "@f0rbit/ui";
+import Hero from '../../components/landing/Hero.astro';
+import FeatureGrid from '../../components/landing/FeatureGrid.astro';
+import ComponentShowcase from '../../components/landing/ComponentShowcase.astro';
+import QuickStart from '../../components/landing/QuickStart.astro';
+import Footer from '../../components/landing/Footer.astro';
 
-## Features
+<div class="landing-page">
+  <Hero />
+  <FeatureGrid />
+  <ComponentShowcase />
+  <QuickStart />
+  <Footer />
+</div>
 
-- **15+ Components** — Button, Card, Modal, Dropdown, and more
-- **Design Tokens** — OKLCH colors with automatic dark mode
-- **Layout Primitives** — Stack, Row, Grid, Center utilities
-- **TypeScript** — Full type safety out of the box
-- **Lightweight** — No runtime dependencies beyond SolidJS
+<style>{`
+  .landing-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+`}</style>
