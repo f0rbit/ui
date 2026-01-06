@@ -30,6 +30,8 @@ button,
 textarea,
 select {
 	font: inherit;
+	font-size: var(--text-sm);
+	line-height: var(--text-sm-lh);
 }
 
 p,

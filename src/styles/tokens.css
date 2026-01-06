@@ -21,14 +21,26 @@
 	--font: "neue-haas-grotesk-text", "Inter", Helvetica, sans-serif;
 	--font-mono: ui-monospace, "SF Mono", Menlo, monospace;
 
+	--text-xs: 0.75rem;
+	--text-xs-lh: 1rem;
 	--text-sm: 0.875rem;
+	--text-sm-lh: 1.25rem;
 	--text-base: 1rem;
-	--text-lg: 1.25rem;
-	--text-xl: 1.5rem;
+	--text-base-lh: 1.5rem;
+	--text-lg: 1.125rem;
+	--text-lg-lh: 1.75rem;
+	--text-xl: 1.25rem;
+	--text-xl-lh: 1.75rem;
+	--text-2xl: 1.5rem;
+	--text-2xl-lh: 2rem;
+	--text-3xl: 1.875rem;
+	--text-3xl-lh: 2.25rem;
+	--text-4xl: 2.25rem;
+	--text-4xl-lh: 2.5rem;
 
 	--space-xs: 0.25rem;
-	--space-sm: 0.5rem;
-	--space-md: 1rem;
+	--space-sm: 0.35rem;
+	--space-md: 0.75rem;
 	--space-lg: 1.5rem;
 	--space-xl: 2.5rem;
 
