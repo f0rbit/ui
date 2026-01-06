@@ -51,12 +51,12 @@ header.header {
 .sl-hero,
 .tagline,
 .sl-banner {
-	display: none !important;
+	display: none;
 }
 
 /* Hide the content panel containing the splash page title placeholder */
 .content-panel:has(.splash-title-placeholder) {
-	display: none !important;
+	display: none;
 }
 
 .splash-title-placeholder {
@@ -74,7 +74,7 @@ nav .sidebar-pane {
 }
 
 main {
-	padding-bottom: unset !important;
+	padding-bottom: unset;
 }
 
 /* Cap "On this page" TOC width and adjust main pane on large screens */
@@ -97,10 +97,10 @@ main {
 [aria-current="page"],
 [aria-current="page"]:hover,
 [aria-current="page"]:focus {
-	background-color: transparent !important;
-	color: var(--fg) !important;
+	background-color: transparent;
+	color: var(--fg);
 	text-decoration: underline;
-	font-weight: 500 !important;
+	font-weight: 500;
 }
 
 /* Reduce title sizes */
@@ -307,7 +307,7 @@ h1#_top,
 .expressive-code pre,
 .expressive-code code,
 .expressive-code .frame {
-	background: var(--code-background) !important;
+	background: var(--code-background);
 }
 
 .props-table-wrapper {
@@ -342,22 +342,22 @@ h1#_top,
 
 /* Pagination - compact button style */
 .pagination-links {
-	gap: var(--space-sm) !important;
+	gap: var(--space-sm);
 }
 
 .pagination-links a {
-	padding: var(--space-sm) var(--space-md) !important;
-	border: 1px solid var(--border) !important;
-	border-radius: var(--radius) !important;
-	box-shadow: none !important;
-	color: var(--fg-muted) !important;
-	background: transparent !important;
-	transition: border-color var(--transition), color var(--transition) !important;
+	padding: var(--space-sm) var(--space-md);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	box-shadow: none;
+	color: var(--fg-muted);
+	background: transparent;
+	transition: border-color var(--transition), color var(--transition);
 }
 
 .pagination-links a:hover {
-	border-color: var(--fg-faint) !important;
-	color: var(--fg) !important;
+	border-color: var(--fg-faint);
+	color: var(--fg);
 }
 
 /* Hide "Previous"/"Next" text, keep only the page title */
@@ -372,14 +372,14 @@ h1#_top,
 }
 
 .pagination-links .link-title {
-	font-size: var(--text-sm) !important;
-	color: var(--fg) !important;
-	font-weight: 500 !important;
-	line-height: var(--sl-line-height) !important;
+	font-size: var(--text-sm);
+	color: var(--fg);
+	font-weight: 500;
+	line-height: var(--sl-line-height);
 }
 
 .pagination-links svg {
-	width: 1rem !important;
-	height: 1rem !important;
-	color: var(--fg-faint) !important;
+	width: 1rem;
+	height: 1rem;
+	color: var(--fg-faint);
 }
