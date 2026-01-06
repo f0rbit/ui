@@ -233,6 +233,24 @@
 		opacity: 1;
 	}
 
+	.interactive {
+		--_hover-border: var(--hover-border, var(--fg-faint));
+		transition: border-color var(--transition);
+	}
+
+	.interactive:hover {
+		border-color: var(--_hover-border);
+	}
+
+	.interactive-color {
+		--_hover-color: var(--hover-color, var(--fg));
+		transition: color var(--transition);
+	}
+
+	.interactive-color:hover {
+		color: var(--_hover-color);
+	}
+
 	@keyframes spin {
 		to {
 			transform: rotate(360deg);
