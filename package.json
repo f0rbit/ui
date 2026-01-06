@@ -52,12 +52,13 @@
 	"scripts": {
 		"build": "tsup && npm run build:css",
 		"build:css": "node scripts/build-css.js",
+		"build:llm": "node scripts/generate-llm-docs.js",
 		"dev": "tsup --watch",
 		"typecheck": "tsc --noEmit",
 		"prepublishOnly": "npm run build",
-		"docs": "bun run build && cd docs && bun run dev",
+		"docs": "bun run build && bun run build:llm && cd docs && bun run dev",
 		"docs:dev": "cd docs && bun run dev",
-		"docs:build": "cd docs && bun run build"
+		"docs:build": "bun run build:llm && cd docs && bun run build"
 	},
 	"peerDependencies": {
 		"solid-js": "^1.8.0"

@@ -1,0 +1,737 @@
+# @f0rbit/ui v0.1.0
+
+> A minimal, composable UI component library for SolidJS
+
+## Installation
+
+```bash
+bun add @f0rbit/ui
+# or
+npm install @f0rbit/ui
+```
+
+## Setup
+
+```tsx
+// Import styles in your app entry
+import "@f0rbit/ui/styles.css";
+
+// Import components
+import { Button, Card, Modal } from "@f0rbit/ui";
+```
+
+## Components
+
+### Badge
+A small label for categorization or status indication
+
+**Exports:** Badge
+
+**Examples:**
+
+```tsx
+import { Badge } from "@f0rbit/ui";
+
+<Badge>Default</Badge>
+<Badge variant="success">Active</Badge>
+```
+
+```tsx
+<Badge>Default</Badge>
+<Badge variant="success">Success</Badge>
+<Badge variant="error">Error</Badge>
+<Badge variant="warning">Warning</Badge>
+<Badge variant="info">Info</Badge>
+<Badge variant="accent">Accent</Badge>
+```
+
+```tsx
+<Badge variant="success">
+  <span>✓</span> Completed
+</Badge>
+<Badge variant="error">
+  <span>✕</span> Failed
+</Badge>
+<Badge variant="warning">
+  <span>⚠</span> Warning
+</Badge>
+```
+
+```tsx
+<Badge variant="success">Online</Badge>
+<Badge variant="error">Offline</Badge>
+<Badge variant="warning">Away</Badge>
+```
+
+```tsx
+<Badge>New</Badge>
+<Badge variant="accent">Featured</Badge>
+<Badge variant="info">Beta</Badge>
+```
+
+```tsx
+<Badge>3 items</Badge>
+<Badge variant="error">5 errors</Badge>
+```
+
+---
+
+### Button
+A clickable button with multiple variants and sizes
+
+**Exports:** Button
+
+**Examples:**
+
+```tsx
+import { Button } from "@f0rbit/ui";
+
+<Button variant="primary">Click me</Button>
+```
+
+```tsx
+<Button variant="primary">Primary</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="ghost">Ghost</Button>
+<Button variant="danger">Danger</Button>
+```
+
+```tsx
+<Button size="sm">Small</Button>
+<Button size="md">Medium</Button>
+<Button size="lg">Large</Button>
+```
+
+```tsx
+<Button loading>Saving...</Button>
+```
+
+```tsx
+<Button disabled>Not available</Button>
+```
+
+```tsx
+<Button icon>+</Button>
+<Button icon variant="ghost">x</Button>
+```
+
+---
+
+### Card
+A container component for grouping related content
+
+**Exports:** Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter
+
+**Examples:**
+
+```tsx
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@f0rbit/ui";
+
+<Card>
+  <CardHeader>
+    <CardTitle>Card Title</CardTitle>
+    <CardDescription>Card description text</CardDescription>
+  </CardHeader>
+  <CardContent>
+    Main content goes here
+  </CardContent>
+  <CardFooter>
+    Footer content
+  </CardFooter>
+</Card>
+```
+
+```tsx
+<Card interactive onClick={() => handleClick()}>
+  <CardContent>
+    Click me!
+  </CardContent>
+</Card>
+```
+
+```tsx
+<Card>
+  <CardContent>
+    <p>A simple card with just content.</p>
+  </CardContent>
+</Card>
+```
+
+```tsx
+<Card>
+  <CardHeader>
+    <CardTitle>Confirm Action</CardTitle>
+    <CardDescription>Are you sure you want to proceed?</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <p>This action will update your settings.</p>
+  </CardContent>
+  <CardFooter>
+    <Button variant="secondary">Cancel</Button>
+    <Button>Confirm</Button>
+  </CardFooter>
+</Card>
+```
+
+```tsx
+<div class="card-grid">
+  <Card interactive>
+    <CardContent>Option 1</CardContent>
+  </Card>
+  <Card interactive>
+    <CardContent>Option 2</CardContent>
+  </Card>
+  <Card interactive>
+    <CardContent>Option 3</CardContent>
+  </Card>
+</div>
+```
+
+---
+
+### Chevron
+An animated chevron icon for expand/collapse indicators.
+
+**Exports:** Chevron
+
+**Examples:**
+
+```tsx
+import { Chevron } from "@f0rbit/ui";
+
+<Chevron />
+<Chevron expanded />
+```
+
+```tsx
+<Chevron facing="right" />
+<Chevron facing="down" />
+```
+
+```tsx
+const [expanded, setExpanded] = createSignal(false);
+
+<button onClick={() => setExpanded(e => !e)}>
+  <Chevron expanded={expanded()} />
+  Toggle
+</button>
+```
+
+```tsx
+<Chevron size="0.75em" />
+<Chevron size="1em" />
+<Chevron size="1.5em" />
+<Chevron size={24} />
+```
+
+---
+
+### Clamp
+A text clamping component with expand/collapse functionality.
+
+**Exports:** Clamp
+
+**Examples:**
+
+```tsx
+import { Clamp } from "@f0rbit/ui";
+
+<Clamp lines={3}>
+  <p>Long text content that will be clamped after 3 lines...</p>
+</Clamp>
+```
+
+```tsx
+<Clamp lines={2}>
+  <p>Clamped to 2 lines...</p>
+</Clamp>
+
+<Clamp lines={4}>
+  <p>Clamped to 4 lines...</p>
+</Clamp>
+```
+
+```tsx
+<Clamp
+  lines={2}
+  showMoreText="Read more"
+  showLessText="Read less"
+>
+  <p>Content with custom toggle labels...</p>
+</Clamp>
+```
+
+---
+
+### Collapsible
+An expandable/collapsible content section with animated transitions.
+
+**Exports:** Collapsible
+
+**Examples:**
+
+```tsx
+import { Collapsible } from "@f0rbit/ui";
+
+<Collapsible trigger="Click to expand">
+  <p>Hidden content revealed on click.</p>
+</Collapsible>
+```
+
+```tsx
+<Collapsible trigger="Click me">
+  <p>This content toggles when you click the trigger.</p>
+</Collapsible>
+```
+
+```tsx
+<Collapsible trigger="Already expanded" defaultOpen>
+  <p>This is visible by default.</p>
+</Collapsible>
+```
+
+```tsx
+const [isOpen, setIsOpen] = createSignal(false);
+
+<Collapsible 
+  trigger="Controlled" 
+  open={isOpen()} 
+  onOpenChange={setIsOpen}
+>
+  <p>Controlled by external state.</p>
+</Collapsible>
+```
+
+---
+
+### Dropdown
+A floating menu triggered by a button or element
+
+**Exports:** Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, DropdownDivider
+
+**Examples:**
+
+```tsx
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, DropdownDivider } from "@f0rbit/ui";
+
+<Dropdown>
+  <DropdownTrigger>
+    <Button>Open Menu</Button>
+  </DropdownTrigger>
+  <DropdownMenu>
+    <DropdownItem onClick={() => console.log("Edit")}>Edit</DropdownItem>
+    <DropdownItem onClick={() => console.log("Duplicate")}>Duplicate</DropdownItem>
+    <DropdownDivider />
+    <DropdownItem onClick={() => console.log("Delete")}>Delete</DropdownItem>
+  </DropdownMenu>
+</Dropdown>
+```
+
+```tsx
+<DropdownItem active={selected() === "Option 1"} onClick={() => setSelected("Option 1")}>
+  Option 1
+</DropdownItem>
+```
+
+```tsx
+<DropdownMenu>
+  <DropdownItem>
+    <span>📝</span> Edit
+  </DropdownItem>
+  <DropdownItem>
+    <span>📋</span> Copy
+  </DropdownItem>
+  <DropdownItem>
+    <span>🗑️</span> Delete
+  </DropdownItem>
+</DropdownMenu>
+```
+
+```tsx
+<Dropdown>
+  <DropdownTrigger>
+    <Button>Actions</Button>
+  </DropdownTrigger>
+  <DropdownMenu>
+    <DropdownItem onClick={handleEdit}>Edit</DropdownItem>
+    <DropdownItem onClick={handleDuplicate}>Duplicate</DropdownItem>
+    <DropdownItem onClick={handleArchive}>Archive</DropdownItem>
+    <DropdownDivider />
+    <DropdownItem onClick={handleDelete}>Delete</DropdownItem>
+  </DropdownMenu>
+</Dropdown>
+```
+
+```tsx
+const [sort, setSort] = createSignal("date");
+
+<Dropdown>
+  <DropdownTrigger>
+    <Button variant="secondary">Sort by: {sort()}</Button>
+  </DropdownTrigger>
+  <DropdownMenu>
+    <DropdownItem active={sort() === "date"} onClick={() => setSort("date")}>
+      Date
+    </DropdownItem>
+    <DropdownItem active={sort() === "name"} onClick={() => setSort("name")}>
+      Name
+    </DropdownItem>
+    <DropdownItem active={sort() === "size"} onClick={() => setSort("size")}>
+      Size
+    </DropdownItem>
+  </DropdownMenu>
+</Dropdown>
+```
+
+```tsx
+<Dropdown>
+  <DropdownTrigger>
+    <Button variant="ghost">
+      <Avatar src={user.avatar} />
+    </Button>
+  </DropdownTrigger>
+  <DropdownMenu>
+    <DropdownItem onClick={() => navigate("/profile")}>Profile</DropdownItem>
+    <DropdownItem onClick={() => navigate("/settings")}>Settings</DropdownItem>
+    <DropdownDivider />
+    <DropdownItem onClick={handleLogout}>Log out</DropdownItem>
+  </DropdownMenu>
+</Dropdown>
+```
+
+---
+
+### Empty
+A placeholder component for empty states with optional icon, message, and actions.
+
+**Exports:** 
+
+**Examples:**
+
+```tsx
+import { Empty } from "@f0rbit/ui";
+
+<Empty
+  title="No items found"
+  description="Try adjusting your search or filters."
+/>
+```
+
+```tsx
+import { Empty, Button } from "@f0rbit/ui";
+
+<Empty
+  title="No projects yet"
+  description="Get started by creating your first project."
+>
+  <Button>Create Project</Button>
+</Empty>
+```
+
+```tsx
+import { Empty } from "@f0rbit/ui";
+
+<Empty
+  icon={<InboxIcon />}
+  title="Inbox is empty"
+  description="You're all caught up!"
+/>
+```
+
+---
+
+### Input
+Form input components including text input, textarea, and select.
+
+**Exports:** Input, Textarea, Select
+
+**Examples:**
+
+```tsx
+import { Input, Textarea, Select } from "@f0rbit/ui";
+```
+
+```tsx
+<Input placeholder="Enter your name..." />
+```
+
+```tsx
+<Input placeholder="Invalid input" error />
+```
+
+```tsx
+<Input placeholder="Disabled" disabled />
+```
+
+```tsx
+<Input type="password" placeholder="Password" />
+```
+
+```tsx
+<Textarea placeholder="Enter your message..." />
+```
+
+```tsx
+<Textarea placeholder="Invalid content" error />
+```
+
+```tsx
+<Select>
+  <option value="">Select an option</option>
+  <option value="1">Option 1</option>
+  <option value="2">Option 2</option>
+  <option value="3">Option 3</option>
+</Select>
+```
+
+```tsx
+<Select error>
+  <option value="">Selection required</option>
+  <option value="1">Option 1</option>
+</Select>
+```
+
+---
+
+### Modal
+A dialog overlay for focused user interactions
+
+**Exports:** Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter
+
+**Examples:**
+
+```tsx
+import { createSignal } from "solid-js";
+import { Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter, Button } from "@f0rbit/ui";
+
+const [open, setOpen] = createSignal(false);
+
+<Button onClick={() => setOpen(true)}>Open Modal</Button>
+
+<Modal open={open()} onClose={() => setOpen(false)}>
+  <ModalHeader>
+    <ModalTitle>Modal Title</ModalTitle>
+  </ModalHeader>
+  <ModalBody>
+    Modal content goes here
+  </ModalBody>
+  <ModalFooter>
+    <Button variant="secondary" onClick={() => setOpen(false)}>Cancel</Button>
+    <Button onClick={() => setOpen(false)}>Confirm</Button>
+  </ModalFooter>
+</Modal>
+```
+
+```tsx
+<Modal open={confirmOpen()} onClose={() => setConfirmOpen(false)}>
+  <ModalHeader>
+    <ModalTitle>Delete Item?</ModalTitle>
+  </ModalHeader>
+  <ModalBody>
+    <p>This action cannot be undone.</p>
+  </ModalBody>
+  <ModalFooter>
+    <Button variant="secondary" onClick={() => setConfirmOpen(false)}>
+      Cancel
+    </Button>
+    <Button variant="danger" onClick={handleDelete}>
+      Delete
+    </Button>
+  </ModalFooter>
+</Modal>
+```
+
+```tsx
+<Modal open={formOpen()} onClose={() => setFormOpen(false)}>
+  <ModalHeader>
+    <ModalTitle>Create New Item</ModalTitle>
+  </ModalHeader>
+  <ModalBody>
+    <Input placeholder="Name" />
+    <Textarea placeholder="Description" />
+  </ModalBody>
+  <ModalFooter>
+    <Button variant="secondary" onClick={() => setFormOpen(false)}>
+      Cancel
+    </Button>
+    <Button onClick={handleSubmit}>Create</Button>
+  </ModalFooter>
+</Modal>
+```
+
+```tsx
+<Modal open={alertOpen()} onClose={() => setAlertOpen(false)}>
+  <ModalBody>
+    <p>Your changes have been saved.</p>
+  </ModalBody>
+  <ModalFooter>
+    <Button onClick={() => setAlertOpen(false)}>OK</Button>
+  </ModalFooter>
+</Modal>
+```
+
+---
+
+### Spinner
+A loading indicator animation for async operations.
+
+**Exports:** Spinner
+
+**Examples:**
+
+```tsx
+import { Spinner } from "@f0rbit/ui";
+
+<Spinner />
+<Spinner size="sm" />
+<Spinner size="lg" />
+```
+
+```tsx
+<span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+  <Spinner size="sm" />
+  Loading...
+</span>
+```
+
+---
+
+### Stat
+A display component for statistics with value and label.
+
+**Exports:** 
+
+**Examples:**
+
+```tsx
+import { Stat } from "@f0rbit/ui";
+
+<Stat value={42} label="Total Users" />
+```
+
+```tsx
+<Stat value={1234} label="Total Users" />
+<Stat value={99.9} label="Success Rate" />
+```
+
+```tsx
+<Stat value="99.9%" label="Uptime" />
+<Stat value="$12,345" label="Revenue" />
+<Stat value="1.2M" label="Downloads" />
+```
+
+```tsx
+<div class="stats-grid">
+  <Stat value={42} label="Active Projects" />
+  <Stat value={128} label="Team Members" />
+  <Stat value="2.5k" label="Commits" />
+  <Stat value="99%" label="Test Coverage" />
+</div>
+```
+
+---
+
+### Status
+A status indicator with colored dot and label for displaying state.
+
+**Exports:** Status
+
+**Examples:**
+
+```tsx
+import { Status } from "@f0rbit/ui";
+
+<Status state="active" />
+```
+
+```tsx
+<Status state="active" />   {/* Green */}
+<Status state="inactive" /> {/* Gray */}
+<Status state="error" />    {/* Red */}
+<Status state="pending" />  {/* Yellow */}
+```
+
+```tsx
+<Status state="active" label="Online" />
+<Status state="inactive" label="Offline" />
+<Status state="error" label="Failed" />
+<Status state="pending" label="Processing" />
+```
+
+```tsx
+<div>
+  <span>API Server</span>
+  <Status state="active" label="Healthy" />
+</div>
+<div>
+  <span>Database</span>
+  <Status state="pending" label="Connecting" />
+</div>
+<div>
+  <span>Cache</span>
+  <Status state="error" label="Down" />
+</div>
+```
+
+---
+
+### Stepper
+A multi-step progress indicator for wizards and multi-step forms.
+
+**Exports:** Step, Stepper
+
+**Examples:**
+
+```tsx
+import { Stepper, Step } from "@f0rbit/ui";
+
+<Stepper>
+  <Step title="Step 1" status="completed" />
+  <Step title="Step 2" status="current" />
+  <Step title="Step 3" status="upcoming" />
+</Stepper>
+```
+
+```tsx
+<Stepper>
+  <Step title="Account" description="Create your account" status="completed" />
+  <Step title="Profile" description="Set up your profile" status="current" />
+  <Step title="Review" description="Review and submit" status="upcoming" />
+</Stepper>
+```
+
+```tsx
+<Stepper orientation="vertical">
+  <Step title="Order placed" status="completed" />
+  <Step title="Processing" status="completed" />
+  <Step title="Shipping" status="current" />
+  <Step title="Delivered" status="upcoming" />
+</Stepper>
+```
+
+---
+
+## CSS Tokens
+
+The library uses CSS custom properties for theming. Key tokens:
+
+- `--bg`, `--bg-alt` - Background colors
+- `--fg`, `--fg-muted`, `--fg-subtle`, `--fg-faint` - Text colors  
+- `--accent`, `--accent-fg` - Accent/primary colors
+- `--border` - Border color
+- `--radius`, `--radius-lg` - Border radius
+- `--space-xs`, `--space-sm`, `--space-md`, `--space-lg`, `--space-xl` - Spacing
+- `--text-xs`, `--text-sm`, `--text-base`, `--text-lg`, `--text-xl` - Font sizes
+
+## Utility Classes
+
+- `.stack`, `.stack-sm`, `.stack-lg` - Vertical flex layouts
+- `.row`, `.row-sm`, `.row-lg` - Horizontal flex layouts  
+- `.grid`, `.grid-2`, `.grid-3`, `.grid-4` - Grid layouts
+- `.text-primary`, `.text-muted`, `.text-subtle`, `.text-faint` - Text colors
+- `.truncate`, `.sr-only`, `.hidden` - Utilities
+
+## Links
+
+- Documentation: https://f0rbit.github.io/ui
+- Repository: https://github.com/f0rbit/ui.git
