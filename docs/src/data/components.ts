@@ -250,6 +250,49 @@ export const components: ComponentMeta[] = [
 			{ title: "Facing Down", code: '<Chevron facing="down" />\n<Chevron facing="down" expanded />' },
 		],
 	},
+	{
+		name: "Tabs",
+		description: "A tabbed interface for organizing content into separate views.",
+		importStatement: 'import { Tabs, TabList, Tab, TabPanel } from "@f0rbit/ui";',
+		props: [
+			{ name: "defaultValue", type: "string", description: "Initial active tab (uncontrolled)" },
+			{ name: "value", type: "string", description: "Controlled active tab value" },
+			{ name: "onValueChange", type: "(value: string) => void", description: "Callback when active tab changes" },
+		],
+		examples: [
+			{
+				title: "Basic",
+				code: '<Tabs defaultValue="tab1">\n  <TabList>\n    <Tab value="tab1">Tab 1</Tab>\n    <Tab value="tab2">Tab 2</Tab>\n  </TabList>\n  <TabPanel value="tab1">Content 1</TabPanel>\n  <TabPanel value="tab2">Content 2</TabPanel>\n</Tabs>',
+			},
+		],
+	},
+	{
+		name: "TabList",
+		description: "Container for Tab components within Tabs.",
+		importStatement: 'import { TabList } from "@f0rbit/ui";',
+		props: [{ name: "children", type: "JSX.Element", description: "Tab components" }],
+		examples: [],
+	},
+	{
+		name: "Tab",
+		description: "Individual tab button within TabList.",
+		importStatement: 'import { Tab } from "@f0rbit/ui";',
+		props: [
+			{ name: "value", type: "string", description: "Unique identifier for this tab" },
+			{ name: "children", type: "JSX.Element", description: "Tab label content" },
+		],
+		examples: [],
+	},
+	{
+		name: "TabPanel",
+		description: "Content panel shown when its corresponding tab is active.",
+		importStatement: 'import { TabPanel } from "@f0rbit/ui";',
+		props: [
+			{ name: "value", type: "string", description: "Must match a Tab value to associate content" },
+			{ name: "children", type: "JSX.Element", description: "Panel content" },
+		],
+		examples: [],
+	},
 ];
 
 export const componentsByName = new Map(components.map(c => [c.name, c]));

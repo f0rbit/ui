@@ -32,6 +32,7 @@
 	flex-direction: column;
 	gap: var(--space-md);
 	align-items: stretch;
+	background: var(--bg);
 }
 
 .demo-section {

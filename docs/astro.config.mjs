@@ -43,6 +43,7 @@ export default defineConfig({
 						{ label: "Modal", slug: "components/modal" },
 						{ label: "Dropdown", slug: "components/dropdown" },
 						{ label: "Collapsible", slug: "components/collapsible" },
+						{ label: "Tabs", slug: "components/tabs" },
 						{ label: "Stepper", slug: "components/stepper" },
 						{ label: "Input", slug: "components/input" },
 						{ label: "Status", slug: "components/status" },

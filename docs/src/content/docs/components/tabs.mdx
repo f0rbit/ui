@@ -1,0 +1,75 @@
+---
+title: Tabs
+description: A tabbed interface for organizing content into separate views.
+---
+
+import { TabsDemo } from '../../../components/demos/TabsDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<TabsDemo client:load />
+
+## Usage
+
+```tsx
+import { Tabs, TabList, Tab, TabPanel } from "@f0rbit/ui";
+
+<Tabs defaultValue="overview">
+  <TabList>
+    <Tab value="overview">Overview</Tab>
+    <Tab value="features">Features</Tab>
+  </TabList>
+  <TabPanel value="overview">
+    <p>Overview content here.</p>
+  </TabPanel>
+  <TabPanel value="features">
+    <p>Features content here.</p>
+  </TabPanel>
+</Tabs>
+```
+
+## Uncontrolled Mode
+
+Use `defaultValue` to set the initially active tab:
+
+```tsx
+<Tabs defaultValue="first">
+  <TabList>
+    <Tab value="first">First</Tab>
+    <Tab value="second">Second</Tab>
+  </TabList>
+  <TabPanel value="first">First panel content</TabPanel>
+  <TabPanel value="second">Second panel content</TabPanel>
+</Tabs>
+```
+
+## Controlled Mode
+
+For full control, use `value` and `onValueChange`:
+
+```tsx
+const [activeTab, setActiveTab] = createSignal("tab1");
+
+<Tabs value={activeTab()} onValueChange={setActiveTab}>
+  <TabList>
+    <Tab value="tab1">Tab 1</Tab>
+    <Tab value="tab2">Tab 2</Tab>
+  </TabList>
+  <TabPanel value="tab1">Controlled content 1</TabPanel>
+  <TabPanel value="tab2">Controlled content 2</TabPanel>
+</Tabs>
+```
+
+## Props
+
+### Tabs
+
+<PropsTable props={getComponent("Tabs").props} client:load />
+
+### Tab
+
+<PropsTable props={getComponent("Tab").props} client:load />
+
+### TabPanel
+
+<PropsTable props={getComponent("TabPanel").props} client:load />

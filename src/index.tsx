@@ -44,3 +44,13 @@ export {
 	type StepProps,
 	type StepStatus,
 } from "./components/Stepper";
+export {
+	Tabs,
+	TabList,
+	Tab,
+	TabPanel,
+	type TabsProps,
+	type TabListProps,
+	type TabProps,
+	type TabPanelProps,
+} from "./components/Tabs";

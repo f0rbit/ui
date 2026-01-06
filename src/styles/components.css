@@ -686,4 +686,45 @@
 		line-height: var(--text-sm-lh);
 		color: var(--fg-muted);
 	}
+
+	/* Tabs */
+	.tabs {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.tab-list {
+		display: flex;
+		gap: 0;
+		border-bottom: 1px solid var(--border);
+		position: relative;
+	}
+
+	.tab {
+		padding: var(--space-sm) var(--space-md);
+		background: transparent;
+		border: 1px solid transparent;
+		border-bottom: none;
+		cursor: pointer;
+		font-size: var(--text-sm);
+		color: var(--fg-muted);
+		border-radius: var(--radius) var(--radius) 0 0;
+		margin-bottom: -1px !important;
+		transition: color var(--transition), border-color var(--transition);
+	}
+
+	.tab:hover {
+		color: var(--fg-subtle);
+	}
+
+	.tab.active {
+		background: var(--bg);
+		border-color: var(--border);
+		border-bottom-color: var(--bg);
+		color: var(--fg);
+	}
+
+	.tab-panel {
+		padding: var(--space-md) 0;
+	}
 }
