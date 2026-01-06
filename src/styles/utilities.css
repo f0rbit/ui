@@ -79,23 +79,23 @@
 		grid-template-columns: repeat(4, 1fr);
 	}
 
-	:where(.text-primary) {
+	.text-primary {
 		color: var(--fg);
 	}
 
-	:where(.text-muted) {
+	.text-muted {
 		color: var(--fg-muted);
 	}
 
-	:where(.text-subtle) {
+	.text-subtle {
 		color: var(--fg-subtle);
 	}
 
-	:where(.text-faint) {
+	.text-faint {
 		color: var(--fg-faint);
 	}
 
-	:where(.text-accent) {
+	.text-accent {
 		color: var(--accent);
 	}
 
@@ -104,7 +104,7 @@
 		line-height: var(--text-xs-lh);
 	}
 
-	:where(.text-sm) {
+	.text-sm {
 		font-size: var(--text-sm);
 		line-height: var(--text-sm-lh);
 	}
@@ -114,12 +114,12 @@
 		line-height: var(--text-base-lh);
 	}
 
-	:where(.text-lg) {
+	.text-lg {
 		font-size: var(--text-lg);
 		line-height: var(--text-lg-lh);
 	}
 
-	:where(.text-xl) {
+	.text-xl {
 		font-size: var(--text-xl);
 		line-height: var(--text-xl-lh);
 	}
@@ -139,15 +139,15 @@
 		line-height: var(--text-4xl-lh);
 	}
 
-	:where(.font-medium) {
+	.font-medium {
 		font-weight: 500;
 	}
 
-	:where(.font-bold) {
+	.font-bold {
 		font-weight: 700;
 	}
 
-	:where(.font-mono) {
+	.font-mono {
 		font-family: var(--font-mono);
 	}
 
