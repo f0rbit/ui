@@ -1,22 +1,18 @@
 ---
 import Section from './Section.astro';
-
-const highlight = (code: string): string => {
-  return code
-    .replace(/(\/\/.*$)/gm, '<span class="hl-comment">$1</span>')
-    .replace(/("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')/g, '<span class="hl-string">$1</span>')
-    .replace(/\b(import|from|const|let|var|export|default)\b/g, '<span class="hl-keyword">$1</span>');
-};
+import { Code } from 'astro:components';
 
 const steps = [
   {
     title: "Install the package",
     code: "bun add @f0rbit/ui",
+    lang: "bash" as const,
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="22" y2="12"/></svg>`
   },
   {
     title: "Import styles in your app entry",
     code: 'import "@f0rbit/ui/styles.css";',
+    lang: "tsx" as const,
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>`
   },
   {
@@ -26,6 +22,7 @@ const steps = [
 <Card>
   <Button>Click me</Button>
 </Card>`,
+    lang: "tsx" as const,
     icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`
   }
 ];
@@ -38,7 +35,9 @@ const steps = [
         <div class="step-indicator" set:html={step.icon} />
         <div class="step-content">
           <div class="step-title">{step.title}</div>
-          <code class="landing-code" set:html={highlight(step.code)} />
+          <div class="landing-code">
+            <Code code={step.code} lang={step.lang} theme="css-variables" />
+          </div>
         </div>
         {index < steps.length - 1 && <div class="step-connector" />}
       </div>
@@ -48,29 +47,20 @@ const steps = [
 
 <style>
   .landing-code {
-    display: block;
-    background: var(--code-background, var(--bg-alt));
+    margin-top: var(--space-sm);
     border: 1px solid var(--border);
     border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .landing-code :global(pre) {
+    margin: 0;
     padding: var(--space-sm) var(--space-md);
-    font-family: var(--font-mono);
+    background: var(--code-background, var(--bg-alt)) !important;
     font-size: var(--text-sm);
-    color: var(--fg-muted);
-    overflow-x: auto;
-    white-space: pre;
-    margin-top: var(--space-sm);
   }
 
-  .landing-code :global(.hl-comment) {
-    color: var(--fg-faint);
-  }
-
-  .landing-code :global(.hl-string) {
-    color: var(--accent);
-  }
-
-  .landing-code :global(.hl-keyword) {
-    color: var(--fg);
-    font-weight: 500;
+  .landing-code :global(code) {
+    font-family: var(--font-mono);
   }
 </style>
