@@ -404,7 +404,7 @@ const [sort, setSort] = createSignal("date");
 ### Empty
 A placeholder component for empty states with optional icon, message, and actions.
 
-**Exports:** 
+**Exports:** Empty
 
 **Examples:**
 
@@ -599,7 +599,7 @@ import { Spinner } from "@f0rbit/ui";
 ### Stat
 A display component for statistics with value and label.
 
-**Exports:** 
+**Exports:** Stat
 
 **Examples:**
 
@@ -707,6 +707,56 @@ import { Stepper, Step } from "@f0rbit/ui";
   <Step title="Shipping" status="current" />
   <Step title="Delivered" status="upcoming" />
 </Stepper>
+```
+
+---
+
+### Tabs
+A tabbed interface for organizing content into separate views.
+
+**Exports:** Tabs, TabList, Tab, TabPanel
+
+**Examples:**
+
+```tsx
+import { Tabs, TabList, Tab, TabPanel } from "@f0rbit/ui";
+
+<Tabs defaultValue="overview">
+  <TabList>
+    <Tab value="overview">Overview</Tab>
+    <Tab value="features">Features</Tab>
+  </TabList>
+  <TabPanel value="overview">
+    <p>Overview content here.</p>
+  </TabPanel>
+  <TabPanel value="features">
+    <p>Features content here.</p>
+  </TabPanel>
+</Tabs>
+```
+
+```tsx
+<Tabs defaultValue="first">
+  <TabList>
+    <Tab value="first">First</Tab>
+    <Tab value="second">Second</Tab>
+  </TabList>
+  <TabPanel value="first">First panel content</TabPanel>
+  <TabPanel value="second">Second panel content</TabPanel>
+</Tabs>
+```
+
+```tsx
+const [activeTab, setActiveTab] = createSignal("tab1");
+
+<Tabs value={activeTab()} onValueChange={setActiveTab}>
+  <TabList>
+    <Tab value="tab1">Tab 1</Tab>
+    <Tab value="tab2">Tab 2</Tab>
+  </TabList>
+  <TabPanel value="tab1">Controlled content 1</TabPanel>
+  <TabPanel value="tab2">Controlled content 2</TabPanel>
+</Tabs>
 ```
 
 ---

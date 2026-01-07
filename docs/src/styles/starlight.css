@@ -79,7 +79,7 @@ nav .sidebar-pane {
 }
 
 main {
-	padding-bottom: unset;
+	padding-bottom: unset !important;
 }
 
 /* Cap "On this page" TOC width and adjust main pane on large screens */
