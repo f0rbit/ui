@@ -56,28 +56,6 @@
 	border-top: 1px solid var(--border);
 }
 
-.demo-row-between {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-}
-
-.demo-stack {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-sm);
-	width: 100%;
-	max-width: 320px;
-}
-
-.demo-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-	gap: var(--space-sm);
-	width: 100%;
-}
-
 .demo-hint {
 	font-size: var(--text-sm);
 	color: var(--fg-subtle);

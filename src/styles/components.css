@@ -100,8 +100,8 @@
 	}
 
 	.badge-info {
-		background: oklch(0.95 0.05 240);
-		color: oklch(0.4 0.15 240);
+		background: var(--info);
+		color: var(--info-fg);
 		border-color: transparent;
 	}
 
@@ -548,8 +548,7 @@
 		transition: transform var(--transition);
 	}
 
-	.collapsible-chevron.open,
-	.collapsible-chevron-open {
+	.collapsible-chevron.active {
 		transform: rotate(90deg);
 	}
 
@@ -672,6 +671,10 @@
 
 	.step-completed .step-title {
 		color: var(--fg-muted);
+	}
+
+	.step-upcoming .step-title {
+		color: var(--fg-faint);
 	}
 
 	.step-description {

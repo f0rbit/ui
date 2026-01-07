@@ -26,16 +26,16 @@ export function StatusDemo() {
 
 			<div class="demo-section">
 				<h4>In Context</h4>
-				<div class="demo-stack">
-					<div class="cluster-between">
+				<div class="stack stack-sm" style="max-width: 320px">
+					<div class="row row-between">
 						<span>API Server</span>
 						<Status state="active" label="Healthy" />
 					</div>
-					<div class="cluster-between">
+					<div class="row row-between">
 						<span>Database</span>
 						<Status state="pending" label="Connecting" />
 					</div>
-					<div class="cluster-between">
+					<div class="row row-between">
 						<span>Cache</span>
 						<Status state="error" label="Down" />
 					</div>

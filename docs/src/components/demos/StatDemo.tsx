@@ -15,7 +15,7 @@ export function StatDemo() {
 
 			<div class="demo-section">
 				<h4>Stats Grid</h4>
-				<div class="demo-grid">
+				<div class="grid" style="--grid-min: 120px">
 					<Stat value={42} label="Active Projects" />
 					<Stat value={128} label="Team Members" />
 					<Stat value="2.5k" label="Commits" />

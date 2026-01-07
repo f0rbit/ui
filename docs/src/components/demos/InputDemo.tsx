@@ -6,7 +6,7 @@ export function InputDemo() {
 		<DemoContainer title="Input">
 			<div class="demo-section">
 				<h4>Input</h4>
-				<div class="demo-stack">
+				<div class="stack stack-sm" style="max-width: 320px">
 					<Input placeholder="Enter your name..." />
 					<Input placeholder="Error state" error />
 					<Input placeholder="Disabled" disabled />
@@ -16,7 +16,7 @@ export function InputDemo() {
 
 			<div class="demo-section">
 				<h4>Textarea</h4>
-				<div class="demo-stack">
+				<div class="stack stack-sm" style="max-width: 320px">
 					<Textarea placeholder="Enter a longer message..." />
 					<Textarea placeholder="Error state" error />
 					<Textarea placeholder="Disabled" disabled />
@@ -25,7 +25,7 @@ export function InputDemo() {
 
 			<div class="demo-section">
 				<h4>Select</h4>
-				<div class="demo-stack">
+				<div class="stack stack-sm" style="max-width: 320px">
 					<Select>
 						<option value="">Select an option</option>
 						<option value="1">Option 1</option>
