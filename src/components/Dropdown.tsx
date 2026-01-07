@@ -100,7 +100,7 @@ export function DropdownItem(props: DropdownItemProps) {
 		ctx?.close();
 	};
 
-	const classes = () => `dropdown-item ${local.active ? "dropdown-item-active" : ""}`.trim();
+	const classes = () => `dropdown-item ${local.active ? "active" : ""}`.trim();
 
 	return (
 		<button type="button" class={classes()} onClick={handleClick} {...rest}>

@@ -6,7 +6,7 @@ export function ButtonDemo() {
 		<DemoContainer title="Button">
 			<div class="demo-section">
 				<h4>Variants</h4>
-				<div class="demo-row">
+				<div class="cluster">
 					<Button>Primary</Button>
 					<Button variant="secondary">Secondary</Button>
 					<Button variant="ghost">Ghost</Button>
@@ -16,7 +16,7 @@ export function ButtonDemo() {
 
 			<div class="demo-section">
 				<h4>Sizes</h4>
-				<div class="demo-row">
+				<div class="cluster">
 					<Button size="sm">Small</Button>
 					<Button size="md">Medium</Button>
 					<Button size="lg">Large</Button>
@@ -25,7 +25,7 @@ export function ButtonDemo() {
 
 			<div class="demo-section">
 				<h4>States</h4>
-				<div class="demo-row">
+				<div class="cluster">
 					<Button loading>Loading</Button>
 					<Button disabled>Disabled</Button>
 				</div>
@@ -33,7 +33,7 @@ export function ButtonDemo() {
 
 			<div class="demo-section">
 				<h4>Icon Button</h4>
-				<div class="demo-row">
+				<div class="cluster">
 					<Button icon size="sm">
 						+
 					</Button>

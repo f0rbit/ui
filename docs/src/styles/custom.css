@@ -56,13 +56,6 @@
 	border-top: 1px solid var(--border);
 }
 
-.demo-row {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--space-sm);
-	align-items: center;
-}
-
 .demo-row-between {
 	display: flex;
 	justify-content: space-between;

@@ -23,7 +23,7 @@ export function CollapsibleDemo() {
 
 			<div class="demo-section">
 				<h4>Controlled</h4>
-				<div class="demo-row">
+				<div class="cluster">
 					<button onClick={() => setOpen(!open())}>{open() ? "Close" : "Open"} externally</button>
 				</div>
 				<Collapsible trigger="Controlled collapsible" open={open()} onOpenChange={setOpen}>

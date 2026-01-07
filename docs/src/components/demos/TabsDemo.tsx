@@ -29,7 +29,7 @@ export function TabsDemo() {
 
 			<div class="demo-section">
 				<h4>Controlled</h4>
-				<div class="demo-row">
+				<div class="cluster">
 					<button onClick={() => setActiveTab("tab1")}>Go to Tab 1</button>
 					<button onClick={() => setActiveTab("tab2")}>Go to Tab 2</button>
 					<button onClick={() => setActiveTab("tab3")}>Go to Tab 3</button>

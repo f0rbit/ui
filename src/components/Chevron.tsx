@@ -18,7 +18,7 @@ export function Chevron(props: ChevronProps) {
 			parts.push("chevron-down");
 		}
 		if (local.expanded) {
-			parts.push("chevron-expanded");
+			parts.push("active");
 		}
 		if (local.class) {
 			parts.push(local.class);

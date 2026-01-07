@@ -11,7 +11,7 @@ export interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement>
 }
 
 const variantClasses: Record<ButtonVariant, string> = {
-	primary: "btn-primary",
+	primary: "",
 	secondary: "btn-secondary",
 	ghost: "btn-ghost",
 	danger: "btn-danger",

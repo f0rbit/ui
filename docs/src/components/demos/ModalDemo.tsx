@@ -10,7 +10,7 @@ export function ModalDemo() {
 		<DemoContainer title="Modal">
 			<div class="demo-section">
 				<h4>Basic Modal</h4>
-				<div class="demo-row">
+				<div class="cluster">
 					<Button onClick={() => setBasicOpen(true)}>Open Basic Modal</Button>
 				</div>
 
@@ -33,7 +33,7 @@ export function ModalDemo() {
 
 			<div class="demo-section">
 				<h4>Confirmation Modal</h4>
-				<div class="demo-row">
+				<div class="cluster">
 					<Button variant="danger" onClick={() => setConfirmOpen(true)}>
 						Delete Item
 					</Button>

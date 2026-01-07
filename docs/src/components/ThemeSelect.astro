@@ -14,7 +14,7 @@ const iconPaths = {
 
 <starlight-theme-select>
 	<div class="dropdown">
-		<button class="row btn btn-primary btn-sm theme-trigger" aria-label="Select theme">
+		<button class="row btn btn-sm theme-trigger" aria-label="Select theme">
 			<svg class="theme-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 				<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
 			</svg>
@@ -151,13 +151,13 @@ const iconPaths = {
 		private open(): void {
 			this.isOpen = true;
 			this.menu?.removeAttribute("hidden");
-			this.chevron?.classList.add("chevron-expanded");
+			this.chevron?.classList.add("active");
 		}
 
 		private close(): void {
 			this.isOpen = false;
 			this.menu?.setAttribute("hidden", "");
-			this.chevron?.classList.remove("chevron-expanded");
+			this.chevron?.classList.remove("active");
 		}
 
 		private updateLabel(theme: Theme): void {
@@ -172,7 +172,7 @@ const iconPaths = {
 		private updateActiveItem(theme: Theme): void {
 			this.menu?.querySelectorAll(".dropdown-item").forEach((item) => {
 				const value = (item as HTMLElement).dataset.themeValue;
-				item.classList.toggle("dropdown-item-active", value === theme);
+				item.classList.toggle("active", value === theme);
 			});
 		}
 	}
@@ -194,7 +194,7 @@ const iconPaths = {
 		color: var(--fg-faint);
 	}
 
-	.theme-chevron.chevron-expanded {
+	.theme-chevron.active {
 		transform: rotate(180deg);
 	}
 

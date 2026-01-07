@@ -6,7 +6,7 @@ export function StatusDemo() {
 		<DemoContainer title="Status">
 			<div class="demo-section">
 				<h4>All States</h4>
-				<div class="demo-row">
+				<div class="cluster">
 					<Status state="active" />
 					<Status state="inactive" />
 					<Status state="error" />
@@ -16,7 +16,7 @@ export function StatusDemo() {
 
 			<div class="demo-section">
 				<h4>Custom Labels</h4>
-				<div class="demo-row">
+				<div class="cluster">
 					<Status state="active" label="Online" />
 					<Status state="inactive" label="Offline" />
 					<Status state="error" label="Failed" />
@@ -27,15 +27,15 @@ export function StatusDemo() {
 			<div class="demo-section">
 				<h4>In Context</h4>
 				<div class="demo-stack">
-					<div class="demo-row-between">
+					<div class="cluster-between">
 						<span>API Server</span>
 						<Status state="active" label="Healthy" />
 					</div>
-					<div class="demo-row-between">
+					<div class="cluster-between">
 						<span>Database</span>
 						<Status state="pending" label="Connecting" />
 					</div>
-					<div class="demo-row-between">
+					<div class="cluster-between">
 						<span>Cache</span>
 						<Status state="error" label="Down" />
 					</div>

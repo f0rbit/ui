@@ -23,7 +23,7 @@ export function CardDemo() {
 
 			<div class="demo-section">
 				<h4>Interactive Card</h4>
-				<div class="demo-row">
+				<div class="cluster">
 					<Card interactive>
 						<CardContent>
 							<p>Hover over me! I'm interactive.</p>

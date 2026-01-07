@@ -6,7 +6,7 @@ export function BadgeDemo() {
 		<DemoContainer title="Badge">
 			<div class="demo-section">
 				<h4>Variants</h4>
-				<div class="demo-row">
+				<div class="cluster">
 					<Badge>Default</Badge>
 					<Badge variant="success">Success</Badge>
 					<Badge variant="error">Error</Badge>
@@ -18,7 +18,7 @@ export function BadgeDemo() {
 
 			<div class="demo-section">
 				<h4>With Icons</h4>
-				<div class="demo-row">
+				<div class="cluster">
 					<Badge variant="success">
 						<span>✓</span> Completed
 					</Badge>

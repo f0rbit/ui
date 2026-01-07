@@ -10,7 +10,7 @@ export function ChevronDemo() {
 		<DemoContainer title="Chevron">
 			<div class="demo-section">
 				<h4>Default (Right-facing)</h4>
-				<div class="demo-row">
+				<div class="cluster">
 					<span class="row">
 						<Chevron />
 						Collapsed
@@ -24,7 +24,7 @@ export function ChevronDemo() {
 
 			<div class="demo-section">
 				<h4>Down-facing Variant</h4>
-				<div class="demo-row">
+				<div class="cluster">
 					<span class="row">
 						<Chevron facing="down" />
 						Collapsed
@@ -38,13 +38,13 @@ export function ChevronDemo() {
 
 			<div class="demo-section">
 				<h4>Interactive Toggle</h4>
-				<div class="demo-row">
+				<div class="cluster">
 					<Button variant="ghost" onClick={() => setExpanded1(e => !e)}>
 						<Chevron expanded={expanded1()} />
 						<span style={{ "margin-left": "0.5rem" }}>Click to toggle</span>
 					</Button>
 				</div>
-				<div class="demo-row">
+				<div class="cluster">
 					<Button variant="ghost" onClick={() => setExpanded2(e => !e)}>
 						<span style={{ "margin-right": "0.5rem" }}>Accordion header</span>
 						<Chevron facing="down" expanded={expanded2()} />
@@ -54,7 +54,7 @@ export function ChevronDemo() {
 
 			<div class="demo-section">
 				<h4>Sizes</h4>
-				<div class="demo-row">
+				<div class="cluster">
 					<Chevron size="0.75em" />
 					<Chevron size="1em" />
 					<Chevron size="1.5em" />

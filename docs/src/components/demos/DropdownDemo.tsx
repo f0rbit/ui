@@ -9,7 +9,7 @@ export function DropdownDemo() {
 		<DemoContainer title="Dropdown">
 			<div class="demo-section">
 				<h4>Basic Dropdown</h4>
-				<div class="demo-row">
+				<div class="cluster">
 					<Dropdown>
 						<DropdownTrigger>
 							<Button>Open Menu</Button>
@@ -27,7 +27,7 @@ export function DropdownDemo() {
 			<div class="demo-section">
 				<h4>With Active Item</h4>
 				<p class="demo-hint">Selected: {selected()}</p>
-				<div class="demo-row">
+				<div class="cluster">
 					<Dropdown>
 						<DropdownTrigger>
 							<Button variant="secondary">Select Option</Button>
@@ -49,7 +49,7 @@ export function DropdownDemo() {
 
 			<div class="demo-section">
 				<h4>With Icons</h4>
-				<div class="demo-row">
+				<div class="cluster">
 					<Dropdown>
 						<DropdownTrigger>
 							<Button>Actions</Button>
