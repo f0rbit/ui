@@ -1,6 +1,6 @@
 @layer tokens {
 	:root {
-		--bg: oklch(99% 0.02 290);
+		--bg: oklch(97% 0.02 290);
 		--bg-alt: oklch(96% 0.01 290);
 		--border: oklch(91% 0.01 290);
 
@@ -61,8 +61,9 @@
 		--hover-filter: brightness(0.8);
 	}
 
+	/* Dark mode: system preference or explicit data-theme */
 	@media (prefers-color-scheme: dark) {
-		:root {
+		:root:not([data-theme="light"]) {
 			--bg: oklch(21% 0.015 280);
 			--bg-alt: oklch(27% 0.02 290);
 			--border: oklch(32% 0.02 290);
@@ -74,6 +75,35 @@
 
 			--accent: oklch(70% 0.035 280);
 
+			--success: oklch(0.35 0.05 150);
+			--success-fg: oklch(0.85 0.1 150);
+			--error: oklch(0.35 0.05 20);
+			--error-fg: oklch(0.85 0.1 20);
+			--warning: oklch(0.35 0.08 85);
+			--warning-fg: oklch(0.85 0.12 85);
+			--info: oklch(0.35 0.05 240);
+			--info-fg: oklch(0.85 0.1 240);
+
+			--shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+			--shadow-lg: 0 10px 25px rgb(0 0 0 / 0.4);
+
+			--hover-filter: brightness(1.2);
+		}
+	}
+
+	/* Explicit dark theme override */
+	:root[data-theme="dark"] {
+		--bg: oklch(21% 0.015 280);
+		--bg-alt: oklch(27% 0.02 290);
+		--border: oklch(32% 0.02 290);
+
+		--fg: oklch(100% 0 0);
+		--fg-muted: oklch(85% 0.02 290);
+		--fg-subtle: oklch(75% 0.02 290);
+		--fg-faint: oklch(60% 0.03 290);
+
+		--accent: oklch(70% 0.035 280);
+
 		--success: oklch(0.35 0.05 150);
 		--success-fg: oklch(0.85 0.1 150);
 		--error: oklch(0.35 0.05 20);
@@ -83,10 +113,9 @@
 		--info: oklch(0.35 0.05 240);
 		--info-fg: oklch(0.85 0.1 240);
 
-			--shadow: 0 1px 3px rgb(0 0 0 / 0.3);
-			--shadow-lg: 0 10px 25px rgb(0 0 0 / 0.4);
+		--shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+		--shadow-lg: 0 10px 25px rgb(0 0 0 / 0.4);
 
-			--hover-filter: brightness(1.2);
-		}
+		--hover-filter: brightness(1.2);
 	}
 }
