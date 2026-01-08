@@ -1,0 +1,77 @@
+---
+title: Toggle
+description: A switch component for toggling between on/off states.
+---
+
+import { ToggleDemo } from '../../../components/demos/ToggleDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<ToggleDemo client:load />
+
+## Usage
+
+```tsx
+import { Toggle } from "@f0rbit/ui";
+
+<Toggle />
+```
+
+## With Label
+
+Add a label to describe the toggle:
+
+```tsx
+<Toggle label="Dark mode" />
+<Toggle label="Auto-save" checked />
+```
+
+## With Description
+
+Provide additional context:
+
+```tsx
+<Toggle
+  label="Push notifications"
+  description="Receive alerts when someone mentions you"
+/>
+<Toggle
+  label="Two-factor authentication"
+  description="Add an extra layer of security to your account"
+  checked
+/>
+```
+
+## Controlled State
+
+Control the toggle state with `checked` and `onChange`:
+
+```tsx
+const [enabled, setEnabled] = createSignal(false);
+
+<Toggle
+  checked={enabled()}
+  onChange={() => setEnabled(!enabled())}
+  label="Enable feature"
+/>
+```
+
+## Sizes
+
+Two sizes are available:
+
+```tsx
+<Toggle label="Default size" />
+<Toggle label="Small size" size="sm" />
+```
+
+## Disabled State
+
+```tsx
+<Toggle label="Disabled off" disabled />
+<Toggle label="Disabled on" disabled checked />
+```
+
+## Props
+
+<PropsTable props={getComponent("Toggle").props} client:load />

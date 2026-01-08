@@ -31,13 +31,13 @@ const steps = [
 <Section title="Quick Start" bordered>
   <div class="stepper stepper-vertical">
     {steps.map((step, index) => (
-      <div class="step">
-        <div class="step-indicator" set:html={step.icon} />
-        <div class="step-content">
+      <div class="step vertical-connector-item">
+        <div class="step-indicator vertical-indicator" set:html={step.icon} />
+        <div class="step-content vertical-content">
           <div class="step-title">{step.title}</div>
           <Code code={step.code} lang={step.lang} />
         </div>
-        {index < steps.length - 1 && <div class="step-connector" />}
+        {index < steps.length - 1 && <div class="step-connector vertical-connector" />}
       </div>
     ))}
   </div>

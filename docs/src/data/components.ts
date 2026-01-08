@@ -267,6 +267,85 @@ export const components: ComponentMeta[] = [
 		],
 	},
 	{
+		name: "IconButton",
+		description: "A square button optimized for displaying icons.",
+		importStatement: 'import { IconButton } from "@f0rbit/ui";',
+		props: [
+			{ name: "variant", type: '"primary" | "secondary" | "ghost" | "danger"', default: '"primary"', description: "Visual style variant" },
+			{ name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Button size" },
+			{ name: "label", type: "string", description: "Accessible label for screen readers (required)" },
+			{ name: "loading", type: "boolean", default: "false", description: "Show loading spinner" },
+			{ name: "disabled", type: "boolean", default: "false", description: "Disable the button" },
+		],
+		examples: [
+			{ title: "Basic", code: '<IconButton label="Add item"><PlusIcon /></IconButton>' },
+			{ title: "Variants", code: '<IconButton label="Edit" variant="secondary"><EditIcon /></IconButton>\n<IconButton label="Settings" variant="ghost"><SettingsIcon /></IconButton>\n<IconButton label="Delete" variant="danger"><TrashIcon /></IconButton>' },
+		],
+	},
+	{
+		name: "Checkbox",
+		description: "A checkbox input for boolean or indeterminate selections.",
+		importStatement: 'import { Checkbox } from "@f0rbit/ui";',
+		props: [
+			{ name: "checked", type: "boolean", default: "false", description: "Whether the checkbox is checked" },
+			{ name: "indeterminate", type: "boolean", default: "false", description: "Show indeterminate state (partial selection)" },
+			{ name: "label", type: "string", description: "Label text displayed next to the checkbox" },
+			{ name: "description", type: "string", description: "Description text below the label" },
+			{ name: "disabled", type: "boolean", default: "false", description: "Disable the checkbox" },
+			{ name: "onChange", type: "() => void", description: "Callback when checkbox is toggled" },
+		],
+		examples: [
+			{ title: "Basic", code: "<Checkbox />" },
+			{ title: "With Label", code: '<Checkbox label="Accept terms and conditions" />' },
+			{ title: "With Description", code: '<Checkbox label="Email notifications" description="Receive email updates about your account" />' },
+		],
+	},
+	{
+		name: "Toggle",
+		description: "A switch component for toggling between on/off states.",
+		importStatement: 'import { Toggle } from "@f0rbit/ui";',
+		props: [
+			{ name: "checked", type: "boolean", default: "false", description: "Whether the toggle is on" },
+			{ name: "label", type: "string", description: "Label text displayed next to the toggle" },
+			{ name: "description", type: "string", description: "Description text below the label" },
+			{ name: "size", type: '"sm" | "md"', default: '"md"', description: "Toggle size" },
+			{ name: "disabled", type: "boolean", default: "false", description: "Disable the toggle" },
+			{ name: "onChange", type: "() => void", description: "Callback when toggle is switched" },
+		],
+		examples: [
+			{ title: "Basic", code: "<Toggle />" },
+			{ title: "With Label", code: '<Toggle label="Dark mode" />' },
+			{ title: "With Description", code: '<Toggle label="Push notifications" description="Receive alerts when someone mentions you" />' },
+		],
+	},
+	{
+		name: "FormField",
+		description: "A wrapper component for form inputs with label, description, and error states.",
+		importStatement: 'import { FormField } from "@f0rbit/ui";',
+		props: [
+			{ name: "label", type: "string", description: "Label text for the field" },
+			{ name: "description", type: "string", description: "Helper text below the input" },
+			{ name: "error", type: "string", description: "Error message to display" },
+			{ name: "required", type: "boolean", default: "false", description: "Show required indicator" },
+			{ name: "id", type: "string", description: "ID to associate label with input" },
+		],
+		examples: [
+			{ title: "Basic", code: '<FormField label="Username" id="username">\n  <Input id="username" placeholder="Enter username" />\n</FormField>' },
+			{ title: "With Error", code: '<FormField label="Email" error="Invalid email address" id="email">\n  <Input id="email" error />\n</FormField>' },
+		],
+	},
+	{
+		name: "Timeline",
+		description: "A vertical timeline for displaying chronological events.",
+		importStatement: 'import { Timeline, type TimelineItem } from "@f0rbit/ui";',
+		props: [
+			{ name: "items", type: "TimelineItem[]", description: "Array of timeline items to display" },
+		],
+		examples: [
+			{ title: "Basic", code: '<Timeline items={[\n  { id: 1, title: "Order placed", timestamp: "10:30 AM" },\n  { id: 2, title: "Processing", timestamp: "10:45 AM" },\n  { id: 3, title: "Shipped", timestamp: "2:15 PM" },\n]} />' },
+		],
+	},
+	{
 		name: "TabList",
 		description: "Container for Tab components within Tabs.",
 		importStatement: 'import { TabList } from "@f0rbit/ui";',

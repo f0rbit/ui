@@ -1,0 +1,88 @@
+---
+title: FormField
+description: A wrapper component for form inputs with label, description, and error states.
+---
+
+import { FormFieldDemo } from '../../../components/demos/FormFieldDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<FormFieldDemo client:load />
+
+## Usage
+
+```tsx
+import { FormField, Input } from "@f0rbit/ui";
+
+<FormField label="Username" id="username">
+  <Input id="username" placeholder="Enter username" />
+</FormField>
+```
+
+## With Description
+
+Add helper text below the input:
+
+```tsx
+<FormField
+  label="Password"
+  description="Must be at least 8 characters with one number"
+  id="password"
+>
+  <Input id="password" type="password" />
+</FormField>
+```
+
+## Error State
+
+Display validation errors:
+
+```tsx
+<FormField
+  label="Email"
+  error="Please enter a valid email address"
+  id="email"
+>
+  <Input id="email" error />
+</FormField>
+```
+
+## Required Fields
+
+Show a required indicator:
+
+```tsx
+<FormField label="Full Name" required id="fullname">
+  <Input id="fullname" />
+</FormField>
+```
+
+## With Select
+
+FormField works with any form input:
+
+```tsx
+<FormField label="Role" required id="role">
+  <Select id="role">
+    <option value="">Select a role</option>
+    <option value="admin">Admin</option>
+    <option value="user">User</option>
+  </Select>
+</FormField>
+```
+
+## With Textarea
+
+```tsx
+<FormField
+  label="Bio"
+  description="Tell us a little about yourself"
+  id="bio"
+>
+  <Textarea id="bio" placeholder="I'm a software developer who..." />
+</FormField>
+```
+
+## Props
+
+<PropsTable props={getComponent("FormField").props} client:load />

@@ -1,0 +1,99 @@
+---
+title: Timeline
+description: A vertical timeline for displaying chronological events.
+---
+
+import { TimelineDemo } from '../../../components/demos/TimelineDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<TimelineDemo client:load />
+
+## Usage
+
+```tsx
+import { Timeline, type TimelineItem } from "@f0rbit/ui";
+
+const items: TimelineItem[] = [
+  { id: 1, title: "Order placed", timestamp: "10:30 AM" },
+  { id: 2, title: "Processing", timestamp: "10:45 AM" },
+  { id: 3, title: "Shipped", timestamp: "2:15 PM" },
+];
+
+<Timeline items={items} />
+```
+
+## With Descriptions
+
+Add descriptions for more context:
+
+```tsx
+const items: TimelineItem[] = [
+  {
+    id: 1,
+    title: "Pull request opened",
+    description: "feat: add new authentication flow",
+    timestamp: "2 hours ago",
+  },
+  {
+    id: 2,
+    title: "Code review completed",
+    description: "Approved by 2 reviewers",
+    timestamp: "1 hour ago",
+  },
+];
+
+<Timeline items={items} />
+```
+
+## Variants
+
+Use variants to indicate different event types:
+
+```tsx
+const items: TimelineItem[] = [
+  { id: 1, title: "Build started", variant: "info", timestamp: "10:00 AM" },
+  { id: 2, title: "Tests passed", variant: "success", timestamp: "10:05 AM" },
+  { id: 3, title: "Linting warnings", variant: "warning", timestamp: "10:06 AM" },
+  { id: 4, title: "Deployment failed", variant: "error", timestamp: "10:10 AM" },
+];
+
+<Timeline items={items} />
+```
+
+Available variants:
+- **default**: Neutral styling
+- **success**: Positive events
+- **error**: Failed or negative events
+- **warning**: Events needing attention
+- **info**: Informational events
+
+## Custom Icons
+
+Provide custom icons for timeline items:
+
+```tsx
+const items: TimelineItem[] = [
+  { id: 1, title: "Completed", icon: <CheckIcon />, variant: "success" },
+  { id: 2, title: "Pending", icon: <AlertIcon />, variant: "warning" },
+];
+
+<Timeline items={items} />
+```
+
+## TimelineItem Type
+
+```tsx
+interface TimelineItem {
+  id: string | number;
+  title: string;
+  description?: string;
+  timestamp?: string;
+  icon?: JSX.Element;
+  variant?: "default" | "success" | "error" | "warning" | "info";
+}
+```
+
+## Props
+
+<PropsTable props={getComponent("Timeline").props} client:load />

@@ -34,18 +34,55 @@ function CheckIcon() {
 	);
 }
 
+type StepContextValue = {
+	orientation: () => "horizontal" | "vertical";
+};
+
+const StepContext = createContext<StepContextValue>();
+
 export function Step(props: StepProps) {
 	const [local, rest] = splitProps(props, ["title", "description", "icon", "status", "class"]);
-	const ctx = useContext(StepperContext);
+	const stepperCtx = useContext(StepperContext);
+	const stepCtx = useContext(StepContext);
 
-	const stepNumber = ctx?.registerStep() ?? 1;
+	const stepNumber = stepperCtx?.registerStep() ?? 1;
+	const orientation = () => stepCtx?.orientation() ?? "horizontal";
 
 	const status = () => local.status ?? "upcoming";
 
+	const isVertical = () => orientation() === "vertical";
+
 	const classes = () => {
-		const parts = ["step", "vertical-connector-item", statusClasses[status()]];
+		const parts = ["step", statusClasses[status()]];
+		if (isVertical()) {
+			parts.push("vertical-connector-item");
+		}
 		if (local.class) {
 			parts.push(local.class);
+		}
+		return parts.join(" ");
+	};
+
+	const indicatorClasses = () => {
+		const parts = ["step-indicator"];
+		if (isVertical()) {
+			parts.push("vertical-indicator");
+		}
+		return parts.join(" ");
+	};
+
+	const contentClasses = () => {
+		const parts = ["step-content"];
+		if (isVertical()) {
+			parts.push("vertical-content");
+		}
+		return parts.join(" ");
+	};
+
+	const connectorClasses = () => {
+		const parts = ["step-connector"];
+		if (isVertical()) {
+			parts.push("vertical-connector");
 		}
 		return parts.join(" ");
 	};
@@ -62,14 +99,14 @@ export function Step(props: StepProps) {
 
 	return (
 		<div class={classes()} {...rest}>
-			<div class="step-indicator vertical-indicator">{indicator()}</div>
-			<div class="step-content vertical-content">
+			<div class={indicatorClasses()}>{indicator()}</div>
+			<div class={contentClasses()}>
 				<div class="step-title">{local.title}</div>
 				<Show when={local.description}>
 					<div class="step-description">{local.description}</div>
 				</Show>
 			</div>
-			<div class="step-connector vertical-connector" />
+			<div class={connectorClasses()} />
 		</div>
 	);
 }
@@ -92,9 +129,11 @@ export function Stepper(props: StepperProps) {
 
 	return (
 		<StepperContext.Provider value={{ registerStep }}>
-			<div class={classes()} {...rest}>
-				{local.children}
-			</div>
+			<StepContext.Provider value={{ orientation }}>
+				<div class={classes()} {...rest}>
+					{local.children}
+				</div>
+			</StepContext.Provider>
 		</StepperContext.Provider>
 	);
 }

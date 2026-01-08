@@ -1,0 +1,72 @@
+---
+title: IconButton
+description: A square button optimized for displaying icons with accessible labels.
+---
+
+import { IconButtonDemo } from '../../../components/demos/IconButtonDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<IconButtonDemo client:load />
+
+## Usage
+
+```tsx
+import { IconButton } from "@f0rbit/ui";
+
+<IconButton label="Add item">
+  <PlusIcon />
+</IconButton>
+```
+
+## Variants
+
+IconButton supports the same variants as Button:
+
+```tsx
+<IconButton label="Add" variant="primary"><PlusIcon /></IconButton>
+<IconButton label="Edit" variant="secondary"><EditIcon /></IconButton>
+<IconButton label="Settings" variant="ghost"><SettingsIcon /></IconButton>
+<IconButton label="Delete" variant="danger"><TrashIcon /></IconButton>
+```
+
+- **Primary**: Default emphasis for main actions
+- **Secondary**: Alternative actions
+- **Ghost**: Subtle actions without emphasis
+- **Danger**: Destructive actions
+
+## Sizes
+
+Three sizes are available:
+
+```tsx
+<IconButton label="Small" size="sm"><PlusIcon /></IconButton>
+<IconButton label="Medium" size="md"><PlusIcon /></IconButton>
+<IconButton label="Large" size="lg"><PlusIcon /></IconButton>
+```
+
+## Accessibility
+
+The `label` prop is required and provides an accessible name for screen readers:
+
+```tsx
+<IconButton label="Close dialog"><CloseIcon /></IconButton>
+```
+
+## States
+
+### Loading
+
+```tsx
+<IconButton label="Loading" loading><PlusIcon /></IconButton>
+```
+
+### Disabled
+
+```tsx
+<IconButton label="Disabled" disabled><PlusIcon /></IconButton>
+```
+
+## Props
+
+<PropsTable props={getComponent("IconButton").props} client:load />

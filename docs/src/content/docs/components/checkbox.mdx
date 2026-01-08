@@ -1,0 +1,76 @@
+---
+title: Checkbox
+description: A checkbox input for boolean or indeterminate selections.
+---
+
+import { CheckboxDemo } from '../../../components/demos/CheckboxDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<CheckboxDemo client:load />
+
+## Usage
+
+```tsx
+import { Checkbox } from "@f0rbit/ui";
+
+<Checkbox />
+```
+
+## With Label
+
+Add a label to describe the checkbox:
+
+```tsx
+<Checkbox label="Accept terms and conditions" />
+<Checkbox label="Subscribe to newsletter" />
+```
+
+## With Description
+
+Provide additional context with a description:
+
+```tsx
+<Checkbox
+  label="Email notifications"
+  description="Receive email updates about your account activity"
+/>
+```
+
+## Controlled State
+
+Control the checkbox state with `checked` and `onChange`:
+
+```tsx
+const [checked, setChecked] = createSignal(false);
+
+<Checkbox
+  checked={checked()}
+  onChange={() => setChecked(!checked())}
+  label="Toggle me"
+/>
+```
+
+## Indeterminate State
+
+Use `indeterminate` for partial selections (e.g., "select all" with some items selected):
+
+```tsx
+<Checkbox
+  label="Select all"
+  checked={allChecked()}
+  indeterminate={someChecked()}
+  onChange={toggleAll}
+/>
+```
+
+## Disabled State
+
+```tsx
+<Checkbox label="Disabled unchecked" disabled />
+<Checkbox label="Disabled checked" disabled checked />
+```
+
+## Props
+
+<PropsTable props={getComponent("Checkbox").props} client:load />
