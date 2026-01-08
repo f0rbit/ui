@@ -46,7 +46,8 @@
 		"./styles/tokens": "./dist/tokens.css",
 		"./styles/reset": "./dist/reset.css",
 		"./styles/utilities": "./dist/utilities.css",
-		"./styles/components": "./dist/components.css"
+		"./styles/components": "./dist/components.css",
+		"./styles/starlight": "./docs/src/styles/starlight.css"
 	},
 	"files": ["dist", "src"],
 	"scripts": {
