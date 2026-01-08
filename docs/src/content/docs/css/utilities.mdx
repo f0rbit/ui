@@ -18,8 +18,8 @@ Vertical layout with consistent spacing.
 
 | Class | Gap |
 |-------|-----|
-| `.stack` | `--space-md` (1rem) |
-| `.stack-sm` | `--space-sm` (0.5rem) |
+| `.stack` | `--space-md` (0.75rem) |
+| `.stack-sm` | `--space-sm` (0.35rem) |
 | `.stack-lg` | `--space-lg` (1.5rem) |
 
 ### Row
@@ -36,6 +36,8 @@ Horizontal layout with alignment.
 | Class | Description |
 |-------|-------------|
 | `.row` | Horizontal flex with center alignment |
+| `.row-sm` | Smaller gap (`--space-xs`) |
+| `.row-lg` | Larger gap (`--space-md`) |
 | `.row-between` | Space between items |
 | `.row-end` | Align to end |
 | `.row-start` | Align items to start |
@@ -58,6 +60,12 @@ Responsive auto-fit grid.
 | `.grid-2` | 2 columns |
 | `.grid-3` | 3 columns |
 | `.grid-4` | 4 columns |
+
+Customize the minimum column width:
+
+```html
+<div class="grid" style="--grid-min: 150px">...</div>
+```
 
 ### Center
 
@@ -86,6 +94,19 @@ Wrapping horizontal layout for tags/buttons.
 </div>
 ```
 
+### List
+
+Styled lists with proper markers.
+
+```html
+<ul class="list">
+  <li>Item 1</li>
+  <li>Item 2</li>
+</ul>
+```
+
+Works with both `<ul>` and `<ol>`, with automatic nested styling.
+
 ## Text Utilities
 
 | Class | Description |
@@ -94,19 +115,41 @@ Wrapping horizontal layout for tags/buttons.
 | `.text-muted` | Muted text |
 | `.text-subtle` | Subtle text |
 | `.text-faint` | Faint text |
-| `.text-sm` | Small text |
-| `.text-lg` | Large text |
-| `.font-medium` | Medium weight |
-| `.font-bold` | Bold weight |
+| `.text-accent` | Accent color text |
+| `.text-xs` | Extra small text (0.75rem) |
+| `.text-sm` | Small text (0.875rem) |
+| `.text-base` | Base text (1rem) |
+| `.text-lg` | Large text (1.125rem) |
+| `.text-xl` | Extra large text (1.25rem) |
+| `.text-2xl` | 2x large text (1.5rem) |
+| `.text-3xl` | 3x large text (1.875rem) |
+| `.text-4xl` | 4x large text (2.25rem) |
+| `.font-medium` | Medium weight (500) |
+| `.font-bold` | Bold weight (700) |
 | `.font-mono` | Monospace font |
 | `.truncate` | Truncate with ellipsis |
 
-## Other
+## Interactive
+
+| Class | Description |
+|-------|-------------|
+| `.interactive` | Border highlights on hover |
+| `.interactive-color` | Color changes on hover |
+
+## Visibility
 
 | Class | Description |
 |-------|-------------|
 | `.hidden` | Display none |
 | `.sr-only` | Screen reader only |
 | `.hover-reveal` | Show on parent hover |
+| `.hide-mobile` | Hide on mobile (< 768px) |
+
+## Animation
+
+| Class | Description |
+|-------|-------------|
 | `.animate-spin` | Spinning animation |
 | `.animate-pulse` | Pulsing animation |
+
+Animations respect `prefers-reduced-motion`.

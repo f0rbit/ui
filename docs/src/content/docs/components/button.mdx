@@ -67,9 +67,27 @@ Disable interaction when the action is not available:
 
 ## Icon Button
 
-Use the `icon` prop for square icon-only buttons:
+Use the `icon` prop for square icon-only buttons. Add a `label` prop for accessibility:
 
 ```tsx
-<Button icon>+</Button>
-<Button icon variant="ghost">x</Button>
+<Button icon label="Add item">
+  <PlusIcon />
+</Button>
+```
+
+Icon buttons support all the same variants:
+
+```tsx
+<Button icon label="Add"><PlusIcon /></Button>
+<Button icon label="Edit" variant="secondary"><EditIcon /></Button>
+<Button icon label="Settings" variant="ghost"><SettingsIcon /></Button>
+<Button icon label="Delete" variant="danger"><TrashIcon /></Button>
+```
+
+And all the same sizes and states:
+
+```tsx
+<Button icon label="Small" size="sm"><PlusIcon /></Button>
+<Button icon label="Loading" loading><PlusIcon /></Button>
+<Button icon label="Disabled" disabled><PlusIcon /></Button>
 ```

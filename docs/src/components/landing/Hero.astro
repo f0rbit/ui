@@ -1,6 +1,9 @@
 ---
 // Hero Section - Variation B: Centered with Badge Strip
+import { components } from '../../data/components';
+
 const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+const componentCount = components.length;
 ---
 
 <section class="hero">
@@ -31,7 +34,7 @@ const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL :
 
     <div class="hero-stats">
       <div class="stat hero-stat">
-        <div class="stat-value hero-stat-value" data-count-to="15" data-suffix="+">15+</div>
+        <div class="stat-value hero-stat-value" data-count-to={componentCount} data-suffix="+">{ componentCount }+</div>
         <div class="stat-label hero-stat-label">Components</div>
       </div>
       <div class="stat hero-stat">

@@ -26,7 +26,8 @@ export const components: ComponentMeta[] = [
 		props: [
 			{ name: "variant", type: '"primary" | "secondary" | "ghost" | "danger"', default: '"primary"', description: "Visual style variant" },
 			{ name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Button size" },
-			{ name: "icon", type: "boolean", default: "false", description: "Render as icon-only button" },
+			{ name: "icon", type: "boolean", default: "false", description: "Render as square icon-only button" },
+			{ name: "label", type: "string", description: "Accessible label for icon buttons (sets aria-label)" },
 			{ name: "loading", type: "boolean", default: "false", description: "Show loading spinner" },
 			{ name: "disabled", type: "boolean", default: "false", description: "Disable the button" },
 		],
@@ -35,6 +36,7 @@ export const components: ComponentMeta[] = [
 			{ title: "Variants", code: '<Button variant="secondary">Secondary</Button>\n<Button variant="ghost">Ghost</Button>\n<Button variant="danger">Danger</Button>' },
 			{ title: "Sizes", code: '<Button size="sm">Small</Button>\n<Button size="md">Medium</Button>\n<Button size="lg">Large</Button>' },
 			{ title: "Loading", code: "<Button loading>Loading...</Button>" },
+			{ title: "Icon Button", code: '<Button icon label="Add"><PlusIcon /></Button>\n<Button icon label="Edit" variant="ghost"><EditIcon /></Button>' },
 		],
 	},
 	{
@@ -266,22 +268,7 @@ export const components: ComponentMeta[] = [
 			},
 		],
 	},
-	{
-		name: "IconButton",
-		description: "A square button optimized for displaying icons.",
-		importStatement: 'import { IconButton } from "@f0rbit/ui";',
-		props: [
-			{ name: "variant", type: '"primary" | "secondary" | "ghost" | "danger"', default: '"primary"', description: "Visual style variant" },
-			{ name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Button size" },
-			{ name: "label", type: "string", description: "Accessible label for screen readers (required)" },
-			{ name: "loading", type: "boolean", default: "false", description: "Show loading spinner" },
-			{ name: "disabled", type: "boolean", default: "false", description: "Disable the button" },
-		],
-		examples: [
-			{ title: "Basic", code: '<IconButton label="Add item"><PlusIcon /></IconButton>' },
-			{ title: "Variants", code: '<IconButton label="Edit" variant="secondary"><EditIcon /></IconButton>\n<IconButton label="Settings" variant="ghost"><SettingsIcon /></IconButton>\n<IconButton label="Delete" variant="danger"><TrashIcon /></IconButton>' },
-		],
-	},
+	
 	{
 		name: "Checkbox",
 		description: "A checkbox input for boolean or indeterminate selections.",

@@ -1,14 +1,16 @@
 ---
 import Section from './Section.astro';
 import { ThemePlayground } from './ThemePlayground';
+import { components } from '../../data/components';
 
 const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+const componentCount = components.length;
 ---
 
 <Section title="Components" subtitle="See how theming works" bordered>
   <ThemePlayground client:visible />
   <div class="showcase-footer">
-    <a href={`${base}components/button`} class="view-all-link">Explore all 15+ components</a>
+    <a href={`${base}components/button`} class="view-all-link">Explore all { componentCount }+ components</a>
   </div>
 </Section>
 

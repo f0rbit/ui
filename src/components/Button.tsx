@@ -7,6 +7,7 @@ export interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement>
 	variant?: ButtonVariant;
 	size?: ButtonSize;
 	icon?: boolean;
+	label?: string;
 	loading?: boolean;
 }
 
@@ -24,7 +25,7 @@ const sizeClasses: Record<ButtonSize, string> = {
 };
 
 export function Button(props: ButtonProps) {
-	const [local, rest] = splitProps(props, ["variant", "size", "icon", "loading", "class", "disabled", "children"]);
+	const [local, rest] = splitProps(props, ["variant", "size", "icon", "label", "loading", "class", "disabled", "children"]);
 
 	const classes = () => {
 		const parts = ["btn"];
@@ -42,7 +43,12 @@ export function Button(props: ButtonProps) {
 	};
 
 	return (
-		<button class={classes()} disabled={local.disabled || local.loading} {...rest}>
+		<button
+			class={classes()}
+			aria-label={local.icon ? local.label : undefined}
+			disabled={local.disabled || local.loading}
+			{...rest}
+		>
 			{local.loading ? <span class="spinner spinner-sm" /> : local.children}
 		</button>
 	);

@@ -1,6 +1,5 @@
 // Components
 export { Button, type ButtonProps, type ButtonVariant, type ButtonSize } from "./components/Button";
-export { IconButton, type IconButtonProps, type IconButtonVariant, type IconButtonSize } from "./components/IconButton";
 export { Badge, type BadgeProps, type BadgeVariant } from "./components/Badge";
 export {
 	Card,

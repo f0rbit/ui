@@ -767,8 +767,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 18px;
-		height: 18px;
+		width: 1.125em;
+		height: 1.125em;
 		flex-shrink: 0;
 		border: 1px solid var(--border);
 		border-radius: var(--radius);
@@ -791,8 +791,8 @@
 	}
 
 	.checkbox-check {
-		width: 12px;
-		height: 12px;
+		width: 0.75em;
+		height: 0.75em;
 		color: var(--accent-fg);
 		opacity: 0;
 		transform: scale(0.8);
@@ -805,8 +805,8 @@
 	}
 
 	.checkbox-indeterminate {
-		width: 8px;
-		height: 2px;
+		width: 0.5em;
+		height: 0.125em;
 		background: var(--accent-fg);
 		border-radius: 1px;
 		opacity: 0;
@@ -869,8 +869,8 @@
 
 	.toggle-track {
 		position: relative;
-		width: 44px;
-		height: 24px;
+		width: 2.5em;
+		height: 1.375em;
 		background: var(--border);
 		border-radius: 9999px;
 		flex-shrink: 0;
@@ -879,10 +879,10 @@
 
 	.toggle-knob {
 		position: absolute;
-		top: 2px;
-		left: 2px;
-		width: 20px;
-		height: 20px;
+		top: 0.125em;
+		left: 0.125em;
+		width: 1.125em;
+		height: 1.125em;
 		background: var(--bg);
 		border-radius: 50%;
 		box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
@@ -894,7 +894,7 @@
 	}
 
 	.toggle-input:checked + .toggle-track .toggle-knob {
-		transform: translateX(20px);
+		transform: translateX(1.125em);
 	}
 
 	.toggle-input:focus-visible + .toggle-track {
@@ -924,17 +924,17 @@
 
 	/* Toggle small variant */
 	.toggle-sm .toggle-track {
-		width: 36px;
-		height: 20px;
+		width: 2em;
+		height: 1.125em;
 	}
 
 	.toggle-sm .toggle-knob {
-		width: 16px;
-		height: 16px;
+		width: 0.875em;
+		height: 0.875em;
 	}
 
 	.toggle-sm .toggle-input:checked + .toggle-track .toggle-knob {
-		transform: translateX(16px);
+		transform: translateX(0.875em);
 	}
 
 	/* FormField */
