@@ -1,5 +1,6 @@
 // Components
 export { Button, type ButtonProps, type ButtonVariant, type ButtonSize } from "./components/Button";
+export { IconButton, type IconButtonProps, type IconButtonVariant, type IconButtonSize } from "./components/IconButton";
 export { Badge, type BadgeProps, type BadgeVariant } from "./components/Badge";
 export {
 	Card,
@@ -54,3 +55,12 @@ export {
 	type TabProps,
 	type TabPanelProps,
 } from "./components/Tabs";
+export { Checkbox, type CheckboxProps } from "./components/Checkbox";
+export { Toggle, type ToggleProps } from "./components/Toggle";
+export { FormField, type FormFieldProps } from "./components/FormField";
+export {
+	Timeline,
+	type TimelineProps,
+	type TimelineItem,
+	type TimelineItemVariant,
+} from "./components/Timeline";

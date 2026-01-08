@@ -43,7 +43,7 @@ export function Step(props: StepProps) {
 	const status = () => local.status ?? "upcoming";
 
 	const classes = () => {
-		const parts = ["step", statusClasses[status()]];
+		const parts = ["step", "vertical-connector-item", statusClasses[status()]];
 		if (local.class) {
 			parts.push(local.class);
 		}
@@ -62,14 +62,14 @@ export function Step(props: StepProps) {
 
 	return (
 		<div class={classes()} {...rest}>
-			<div class="step-indicator">{indicator()}</div>
-			<div class="step-content">
+			<div class="step-indicator vertical-indicator">{indicator()}</div>
+			<div class="step-content vertical-content">
 				<div class="step-title">{local.title}</div>
 				<Show when={local.description}>
 					<div class="step-description">{local.description}</div>
 				</Show>
 			</div>
-			<div class="step-connector" />
+			<div class="step-connector vertical-connector" />
 		</div>
 	);
 }
