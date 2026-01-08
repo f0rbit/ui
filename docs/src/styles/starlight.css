@@ -43,13 +43,11 @@ header.header {
 }
 
 /* Override Starlight's aggressive content margin rules */
-@layer starlight.content {
-	.sl-markdown-content :not(h1, h2, h3, h4, h5, h6) + :is(h1, h2, h3, h4, h5, h6):not(:where(.not-content *)) {
-		margin-top: 0;
-	}
-	.sl-markdown-content :not(a, strong, em, del, span, input, code, br) + :not(a, strong, em, del, span, input, code, br, :where(.not-content *)) {
-		margin-top: 0;
-	}
+.sl-markdown-content :not(h1, h2, h3, h4, h5, h6) + :is(h1, h2, h3, h4, h5, h6):not(:where(.not-content *)) {
+	margin-top: 0 !important;
+}
+.sl-markdown-content :not(a, strong, em, del, span, input, code, br) + :not(a, strong, em, del, span, input, code, br, :where(.not-content *)) {
+	margin-top: 0 !important;
 }
 
 /* Hide Starlight's default splash hero/tagline/banner/title on landing page */
