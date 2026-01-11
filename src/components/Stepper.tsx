@@ -18,6 +18,11 @@ export interface StepProps extends JSX.HTMLAttributes<HTMLDivElement> {
 	description?: string;
 	icon?: JSX.Element;
 	status?: StepStatus;
+	children?: JSX.Element;
+	/** Explicit step number (optional, auto-increments if not provided) */
+	number?: number;
+	/** Explicit orientation (optional, uses context if not provided) */
+	orientation?: "horizontal" | "vertical";
 }
 
 const statusClasses: Record<StepStatus, string> = {
@@ -41,12 +46,12 @@ type StepContextValue = {
 const StepContext = createContext<StepContextValue>();
 
 export function Step(props: StepProps) {
-	const [local, rest] = splitProps(props, ["title", "description", "icon", "status", "class"]);
+	const [local, rest] = splitProps(props, ["title", "description", "icon", "status", "class", "children", "number", "orientation"]);
 	const stepperCtx = useContext(StepperContext);
 	const stepCtx = useContext(StepContext);
 
-	const stepNumber = stepperCtx?.registerStep() ?? 1;
-	const orientation = () => stepCtx?.orientation() ?? "horizontal";
+	const stepNumber = local.number ?? stepperCtx?.registerStep() ?? 1;
+	const orientation = () => local.orientation ?? stepCtx?.orientation() ?? "vertical";
 
 	const status = () => local.status ?? "upcoming";
 
@@ -104,6 +109,9 @@ export function Step(props: StepProps) {
 				<div class="step-title">{local.title}</div>
 				<Show when={local.description}>
 					<div class="step-description">{local.description}</div>
+				</Show>
+				<Show when={local.children}>
+					<div class="step-body">{local.children}</div>
 				</Show>
 			</div>
 			<div class={connectorClasses()} />

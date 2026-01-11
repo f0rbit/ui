@@ -1,0 +1,20 @@
+---
+export interface Props {
+  title: string;
+  number?: number;
+  isLast?: boolean;
+}
+
+const { title, number, isLast = false } = Astro.props;
+---
+
+<div class="step vertical-connector-item">
+  <div class="step-indicator vertical-indicator">{number}</div>
+  <div class="step-content vertical-content">
+    <div class="step-title">{title}</div>
+    <div class="step-body">
+      <slot />
+    </div>
+  </div>
+  {!isLast && <div class="step-connector vertical-connector" />}
+</div>

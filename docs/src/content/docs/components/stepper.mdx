@@ -46,6 +46,25 @@ Use `orientation="vertical"` for vertical layouts:
 </Stepper>
 ```
 
+## Rich Content
+
+Use the `children` prop to render rich content inside the step body. Content is wrapped in a `.step-body` element for styling:
+
+```tsx
+<Stepper orientation="vertical">
+  <Step title="Select plan" status="completed">
+    <p>You selected the Pro plan at $19/month.</p>
+  </Step>
+  <Step title="Payment details" status="current">
+    <form>
+      <input type="text" placeholder="Card number" class="input" />
+      <button type="submit" class="btn">Continue</button>
+    </form>
+  </Step>
+  <Step title="Confirmation" status="upcoming" />
+</Stepper>
+```
+
 ## Step Status
 
 Each step can have one of three statuses:
@@ -61,4 +80,24 @@ Each step can have one of three statuses:
 
 ### Step
 
-<PropsTable props={getComponent("Step").props} client:load />
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string` | - | The step title (required) |
+| `description` | `string` | - | Optional description text below the title |
+| `status` | `"completed" \| "current" \| "upcoming"` | `"upcoming"` | The step's status |
+| `icon` | `JSX.Element` | - | Custom icon to display in the indicator |
+| `children` | `JSX.Element` | - | Rich content to render inside the step body |
+| `number` | `number` | - | Explicit step number (auto-increments if not provided) |
+| `orientation` | `"horizontal" \| "vertical"` | - | Explicit orientation (uses context if not provided) |
+
+## CSS Classes
+
+| Class | Description |
+|-------|-------------|
+| `.step` | Base step container |
+| `.step-indicator` | The numbered/icon circle |
+| `.step-content` | Wrapper for title, description, and body |
+| `.step-title` | Step title text |
+| `.step-description` | Step description text |
+| `.step-body` | Wrapper for rich content passed via `children` |
+| `.step-connector` | Line connecting steps |
