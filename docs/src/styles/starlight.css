@@ -42,11 +42,18 @@ header.header {
 	border-bottom: 1px solid var(--border);
 }
 
+/* Apply stack spacing to markdown content */
+.sl-markdown-content {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-md);
+}
+
 /* Override Starlight's aggressive content margin rules */
-.sl-markdown-content :not(h1, h2, h3, h4, h5, h6) + :is(h1, h2, h3, h4, h5, h6):not(:where(.not-content *)) {
+.sl-markdown-content :not(h1, h2, h3, h4, h5, h6) + :is(h1, h2, h3, h4, h5, h6):not(:where(.not-content, .sl-steps *)) {
 	margin-top: 0 !important;
 }
-.sl-markdown-content :not(a, strong, em, del, span, input, code, br) + :not(a, strong, em, del, span, input, code, br, :where(.not-content *)) {
+.sl-markdown-content :not(a, strong, em, del, span, input, code, br) + :not(a, strong, em, del, span, input, code, br, :where(.not-content, .sl-steps *)) {
 	margin-top: 0 !important;
 }
 
@@ -63,6 +70,11 @@ header.header {
 }
 
 .splash-title-placeholder {
+	display: none;
+}
+
+/* Hide the empty content panel with just an h1#_top on splash pages */
+.content-panel:has(> .sl-container > h1#_top:only-child:empty) {
 	display: none;
 }
 

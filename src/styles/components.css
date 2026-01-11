@@ -700,6 +700,10 @@
 		color: var(--fg-muted);
 	}
 
+	.step-body {
+		margin-top: var(--space-sm);
+	}
+
 	/* Tabs */
 	.tabs {
 		display: flex;
