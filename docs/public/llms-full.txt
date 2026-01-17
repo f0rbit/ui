@@ -1,4 +1,4 @@
-# @f0rbit/ui v0.1.0 - Full Documentation
+# @f0rbit/ui v0.1.6 - Full Documentation
 
 > A minimal, composable UI component library for SolidJS
 
@@ -79,6 +79,7 @@ export interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement>
 	variant?: ButtonVariant;
 	size?: ButtonSize;
 	icon?: boolean;
+	label?: string;
 	loading?: boolean;
 }
 
@@ -96,7 +97,7 @@ const sizeClasses: Record<ButtonSize, string> = {
 };
 
 export function Button(props: ButtonProps) {
-	const [local, rest] = splitProps(props, ["variant", "size", "icon", "loading", "class", "disabled", "children"]);
+	const [local, rest] = splitProps(props, ["variant", "size", "icon", "label", "loading", "class", "disabled", "children"]);
 
 	const classes = () => {
 		const parts = ["btn"];
@@ -114,7 +115,12 @@ export function Button(props: ButtonProps) {
 	};
 
 	return (
-		<button class={classes()} disabled={local.disabled || local.loading} {...rest}>
+		<button
+			class={classes()}
+			aria-label={local.icon ? local.label : undefined}
+			disabled={local.disabled || local.loading}
+			{...rest}
+		>
 			{local.loading ? <span class="spinner spinner-sm" /> : local.children}
 		</button>
 	);
@@ -207,6 +213,64 @@ export function CardFooter(props: CardFooterProps) {
 		<div class={`card-footer ${local.class ?? ""}`.trim()} {...rest}>
 			{local.children}
 		</div>
+	);
+}
+
+```
+
+---
+
+### Checkbox
+
+```tsx
+import { type JSX, splitProps, createEffect, onMount } from "solid-js";
+
+export interface CheckboxProps extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "type"> {
+	label?: string;
+	description?: string;
+	indeterminate?: boolean;
+}
+
+export function Checkbox(props: CheckboxProps) {
+	const [local, rest] = splitProps(props, ["label", "description", "indeterminate", "class", "disabled", "id"]);
+	
+	let inputRef: HTMLInputElement | undefined;
+	
+	const setIndeterminate = () => {
+		if (inputRef) inputRef.indeterminate = local.indeterminate ?? false;
+	};
+	
+	onMount(setIndeterminate);
+	createEffect(setIndeterminate);
+	
+	const classes = () => 
+		`checkbox ${local.disabled ? "checkbox-disabled" : ""} ${local.class ?? ""}`.trim();
+	
+	const inputId = () => local.id ?? (local.label ? `checkbox-${local.label.toLowerCase().replace(/\s+/g, "-")}` : undefined);
+	
+	return (
+		<label class={classes()}>
+			<input
+				ref={inputRef}
+				type="checkbox"
+				class="checkbox-input"
+				id={inputId()}
+				disabled={local.disabled}
+				{...rest}
+			/>
+			<span class="checkbox-box" aria-hidden="true">
+				<svg class="checkbox-check" viewBox="0 0 12 12" fill="none">
+					<path d="M2 6L5 9L10 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+				</svg>
+				<span class="checkbox-indeterminate" />
+			</span>
+			{(local.label || local.description) && (
+				<span class="checkbox-content">
+					{local.label && <span class="checkbox-label">{local.label}</span>}
+					{local.description && <span class="checkbox-description">{local.description}</span>}
+				</span>
+			)}
+		</label>
 	);
 }
 
@@ -516,6 +580,47 @@ export type { EmptyProps };
 
 ---
 
+### FormField
+
+```tsx
+import { type JSX, splitProps, Show } from "solid-js";
+
+export interface FormFieldProps extends JSX.HTMLAttributes<HTMLDivElement> {
+	label: string;
+	error?: string;
+	description?: string;
+	required?: boolean;
+	children: JSX.Element;
+	id?: string;
+}
+
+export function FormField(props: FormFieldProps) {
+	const [local, rest] = splitProps(props, ["label", "error", "description", "required", "children", "id", "class"]);
+	const classes = () => `form-field ${local.error ? "form-field-has-error" : ""} ${local.class ?? ""}`.trim();
+
+	return (
+		<div class={classes()} {...rest}>
+			<label class="form-field-label" for={local.id}>
+				{local.label}
+				<Show when={local.required}>
+					<span class="form-field-required" aria-hidden="true">*</span>
+				</Show>
+			</label>
+			<Show when={local.description}>
+				<span class="form-field-description">{local.description}</span>
+			</Show>
+			{local.children}
+			<Show when={local.error}>
+				<span class="form-field-error" role="alert">{local.error}</span>
+			</Show>
+		</div>
+	);
+}
+
+```
+
+---
+
 ### Input
 
 ```tsx
@@ -812,6 +917,11 @@ export interface StepProps extends JSX.HTMLAttributes<HTMLDivElement> {
 	description?: string;
 	icon?: JSX.Element;
 	status?: StepStatus;
+	children?: JSX.Element;
+	/** Explicit step number (optional, auto-increments if not provided) */
+	number?: number;
+	/** Explicit orientation (optional, uses context if not provided) */
+	orientation?: "horizontal" | "vertical";
 }
 
 const statusClasses: Record<StepStatus, string> = {
@@ -828,18 +938,55 @@ function CheckIcon() {
 	);
 }
 
-export function Step(props: StepProps) {
-	const [local, rest] = splitProps(props, ["title", "description", "icon", "status", "class"]);
-	const ctx = useContext(StepperContext);
+type StepContextValue = {
+	orientation: () => "horizontal" | "vertical";
+};
 
-	const stepNumber = ctx?.registerStep() ?? 1;
+const StepContext = createContext<StepContextValue>();
+
+export function Step(props: StepProps) {
+	const [local, rest] = splitProps(props, ["title", "description", "icon", "status", "class", "children", "number", "orientation"]);
+	const stepperCtx = useContext(StepperContext);
+	const stepCtx = useContext(StepContext);
+
+	const stepNumber = local.number ?? stepperCtx?.registerStep() ?? 1;
+	const orientation = () => local.orientation ?? stepCtx?.orientation() ?? "vertical";
 
 	const status = () => local.status ?? "upcoming";
 
+	const isVertical = () => orientation() === "vertical";
+
 	const classes = () => {
 		const parts = ["step", statusClasses[status()]];
+		if (isVertical()) {
+			parts.push("vertical-connector-item");
+		}
 		if (local.class) {
 			parts.push(local.class);
+		}
+		return parts.join(" ");
+	};
+
+	const indicatorClasses = () => {
+		const parts = ["step-indicator"];
+		if (isVertical()) {
+			parts.push("vertical-indicator");
+		}
+		return parts.join(" ");
+	};
+
+	const contentClasses = () => {
+		const parts = ["step-content"];
+		if (isVertical()) {
+			parts.push("vertical-content");
+		}
+		return parts.join(" ");
+	};
+
+	const connectorClasses = () => {
+		const parts = ["step-connector"];
+		if (isVertical()) {
+			parts.push("vertical-connector");
 		}
 		return parts.join(" ");
 	};
@@ -856,14 +1003,17 @@ export function Step(props: StepProps) {
 
 	return (
 		<div class={classes()} {...rest}>
-			<div class="step-indicator">{indicator()}</div>
-			<div class="step-content">
+			<div class={indicatorClasses()}>{indicator()}</div>
+			<div class={contentClasses()}>
 				<div class="step-title">{local.title}</div>
 				<Show when={local.description}>
 					<div class="step-description">{local.description}</div>
 				</Show>
+				<Show when={local.children}>
+					<div class="step-body">{local.children}</div>
+				</Show>
 			</div>
-			<div class="step-connector" />
+			<div class={connectorClasses()} />
 		</div>
 	);
 }
@@ -886,9 +1036,11 @@ export function Stepper(props: StepperProps) {
 
 	return (
 		<StepperContext.Provider value={{ registerStep }}>
-			<div class={classes()} {...rest}>
-				{local.children}
-			</div>
+			<StepContext.Provider value={{ orientation }}>
+				<div class={classes()} {...rest}>
+					{local.children}
+				</div>
+			</StepContext.Provider>
 		</StepperContext.Provider>
 	);
 }
@@ -900,65 +1052,149 @@ export function Stepper(props: StepperProps) {
 ### Tabs
 
 ```tsx
-import { type JSX, splitProps, createSignal, createContext, useContext, Show, For } from "solid-js";
+import { type JSX, splitProps, onMount, onCleanup, createSignal } from "solid-js";
 
-type TabsContextValue = {
-	activeTab: () => string;
-	setActiveTab: (id: string) => void;
-};
-
-const TabsContext = createContext<TabsContextValue>();
-
+/**
+ * A tab container component that manages tab selection and panel visibility.
+ *
+ * Uses DOM-based discovery via data attributes, making it compatible with
+ * Astro's island architecture where each child component hydrates independently.
+ *
+ * @example Basic usage in SolidJS
+ * ```tsx
+ * <Tabs defaultValue="tab1">
+ *   <TabList>
+ *     <Tab value="tab1">First Tab</Tab>
+ *     <Tab value="tab2">Second Tab</Tab>
+ *   </TabList>
+ *   <TabPanel value="tab1">First panel content</TabPanel>
+ *   <TabPanel value="tab2">Second panel content</TabPanel>
+ * </Tabs>
+ * ```
+ *
+ * @example Usage in Astro MDX (each component needs client:load)
+ * ```mdx
+ * <Tabs defaultValue="tab1" client:load>
+ *   <TabList client:load>
+ *     <Tab value="tab1" client:load>First Tab</Tab>
+ *     <Tab value="tab2" client:load>Second Tab</Tab>
+ *   </TabList>
+ *   <TabPanel value="tab1" client:load>First panel content</TabPanel>
+ *   <TabPanel value="tab2" client:load>Second panel content</TabPanel>
+ * </Tabs>
+ * ```
+ *
+ * @example Creating a wrapper to avoid multiple client:load directives
+ * ```tsx
+ * // MyTabs.tsx - your custom wrapper
+ * import { Tabs, TabList, Tab, TabPanel } from '@f0rbit/ui';
+ *
+ * export function MyTabs() {
+ *   return (
+ *     <Tabs defaultValue="tab1">
+ *       <TabList>
+ *         <Tab value="tab1">First</Tab>
+ *         <Tab value="tab2">Second</Tab>
+ *       </TabList>
+ *       <TabPanel value="tab1">Content 1</TabPanel>
+ *       <TabPanel value="tab2">Content 2</TabPanel>
+ *     </Tabs>
+ *   );
+ * }
+ *
+ * // Then in Astro: <MyTabs client:load />
+ * ```
+ */
 export interface TabsProps extends JSX.HTMLAttributes<HTMLDivElement> {
+	/** The value of the initially selected tab */
 	defaultValue?: string;
-	value?: string;
-	onValueChange?: (value: string) => void;
-	children: JSX.Element;
-}
-
-export interface TabListProps extends JSX.HTMLAttributes<HTMLDivElement> {
-	children: JSX.Element;
-}
-
-export interface TabProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
-	value: string;
-	children: JSX.Element;
-}
-
-export interface TabPanelProps extends JSX.HTMLAttributes<HTMLDivElement> {
-	value: string;
 	children: JSX.Element;
 }
 
 export function Tabs(props: TabsProps) {
-	const [local, rest] = splitProps(props, ["defaultValue", "value", "onValueChange", "children", "class"]);
+	const [local, rest] = splitProps(props, ["defaultValue", "children", "class"]);
+	let containerRef: HTMLDivElement | undefined;
+	const [activeTab, setActiveTab] = createSignal(local.defaultValue ?? "");
 
-	const [internalValue, setInternalValue] = createSignal(local.defaultValue ?? "");
+	const updateTabs = (value: string) => {
+		if (!containerRef) return;
 
-	const isControlled = () => local.value !== undefined;
-	const activeTab = () => (isControlled() ? local.value! : internalValue());
+		const tabs = containerRef.querySelectorAll<HTMLButtonElement>("[data-tab-value]");
+		tabs.forEach((tab) => {
+			const isActive = tab.dataset.tabValue === value;
+			tab.setAttribute("aria-selected", String(isActive));
+			tab.setAttribute("tabindex", isActive ? "0" : "-1");
+			tab.classList.toggle("active", isActive);
+		});
 
-	const setActiveTab = (id: string) => {
-		if (!isControlled()) {
-			setInternalValue(id);
-		}
-		local.onValueChange?.(id);
+		const panels = containerRef.querySelectorAll<HTMLDivElement>("[data-panel-value]");
+		panels.forEach((panel) => {
+			const isActive = panel.dataset.panelValue === value;
+			panel.hidden = !isActive;
+		});
 	};
+
+	const initializeTabs = () => {
+		if (!containerRef) return;
+
+		let value = activeTab();
+		if (!value) {
+			const firstTab = containerRef.querySelector<HTMLButtonElement>("[data-tab-value]");
+			value = firstTab?.dataset.tabValue ?? "";
+			if (value) setActiveTab(value);
+		}
+
+		if (value) updateTabs(value);
+	};
+
+	onMount(() => {
+		if (!containerRef) return;
+
+		// Use event delegation for clicks - handles dynamically added children
+		containerRef.addEventListener("click", (e) => {
+			const tab = (e.target as HTMLElement).closest<HTMLButtonElement>("[data-tab-value]");
+			if (tab?.dataset.tabValue) {
+				setActiveTab(tab.dataset.tabValue);
+				updateTabs(tab.dataset.tabValue);
+			}
+		});
+
+		// Initialize with any children already present
+		initializeTabs();
+
+		// Watch for new children being added (e.g., Astro islands hydrating)
+		const observer = new MutationObserver(() => {
+			initializeTabs();
+		});
+
+		observer.observe(containerRef, {
+			childList: true,
+			subtree: true,
+		});
+
+		onCleanup(() => observer.disconnect());
+	});
 
 	const classes = () => `tabs ${local.class ?? ""}`.trim();
 
 	return (
-		<TabsContext.Provider value={{ activeTab, setActiveTab }}>
-			<div class={classes()} {...rest}>
-				{local.children}
-			</div>
-		</TabsContext.Provider>
+		<div ref={containerRef} class={classes()} data-default-value={local.defaultValue} {...rest}>
+			{local.children}
+		</div>
 	);
+}
+
+/**
+ * Container for Tab buttons. Provides the tablist role for accessibility.
+ *
+ * In Astro, requires `client:load` directive.
+ */
+export interface TabListProps extends JSX.HTMLAttributes<HTMLDivElement> {
+	children: JSX.Element;
 }
 
 export function TabList(props: TabListProps) {
 	const [local, rest] = splitProps(props, ["children", "class"]);
-
 	const classes = () => `tab-list ${local.class ?? ""}`.trim();
 
 	return (
@@ -968,35 +1204,30 @@ export function TabList(props: TabListProps) {
 	);
 }
 
+/**
+ * A tab button that switches the active panel when clicked.
+ *
+ * The `value` prop must match a corresponding `TabPanel` value.
+ * In Astro, requires `client:load` directive.
+ */
+export interface TabProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
+	/** Unique identifier that links this tab to its panel */
+	value: string;
+	children: JSX.Element;
+}
+
 export function Tab(props: TabProps) {
 	const [local, rest] = splitProps(props, ["value", "children", "class"]);
-	const ctx = useContext(TabsContext);
-
-	const isActive = () => ctx?.activeTab() === local.value;
-
-	const handleClick = () => {
-		ctx?.setActiveTab(local.value);
-	};
-
-	const classes = () => {
-		const parts = ["tab"];
-		if (isActive()) {
-			parts.push("active");
-		}
-		if (local.class) {
-			parts.push(local.class);
-		}
-		return parts.join(" ");
-	};
+	const classes = () => `tab ${local.class ?? ""}`.trim();
 
 	return (
 		<button
 			type="button"
 			role="tab"
-			aria-selected={isActive()}
-			tabIndex={isActive() ? 0 : -1}
+			aria-selected="false"
+			tabIndex={-1}
 			class={classes()}
-			onClick={handleClick}
+			data-tab-value={local.value}
 			{...rest}
 		>
 			{local.children}
@@ -1004,20 +1235,138 @@ export function Tab(props: TabProps) {
 	);
 }
 
+/**
+ * Content panel that is shown when its corresponding Tab is active.
+ *
+ * The `value` prop must match a corresponding `Tab` value.
+ * Panels are hidden by default and shown when their tab is selected.
+ * In Astro, requires `client:load` directive.
+ */
+export interface TabPanelProps extends JSX.HTMLAttributes<HTMLDivElement> {
+	/** Unique identifier that links this panel to its tab */
+	value: string;
+	children: JSX.Element;
+}
+
 export function TabPanel(props: TabPanelProps) {
 	const [local, rest] = splitProps(props, ["value", "children", "class"]);
-	const ctx = useContext(TabsContext);
-
-	const isActive = () => ctx?.activeTab() === local.value;
-
 	const classes = () => `tab-panel ${local.class ?? ""}`.trim();
 
 	return (
-		<Show when={isActive()}>
-			<div class={classes()} role="tabpanel" {...rest}>
-				{local.children}
-			</div>
-		</Show>
+		<div class={classes()} role="tabpanel" data-panel-value={local.value} hidden {...rest}>
+			{local.children}
+		</div>
+	);
+}
+
+```
+
+---
+
+### Timeline
+
+```tsx
+import { type JSX, splitProps, For, Show } from "solid-js";
+
+export type TimelineItemVariant = "default" | "success" | "error" | "warning" | "info";
+
+export interface TimelineItem {
+	id: string | number;
+	icon?: JSX.Element;
+	title: string | JSX.Element;
+	description?: string | JSX.Element;
+	timestamp?: string | JSX.Element;
+	variant?: TimelineItemVariant;
+}
+
+export interface TimelineProps extends JSX.HTMLAttributes<HTMLDivElement> {
+	items: TimelineItem[];
+}
+
+const variantClasses: Record<TimelineItemVariant, string> = {
+	default: "",
+	success: "timeline-item-success",
+	error: "timeline-item-error",
+	warning: "timeline-item-warning",
+	info: "timeline-item-info",
+};
+
+function DefaultDot() {
+	return <div class="timeline-dot" />;
+}
+
+export function Timeline(props: TimelineProps) {
+	const [local, rest] = splitProps(props, ["items", "class"]);
+
+	const classes = () => {
+		const parts = ["timeline"];
+		if (local.class) parts.push(local.class);
+		return parts.join(" ");
+	};
+
+	return (
+		<div class={classes()} {...rest}>
+			<For each={local.items}>
+				{(item, index) => (
+					<div
+						class={`timeline-item vertical-connector-item ${variantClasses[item.variant ?? "default"]}`}
+					>
+						<div class="timeline-indicator vertical-indicator">
+							<Show when={item.icon} fallback={<DefaultDot />}>
+								{item.icon}
+							</Show>
+						</div>
+						<div class="vertical-connector" />
+						<div class="timeline-content vertical-content">
+							<div class="timeline-title">{item.title}</div>
+							<Show when={item.description}>
+								<div class="timeline-description">{item.description}</div>
+							</Show>
+							<Show when={item.timestamp}>
+								<div class="timeline-timestamp">{item.timestamp}</div>
+							</Show>
+						</div>
+					</div>
+				)}
+			</For>
+		</div>
+	);
+}
+
+```
+
+---
+
+### Toggle
+
+```tsx
+import { type JSX, splitProps } from "solid-js";
+
+export interface ToggleProps extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "type" | "size"> {
+	label?: string;
+	description?: string;
+	size?: "sm" | "md";
+}
+
+export function Toggle(props: ToggleProps) {
+	const [local, rest] = splitProps(props, ["label", "description", "size", "class", "disabled"]);
+	const size = () => local.size ?? "md";
+	const classes = () => 
+		`toggle ${size() === "sm" ? "toggle-sm" : ""} ${local.disabled ? "toggle-disabled" : ""} ${local.class ?? ""}`.trim();
+
+	return (
+		<label class={classes()}>
+			<input type="checkbox" class="toggle-input" role="switch" disabled={local.disabled} {...rest} />
+			<span class="toggle-track">
+				<span class="toggle-knob" />
+			</span>
+			{(local.label || local.description) && (
+				<span class="toggle-content">
+					{local.label && <span class="toggle-label">{local.label}</span>}
+					{local.description && <span class="toggle-description">{local.description}</span>}
+				</span>
+			)}
+		</label>
 	);
 }
 
@@ -1032,7 +1381,7 @@ export function TabPanel(props: TabPanelProps) {
 ```css
 @layer tokens {
 	:root {
-		--bg: oklch(99% 0.02 290);
+		--bg: oklch(97% 0.02 290);
 		--bg-alt: oklch(96% 0.01 290);
 		--border: oklch(91% 0.01 290);
 
@@ -1050,6 +1399,8 @@ export function TabPanel(props: TabPanelProps) {
 		--error-fg: oklch(0.45 0.15 20);
 		--warning: oklch(0.95 0.08 85);
 		--warning-fg: oklch(0.45 0.15 85);
+		--info: oklch(0.95 0.05 240);
+		--info-fg: oklch(0.4 0.15 240);
 
 		--font: "neue-haas-grotesk-text", "Inter", Helvetica, sans-serif;
 		--font-mono: ui-monospace, "SF Mono", Menlo, monospace;
@@ -1091,8 +1442,9 @@ export function TabPanel(props: TabPanelProps) {
 		--hover-filter: brightness(0.8);
 	}
 
+	/* Dark mode: system preference or explicit data-theme */
 	@media (prefers-color-scheme: dark) {
-		:root {
+		:root:not([data-theme="light"]) {
 			--bg: oklch(21% 0.015 280);
 			--bg-alt: oklch(27% 0.02 290);
 			--border: oklch(32% 0.02 290);
@@ -1110,12 +1462,42 @@ export function TabPanel(props: TabPanelProps) {
 			--error-fg: oklch(0.85 0.1 20);
 			--warning: oklch(0.35 0.08 85);
 			--warning-fg: oklch(0.85 0.12 85);
+			--info: oklch(0.35 0.05 240);
+			--info-fg: oklch(0.85 0.1 240);
 
 			--shadow: 0 1px 3px rgb(0 0 0 / 0.3);
 			--shadow-lg: 0 10px 25px rgb(0 0 0 / 0.4);
 
 			--hover-filter: brightness(1.2);
 		}
+	}
+
+	/* Explicit dark theme override */
+	:root[data-theme="dark"] {
+		--bg: oklch(21% 0.015 280);
+		--bg-alt: oklch(27% 0.02 290);
+		--border: oklch(32% 0.02 290);
+
+		--fg: oklch(100% 0 0);
+		--fg-muted: oklch(85% 0.02 290);
+		--fg-subtle: oklch(75% 0.02 290);
+		--fg-faint: oklch(60% 0.03 290);
+
+		--accent: oklch(70% 0.035 280);
+
+		--success: oklch(0.35 0.05 150);
+		--success-fg: oklch(0.85 0.1 150);
+		--error: oklch(0.35 0.05 20);
+		--error-fg: oklch(0.85 0.1 20);
+		--warning: oklch(0.35 0.08 85);
+		--warning-fg: oklch(0.85 0.12 85);
+		--info: oklch(0.35 0.05 240);
+		--info-fg: oklch(0.85 0.1 240);
+
+		--shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+		--shadow-lg: 0 10px 25px rgb(0 0 0 / 0.4);
+
+		--hover-filter: brightness(1.2);
 	}
 }
 
@@ -1635,8 +2017,8 @@ export function TabPanel(props: TabPanelProps) {
 	}
 
 	.badge-info {
-		background: oklch(0.95 0.05 240);
-		color: oklch(0.4 0.15 240);
+		background: var(--info);
+		color: var(--info-fg);
 		border-color: transparent;
 	}
 
@@ -2083,13 +2465,50 @@ export function TabPanel(props: TabPanelProps) {
 		transition: transform var(--transition);
 	}
 
-	.collapsible-chevron.open,
-	.collapsible-chevron-open {
+	.collapsible-chevron.active {
 		transform: rotate(90deg);
 	}
 
 	.collapsible-content {
 		padding: var(--space-sm) 0;
+	}
+
+	/* Shared vertical connector pattern - used by Stepper and Timeline */
+	.vertical-connector {
+		position: absolute;
+		left: 16px;
+		top: 32px;
+		bottom: 0;
+		width: 1px;
+		background: var(--border);
+	}
+
+	.vertical-connector-item:last-child .vertical-connector {
+		display: none;
+	}
+
+	.vertical-indicator {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 32px;
+		height: 32px;
+		flex-shrink: 0;
+		position: relative;
+		z-index: 1;
+	}
+
+	.vertical-content {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		padding-bottom: var(--space-md);
+		min-width: 0;
+		flex: 1;
+	}
+
+	.vertical-connector-item:last-child .vertical-content {
+		padding-bottom: 0;
 	}
 
 	.stepper {
@@ -2129,12 +2548,10 @@ export function TabPanel(props: TabPanelProps) {
 		justify-content: center;
 		width: 32px;
 		height: 32px;
+		flex-shrink: 0;
 		border-radius: 50%;
 		font-size: var(--text-sm);
 		line-height: var(--text-sm-lh);
-		flex-shrink: 0;
-		position: relative;
-		z-index: 1;
 		background: transparent;
 		color: var(--fg-faint);
 		border: 1px solid var(--border);
@@ -2166,32 +2583,13 @@ export function TabPanel(props: TabPanelProps) {
 		display: none;
 	}
 
-	.stepper-vertical .step-connector {
-		left: 16px;
-		top: 32px;
-		bottom: 0;
-		width: 1px;
-	}
-
-	.stepper-vertical .step:last-child .step-connector {
-		display: none;
-	}
-
 	.step-completed .step-connector {
 		background: var(--success);
 	}
 
 	.step-content {
 		width: 100%;
-		display: flex;
-		flex-direction: column;
-		gap: 2px;
-		padding-bottom: var(--space-md);
 		padding-top: var(--space-sm);
-	}
-
-	.step:last-child .step-content {
-		padding-bottom: 0;
 	}
 
 	.step-title {
@@ -2209,10 +2607,18 @@ export function TabPanel(props: TabPanelProps) {
 		color: var(--fg-muted);
 	}
 
+	.step-upcoming .step-title {
+		color: var(--fg-faint);
+	}
+
 	.step-description {
 		font-size: var(--text-sm);
 		line-height: var(--text-sm-lh);
 		color: var(--fg-muted);
+	}
+
+	.step-body {
+		margin-top: var(--space-sm);
 	}
 
 	/* Tabs */
@@ -2254,6 +2660,317 @@ export function TabPanel(props: TabPanelProps) {
 
 	.tab-panel {
 		padding: var(--space-md) 0;
+	}
+
+	/* Checkbox */
+	.checkbox {
+		display: inline-flex;
+		align-items: flex-start;
+		gap: var(--space-sm);
+		cursor: pointer;
+		user-select: none;
+	}
+
+	.checkbox-disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	.checkbox-input {
+		position: absolute;
+		opacity: 0;
+		width: 0;
+		height: 0;
+		pointer-events: none;
+	}
+
+	.checkbox-box {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.125em;
+		height: 1.125em;
+		flex-shrink: 0;
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		background: var(--bg-alt);
+		transition: border-color var(--transition), background var(--transition);
+	}
+
+	.checkbox:hover:not(.checkbox-disabled) .checkbox-box {
+		border-color: var(--fg-faint);
+	}
+
+	.checkbox-input:focus-visible + .checkbox-box {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
+	}
+
+	.checkbox-input:checked + .checkbox-box {
+		background: var(--accent);
+		border-color: var(--accent);
+	}
+
+	.checkbox-check {
+		width: 0.75em;
+		height: 0.75em;
+		color: var(--accent-fg);
+		opacity: 0;
+		transform: scale(0.8);
+		transition: opacity var(--transition), transform var(--transition);
+	}
+
+	.checkbox-input:checked + .checkbox-box .checkbox-check {
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	.checkbox-indeterminate {
+		width: 0.5em;
+		height: 0.125em;
+		background: var(--accent-fg);
+		border-radius: 1px;
+		opacity: 0;
+		position: absolute;
+		transition: opacity var(--transition);
+	}
+
+	.checkbox-input:indeterminate + .checkbox-box {
+		background: var(--accent);
+		border-color: var(--accent);
+	}
+
+	.checkbox-input:indeterminate + .checkbox-box .checkbox-check {
+		opacity: 0;
+	}
+
+	.checkbox-input:indeterminate + .checkbox-box .checkbox-indeterminate {
+		opacity: 1;
+	}
+
+	.checkbox-content {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		padding-top: 1px;
+	}
+
+	.checkbox-label {
+		font-size: var(--text-sm);
+		line-height: var(--text-sm-lh);
+		color: var(--fg);
+	}
+
+	.checkbox-description {
+		font-size: var(--text-xs);
+		line-height: var(--text-xs-lh);
+		color: var(--fg-muted);
+	}
+
+	/* Toggle */
+	.toggle {
+		display: inline-flex;
+		align-items: flex-start;
+		gap: var(--space-sm);
+		cursor: pointer;
+	}
+
+	.toggle-disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	.toggle-input {
+		position: absolute;
+		opacity: 0;
+		width: 0;
+		height: 0;
+		pointer-events: none;
+	}
+
+	.toggle-track {
+		position: relative;
+		width: 2.5em;
+		height: 1.375em;
+		background: var(--border);
+		border-radius: 9999px;
+		flex-shrink: 0;
+		transition: background var(--transition);
+	}
+
+	.toggle-knob {
+		position: absolute;
+		top: 0.125em;
+		left: 0.125em;
+		width: 1.125em;
+		height: 1.125em;
+		background: var(--bg);
+		border-radius: 50%;
+		box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+		transition: transform var(--transition);
+	}
+
+	.toggle-input:checked + .toggle-track {
+		background: var(--accent);
+	}
+
+	.toggle-input:checked + .toggle-track .toggle-knob {
+		transform: translateX(1.125em);
+	}
+
+	.toggle-input:focus-visible + .toggle-track {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
+	}
+
+	.toggle-content {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		padding-top: 2px;
+	}
+
+	.toggle-label {
+		font-size: var(--text-sm);
+		line-height: var(--text-sm-lh);
+		font-weight: 500;
+		color: var(--fg);
+	}
+
+	.toggle-description {
+		font-size: var(--text-sm);
+		line-height: var(--text-sm-lh);
+		color: var(--fg-muted);
+	}
+
+	/* Toggle small variant */
+	.toggle-sm .toggle-track {
+		width: 2em;
+		height: 1.125em;
+	}
+
+	.toggle-sm .toggle-knob {
+		width: 0.875em;
+		height: 0.875em;
+	}
+
+	.toggle-sm .toggle-input:checked + .toggle-track .toggle-knob {
+		transform: translateX(0.875em);
+	}
+
+	/* FormField */
+	.form-field {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+	}
+
+	.form-field-label {
+		display: block;
+		font-size: var(--text-sm);
+		font-weight: 500;
+		color: var(--fg-muted);
+	}
+
+	.form-field-required {
+		color: var(--error-fg);
+		margin-left: var(--space-xs);
+	}
+
+	.form-field-description {
+		font-size: var(--text-xs);
+		line-height: var(--text-xs-lh);
+		color: var(--fg-faint);
+	}
+
+	.form-field-error {
+		font-size: var(--text-sm);
+		color: var(--error-fg);
+	}
+
+	/* Timeline */
+	.timeline {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.timeline-item {
+		display: flex;
+		gap: var(--space-sm);
+		position: relative;
+	}
+
+	.timeline-indicator {
+		color: var(--fg-muted);
+	}
+
+	.timeline-dot {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		background: var(--border);
+		border: 2px solid var(--bg);
+		box-shadow: 0 0 0 2px var(--border);
+	}
+
+	.timeline-content {
+		padding-top: var(--space-xs);
+	}
+
+	.timeline-title {
+		font-size: var(--text-sm);
+		line-height: var(--text-sm-lh);
+		font-weight: 500;
+		color: var(--fg);
+	}
+
+	.timeline-description {
+		font-size: var(--text-sm);
+		line-height: var(--text-sm-lh);
+		color: var(--fg-muted);
+	}
+
+	.timeline-timestamp {
+		font-size: var(--text-xs);
+		line-height: var(--text-xs-lh);
+		color: var(--fg-faint);
+	}
+
+	/* Timeline variants */
+	.timeline-item-success .timeline-indicator {
+		color: var(--success-fg);
+	}
+
+	.timeline-item-success .timeline-dot {
+		background: var(--success);
+		box-shadow: 0 0 0 2px var(--success);
+	}
+
+	.timeline-item-error .timeline-indicator {
+		color: var(--error-fg);
+	}
+
+	.timeline-item-error .timeline-dot {
+		background: var(--error);
+		box-shadow: 0 0 0 2px var(--error);
+	}
+
+	.timeline-item-warning .timeline-indicator {
+		color: var(--warning-fg);
+	}
+
+	.timeline-item-warning .timeline-dot {
+		background: var(--warning);
+		box-shadow: 0 0 0 2px var(--warning);
+	}
+
+	.timeline-item-info .timeline-indicator {
+		color: var(--info-fg);
+	}
+
+	.timeline-item-info .timeline-dot {
+		background: var(--info);
+		box-shadow: 0 0 0 2px var(--info);
 	}
 }
 

@@ -1,4 +1,4 @@
-# @f0rbit/ui v0.1.0
+# @f0rbit/ui v0.1.6
 
 > A minimal, composable UI component library for SolidJS
 
@@ -111,8 +111,22 @@ import { Button } from "@f0rbit/ui";
 ```
 
 ```tsx
-<Button icon>+</Button>
-<Button icon variant="ghost">x</Button>
+<Button icon label="Add item">
+  <PlusIcon />
+</Button>
+```
+
+```tsx
+<Button icon label="Add"><PlusIcon /></Button>
+<Button icon label="Edit" variant="secondary"><EditIcon /></Button>
+<Button icon label="Settings" variant="ghost"><SettingsIcon /></Button>
+<Button icon label="Delete" variant="danger"><TrashIcon /></Button>
+```
+
+```tsx
+<Button icon label="Small" size="sm"><PlusIcon /></Button>
+<Button icon label="Loading" loading><PlusIcon /></Button>
+<Button icon label="Disabled" disabled><PlusIcon /></Button>
 ```
 
 ---
@@ -185,6 +199,57 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
     <CardContent>Option 3</CardContent>
   </Card>
 </div>
+```
+
+---
+
+### Checkbox
+A checkbox input for boolean or indeterminate selections.
+
+**Exports:** Checkbox
+
+**Examples:**
+
+```tsx
+import { Checkbox } from "@f0rbit/ui";
+
+<Checkbox />
+```
+
+```tsx
+<Checkbox label="Accept terms and conditions" />
+<Checkbox label="Subscribe to newsletter" />
+```
+
+```tsx
+<Checkbox
+  label="Email notifications"
+  description="Receive email updates about your account activity"
+/>
+```
+
+```tsx
+const [checked, setChecked] = createSignal(false);
+
+<Checkbox
+  checked={checked()}
+  onChange={() => setChecked(!checked())}
+  label="Toggle me"
+/>
+```
+
+```tsx
+<Checkbox
+  label="Select all"
+  checked={allChecked()}
+  indeterminate={someChecked()}
+  onChange={toggleAll}
+/>
+```
+
+```tsx
+<Checkbox label="Disabled unchecked" disabled />
+<Checkbox label="Disabled checked" disabled checked />
 ```
 
 ---
@@ -437,6 +502,11 @@ import { Empty } from "@f0rbit/ui";
   description="You're all caught up!"
 />
 ```
+
+---
+
+### FormField
+**Exports:** FormField
 
 ---
 
@@ -709,12 +779,27 @@ import { Stepper, Step } from "@f0rbit/ui";
 </Stepper>
 ```
 
+```tsx
+<Stepper orientation="vertical">
+  <Step title="Select plan" status="completed">
+    <p>You selected the Pro plan at $19/month.</p>
+  </Step>
+  <Step title="Payment details" status="current">
+    <form>
+      <input type="text" placeholder="Card number" class="input" />
+      <button type="submit" class="btn">Continue</button>
+    </form>
+  </Step>
+  <Step title="Confirmation" status="upcoming" />
+</Stepper>
+```
+
 ---
 
 ### Tabs
 A tabbed interface for organizing content into separate views.
 
-**Exports:** Tabs, TabList, Tab, TabPanel
+**Exports:** MyTabs, Tabs, TabList, Tab, TabPanel
 
 **Examples:**
 
@@ -757,6 +842,129 @@ const [activeTab, setActiveTab] = createSignal("tab1");
   <TabPanel value="tab1">Controlled content 1</TabPanel>
   <TabPanel value="tab2">Controlled content 2</TabPanel>
 </Tabs>
+```
+
+---
+
+### Timeline
+A vertical timeline for displaying chronological events.
+
+**Exports:** Timeline
+
+**Examples:**
+
+```tsx
+import { Timeline, type TimelineItem } from "@f0rbit/ui";
+
+const items: TimelineItem[] = [
+  { id: 1, title: "Order placed", timestamp: "10:30 AM" },
+  { id: 2, title: "Processing", timestamp: "10:45 AM" },
+  { id: 3, title: "Shipped", timestamp: "2:15 PM" },
+];
+
+<Timeline items={items} />
+```
+
+```tsx
+const items: TimelineItem[] = [
+  {
+    id: 1,
+    title: "Pull request opened",
+    description: "feat: add new authentication flow",
+    timestamp: "2 hours ago",
+  },
+  {
+    id: 2,
+    title: "Code review completed",
+    description: "Approved by 2 reviewers",
+    timestamp: "1 hour ago",
+  },
+];
+
+<Timeline items={items} />
+```
+
+```tsx
+const items: TimelineItem[] = [
+  { id: 1, title: "Build started", variant: "info", timestamp: "10:00 AM" },
+  { id: 2, title: "Tests passed", variant: "success", timestamp: "10:05 AM" },
+  { id: 3, title: "Linting warnings", variant: "warning", timestamp: "10:06 AM" },
+  { id: 4, title: "Deployment failed", variant: "error", timestamp: "10:10 AM" },
+];
+
+<Timeline items={items} />
+```
+
+```tsx
+const items: TimelineItem[] = [
+  { id: 1, title: "Completed", icon: <CheckIcon />, variant: "success" },
+  { id: 2, title: "Pending", icon: <AlertIcon />, variant: "warning" },
+];
+
+<Timeline items={items} />
+```
+
+```tsx
+interface TimelineItem {
+  id: string | number;
+  title: string;
+  description?: string;
+  timestamp?: string;
+  icon?: JSX.Element;
+  variant?: "default" | "success" | "error" | "warning" | "info";
+}
+```
+
+---
+
+### Toggle
+A switch component for toggling between on/off states.
+
+**Exports:** Toggle
+
+**Examples:**
+
+```tsx
+import { Toggle } from "@f0rbit/ui";
+
+<Toggle />
+```
+
+```tsx
+<Toggle label="Dark mode" />
+<Toggle label="Auto-save" checked />
+```
+
+```tsx
+<Toggle
+  label="Push notifications"
+  description="Receive alerts when someone mentions you"
+/>
+<Toggle
+  label="Two-factor authentication"
+  description="Add an extra layer of security to your account"
+  checked
+/>
+```
+
+```tsx
+const [enabled, setEnabled] = createSignal(false);
+
+<Toggle
+  checked={enabled()}
+  onChange={() => setEnabled(!enabled())}
+  label="Enable feature"
+/>
+```
+
+```tsx
+<Toggle label="Default size" />
+<Toggle label="Small size" size="sm" />
+```
+
+```tsx
+<Toggle label="Disabled off" disabled />
+<Toggle label="Disabled on" disabled checked />
 ```
 
 ---

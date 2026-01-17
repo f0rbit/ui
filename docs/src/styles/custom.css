@@ -1,5 +1,5 @@
 @import "../../../dist/styles.css";
-@import "./starlight.css";
+@import "../../../dist/starlight.css";
 @import "./landing.css";
 
 /* Fix text alignment in row layouts */
