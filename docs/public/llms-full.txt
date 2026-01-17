@@ -1,4 +1,4 @@
-# @f0rbit/ui v0.1.6 - Full Documentation
+# @f0rbit/ui v0.1.7 - Full Documentation
 
 > A minimal, composable UI component library for SolidJS
 

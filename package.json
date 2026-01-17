@@ -1,6 +1,6 @@
 {
 	"name": "@f0rbit/ui",
-	"version": "0.1.6",
+	"version": "0.1.7",
 	"description": "A minimal, composable UI component library for SolidJS",
 	"type": "module",
 	"main": "./dist/server.js",
