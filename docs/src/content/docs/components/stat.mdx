@@ -47,6 +47,86 @@ Display multiple stats in a grid layout:
 </div>
 ```
 
+## Stat with Trend Indicator
+
+Show a trend direction with percentage change:
+
+```tsx
+const TrendStat = (props: {
+  value: string | number;
+  label: string;
+  change: number;
+}) => {
+  const isPositive = () => props.change >= 0;
+
+  return (
+    <div class="stack-xs">
+      <Stat value={props.value} label={props.label} />
+      <span
+        style={{
+          color: isPositive() ? "var(--color-success)" : "var(--color-danger)",
+          "font-size": "0.875rem",
+          display: "flex",
+          "align-items": "center",
+          gap: "0.25rem",
+        }}
+      >
+        <Chevron direction={isPositive() ? "up" : "down"} size={12} />
+        {Math.abs(props.change)}%
+      </span>
+    </div>
+  );
+};
+
+<div class="stats-grid">
+  <TrendStat value="$48,352" label="Revenue" change={12.5} />
+  <TrendStat value="2,847" label="Orders" change={8.2} />
+  <TrendStat value="1.2k" label="Returns" change={-3.1} />
+  <TrendStat value="4.8" label="Rating" change={0.3} />
+</div>
+```
+
+## Stat with Comparison
+
+Display values compared to a previous period:
+
+```tsx
+const ComparisonStat = (props: {
+  value: string | number;
+  label: string;
+  previousValue: string | number;
+  previousLabel: string;
+}) => (
+  <div class="stack-xs">
+    <Stat value={props.value} label={props.label} />
+    <span style={{ color: "var(--text-secondary)", "font-size": "0.75rem" }}>
+      vs {props.previousValue} {props.previousLabel}
+    </span>
+  </div>
+);
+
+<div class="stats-grid">
+  <ComparisonStat
+    value="1,234"
+    label="Users this month"
+    previousValue="987"
+    previousLabel="last month"
+  />
+  <ComparisonStat
+    value="$52k"
+    label="Revenue this quarter"
+    previousValue="$41k"
+    previousLabel="last quarter"
+  />
+  <ComparisonStat
+    value="89%"
+    label="Satisfaction rate"
+    previousValue="84%"
+    previousLabel="last survey"
+  />
+</div>
+```
+
 ## Props
 
 <PropsTable props={getComponent("Stat").props} client:load />

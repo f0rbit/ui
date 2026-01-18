@@ -71,6 +71,84 @@ Use `indeterminate` for partial selections (e.g., "select all" with some items s
 <Checkbox label="Disabled checked" disabled checked />
 ```
 
+## Checkbox Group
+
+Create a group of related checkboxes:
+
+```tsx
+const [selected, setSelected] = createSignal<string[]>([]);
+
+const toggle = (value: string) => {
+  setSelected(prev =>
+    prev.includes(value)
+      ? prev.filter(v => v !== value)
+      : [...prev, value]
+  );
+};
+
+<div class="stack-sm">
+  <Checkbox
+    label="Email notifications"
+    checked={selected().includes("email")}
+    onChange={() => toggle("email")}
+  />
+  <Checkbox
+    label="SMS notifications"
+    checked={selected().includes("sms")}
+    onChange={() => toggle("sms")}
+  />
+  <Checkbox
+    label="Push notifications"
+    checked={selected().includes("push")}
+    onChange={() => toggle("push")}
+  />
+</div>
+```
+
+## Select All Pattern
+
+Implement a "select all" checkbox with child items:
+
+```tsx
+const items = ["Documents", "Images", "Videos", "Music"];
+const [selected, setSelected] = createSignal<string[]>([]);
+
+const allSelected = () => selected().length === items.length;
+const someSelected = () => selected().length > 0 && !allSelected();
+
+const toggleAll = () => {
+  setSelected(allSelected() ? [] : [...items]);
+};
+
+const toggleItem = (item: string) => {
+  setSelected(prev =>
+    prev.includes(item)
+      ? prev.filter(v => v !== item)
+      : [...prev, item]
+  );
+};
+
+<div class="stack-sm">
+  <Checkbox
+    label="Select all files"
+    checked={allSelected()}
+    indeterminate={someSelected()}
+    onChange={toggleAll}
+  />
+  <div class="stack-sm" style={{ "margin-left": "1.5rem" }}>
+    <For each={items}>
+      {item => (
+        <Checkbox
+          label={item}
+          checked={selected().includes(item)}
+          onChange={() => toggleItem(item)}
+        />
+      )}
+    </For>
+  </div>
+</div>
+```
+
 ## Props
 
 <PropsTable props={getComponent("Checkbox").props} client:load />

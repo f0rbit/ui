@@ -72,6 +72,81 @@ Two sizes are available:
 <Toggle label="Disabled on" disabled checked />
 ```
 
+## Settings Page Pattern
+
+Build a real settings page with grouped toggles:
+
+```tsx
+const [settings, setSettings] = createSignal({
+  darkMode: true,
+  notifications: true,
+  emailDigest: false,
+  twoFactor: true,
+  analytics: false,
+});
+
+const updateSetting = (key: keyof typeof settings) => {
+  setSettings(prev => ({ ...prev, [key]: !prev[key] }));
+};
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preferences</CardTitle>
+    <CardDescription>Manage your account settings</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div class="stack">
+      <div class="setting-row">
+        <Toggle
+          label="Dark mode"
+          description="Use dark theme across the application"
+          checked={settings().darkMode}
+          onChange={() => updateSetting("darkMode")}
+        />
+      </div>
+      <div class="setting-row">
+        <Toggle
+          label="Push notifications"
+          description="Receive alerts for important updates"
+          checked={settings().notifications}
+          onChange={() => updateSetting("notifications")}
+        />
+      </div>
+      <div class="setting-row">
+        <Toggle
+          label="Weekly email digest"
+          description="Get a summary of activity every Monday"
+          checked={settings().emailDigest}
+          onChange={() => updateSetting("emailDigest")}
+        />
+      </div>
+    </div>
+  </CardContent>
+</Card>
+
+<Card>
+  <CardHeader>
+    <CardTitle>Security</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <div class="stack">
+      <Toggle
+        label="Two-factor authentication"
+        description="Require a code when signing in"
+        checked={settings().twoFactor}
+        onChange={() => updateSetting("twoFactor")}
+      />
+      <Toggle
+        label="Usage analytics"
+        description="Help improve the product by sharing anonymous usage data"
+        checked={settings().analytics}
+        onChange={() => updateSetting("analytics")}
+      />
+    </div>
+  </CardContent>
+</Card>
+```
+
 ## Props
 
 <PropsTable props={getComponent("Toggle").props} client:load />
