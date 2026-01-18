@@ -1,0 +1,271 @@
+---
+title: Loading States
+description: Patterns for showing loading states across your application
+---
+
+Loading states provide visual feedback while data is being fetched or actions are processing. This guide covers common patterns using @f0rbit/ui components.
+
+## Button Loading State
+
+Use the `loading` prop on buttons to indicate an action is in progress. This disables interaction and shows a spinner.
+
+```tsx
+import { createSignal } from "solid-js";
+import { Button } from "@f0rbit/ui";
+
+function SaveButton() {
+  const [loading, setLoading] = createSignal(false);
+
+  const handleSave = async () => {
+    setLoading(true);
+    await saveData();
+    setLoading(false);
+  };
+
+  return (
+    <Button loading={loading()} onClick={handleSave}>
+      {loading() ? "Saving..." : "Save Changes"}
+    </Button>
+  );
+}
+```
+
+### Best Practices
+
+- Change button text to reflect the action ("Save" → "Saving...")
+- Disable form inputs while submitting to prevent duplicate submissions
+- Keep the button width consistent to avoid layout shift
+
+```tsx
+<Button loading={loading()} style={{ "min-width": "120px" }}>
+  {loading() ? "Saving..." : "Save"}
+</Button>
+```
+
+## Full Page Loading
+
+For initial page loads or major data fetching, center a spinner on the page:
+
+```tsx
+import { Spinner } from "@f0rbit/ui";
+
+function PageLoader() {
+  return (
+    <div class="page-loader">
+      <Spinner size="lg" />
+      <span>Loading...</span>
+    </div>
+  );
+}
+```
+
+```css
+.page-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  min-height: 400px;
+  color: var(--color-text-secondary);
+}
+```
+
+### Conditional Rendering
+
+```tsx
+import { Show } from "solid-js";
+
+function DataPage() {
+  const [data] = createResource(fetchData);
+
+  return (
+    <Show when={!data.loading} fallback={<PageLoader />}>
+      <DataContent data={data()} />
+    </Show>
+  );
+}
+```
+
+## Inline Loading
+
+For smaller areas, use a small spinner inline with text:
+
+```tsx
+import { Spinner } from "@f0rbit/ui";
+
+function LoadingMessage() {
+  return (
+    <span style={{ display: "flex", "align-items": "center", gap: "0.5rem" }}>
+      <Spinner size="sm" />
+      Loading items...
+    </span>
+  );
+}
+```
+
+## Skeleton Loading
+
+While @f0rbit/ui doesn't include a dedicated skeleton component, you can create skeleton placeholders using CSS:
+
+```tsx
+function CardSkeleton() {
+  return (
+    <div class="skeleton-card">
+      <div class="skeleton skeleton-title" />
+      <div class="skeleton skeleton-text" />
+      <div class="skeleton skeleton-text short" />
+    </div>
+  );
+}
+```
+
+```css
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-bg-secondary) 25%,
+    var(--color-bg-tertiary) 50%,
+    var(--color-bg-secondary) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton-title {
+  height: 1.5rem;
+  width: 60%;
+  margin-bottom: var(--space-sm);
+}
+
+.skeleton-text {
+  height: 1rem;
+  width: 100%;
+  margin-bottom: var(--space-xs);
+}
+
+.skeleton-text.short {
+  width: 40%;
+}
+
+@keyframes skeleton-pulse {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+```
+
+### Skeleton with Cards
+
+Combine with the Card component structure:
+
+```tsx
+import { Card, CardHeader, CardContent } from "@f0rbit/ui";
+
+function CardListSkeleton(props: { count: number }) {
+  return (
+    <div class="stack">
+      {Array.from({ length: props.count }).map(() => (
+        <Card>
+          <CardHeader>
+            <div class="skeleton skeleton-title" />
+          </CardHeader>
+          <CardContent>
+            <div class="skeleton skeleton-text" />
+            <div class="skeleton skeleton-text" />
+            <div class="skeleton skeleton-text short" />
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+}
+```
+
+## Loading State Composition
+
+For complex UIs, combine multiple loading patterns:
+
+```tsx
+import { createSignal, Show } from "solid-js";
+import { Button, Spinner, Card, CardContent } from "@f0rbit/ui";
+
+function DataPanel() {
+  const [data, { refetch }] = createResource(fetchData);
+  const [refreshing, setRefreshing] = createSignal(false);
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  };
+
+  return (
+    <Card>
+      <CardContent>
+        <div class="panel-header">
+          <h3>Data Panel</h3>
+          <Button
+            variant="ghost"
+            size="sm"
+            loading={refreshing()}
+            onClick={handleRefresh}
+          >
+            Refresh
+          </Button>
+        </div>
+
+        <Show
+          when={!data.loading}
+          fallback={
+            <div class="panel-loading">
+              <Spinner />
+            </div>
+          }
+        >
+          <DataList items={data()} />
+        </Show>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+## Best Practices
+
+1. **Provide feedback immediately** - Show loading state as soon as an action starts
+2. **Use appropriate sizes** - Small spinner for buttons, large for page loading
+3. **Maintain layout stability** - Reserve space for content to avoid layout shift
+4. **Consider perceived performance** - Skeleton loading often feels faster than spinners
+5. **Add timeouts for long operations** - Show additional messaging for operations taking more than a few seconds
+
+```tsx
+function LongOperationButton() {
+  const [loading, setLoading] = createSignal(false);
+  const [longWait, setLongWait] = createSignal(false);
+
+  const handleClick = async () => {
+    setLoading(true);
+    const timeout = setTimeout(() => setLongWait(true), 3000);
+    
+    await longOperation();
+    
+    clearTimeout(timeout);
+    setLoading(false);
+    setLongWait(false);
+  };
+
+  return (
+    <div class="stack">
+      <Button loading={loading()} onClick={handleClick}>
+        Process Data
+      </Button>
+      <Show when={longWait()}>
+        <span class="text-secondary text-sm">
+          This is taking longer than expected...
+        </span>
+      </Show>
+    </div>
+  );
+}
+```

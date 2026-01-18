@@ -1,0 +1,352 @@
+---
+title: Modal Patterns
+description: Common patterns for dialogs, confirmations, and modal forms
+---
+
+Modals interrupt the user's workflow to capture attention for important interactions. Use them sparingly and follow these patterns for consistency.
+
+## Confirmation Dialog
+
+Use confirmation modals for destructive or irreversible actions:
+
+```tsx
+import { createSignal } from "solid-js";
+import {
+  Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter, Button
+} from "@f0rbit/ui";
+
+function DeleteConfirmation(props: {
+  itemName: string;
+  onConfirm: () => void;
+}) {
+  const [open, setOpen] = createSignal(false);
+  const [deleting, setDeleting] = createSignal(false);
+
+  const handleDelete = async () => {
+    setDeleting(true);
+    await props.onConfirm();
+    setDeleting(false);
+    setOpen(false);
+  };
+
+  return (
+    <>
+      <Button variant="danger" onClick={() => setOpen(true)}>
+        Delete
+      </Button>
+
+      <Modal open={open()} onClose={() => setOpen(false)}>
+        <ModalHeader>
+          <ModalTitle>Delete {props.itemName}?</ModalTitle>
+        </ModalHeader>
+        <ModalBody>
+          <p>
+            This action cannot be undone. The item will be permanently removed.
+          </p>
+        </ModalBody>
+        <ModalFooter>
+          <Button variant="secondary" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+          <Button variant="danger" loading={deleting()} onClick={handleDelete}>
+            {deleting() ? "Deleting..." : "Delete"}
+          </Button>
+        </ModalFooter>
+      </Modal>
+    </>
+  );
+}
+```
+
+### Best Practices for Confirmations
+
+- State the action clearly in the title
+- Explain consequences in the body
+- Use `danger` variant for destructive confirm buttons
+- Always provide a cancel option
+- Keep focus on cancel by default for destructive actions
+
+## Form Modal
+
+For forms that capture structured data:
+
+```tsx
+import { createSignal } from "solid-js";
+import {
+  Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter,
+  Button, FormField, Input, Textarea, Select
+} from "@f0rbit/ui";
+
+function CreateProjectModal(props: { onCreate: (data: ProjectData) => void }) {
+  const [open, setOpen] = createSignal(false);
+  const [saving, setSaving] = createSignal(false);
+  const [name, setName] = createSignal("");
+  const [description, setDescription] = createSignal("");
+  const [priority, setPriority] = createSignal("");
+  const [errors, setErrors] = createSignal<Record<string, string>>({});
+
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    if (!name().trim()) newErrors.name = "Name is required";
+    if (!priority()) newErrors.priority = "Please select a priority";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async () => {
+    if (!validate()) return;
+
+    setSaving(true);
+    await props.onCreate({
+      name: name(),
+      description: description(),
+      priority: priority(),
+    });
+    setSaving(false);
+    resetForm();
+    setOpen(false);
+  };
+
+  const resetForm = () => {
+    setName("");
+    setDescription("");
+    setPriority("");
+    setErrors({});
+  };
+
+  const handleClose = () => {
+    resetForm();
+    setOpen(false);
+  };
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Create Project</Button>
+
+      <Modal open={open()} onClose={handleClose}>
+        <ModalHeader>
+          <ModalTitle>Create New Project</ModalTitle>
+        </ModalHeader>
+        <ModalBody>
+          <div class="stack">
+            <FormField
+              label="Project Name"
+              error={errors().name}
+              required
+              id="project-name"
+            >
+              <Input
+                id="project-name"
+                value={name()}
+                onInput={(e) => setName(e.currentTarget.value)}
+                error={!!errors().name}
+                placeholder="My Project"
+              />
+            </FormField>
+
+            <FormField
+              label="Description"
+              description="Optional project description"
+              id="project-desc"
+            >
+              <Textarea
+                id="project-desc"
+                value={description()}
+                onInput={(e) => setDescription(e.currentTarget.value)}
+                placeholder="What is this project about?"
+              />
+            </FormField>
+
+            <FormField
+              label="Priority"
+              error={errors().priority}
+              required
+              id="project-priority"
+            >
+              <Select
+                id="project-priority"
+                value={priority()}
+                onChange={(e) => setPriority(e.currentTarget.value)}
+                error={!!errors().priority}
+              >
+                <option value="">Select priority</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </Select>
+            </FormField>
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button loading={saving()} onClick={handleSubmit}>
+            {saving() ? "Creating..." : "Create Project"}
+          </Button>
+        </ModalFooter>
+      </Modal>
+    </>
+  );
+}
+```
+
+### Form Modal Best Practices
+
+- Reset form state when modal closes
+- Validate before submission
+- Show field-level errors immediately
+- Disable form during submission
+- Use `stack` class for consistent field spacing
+
+## Alert/Notification Modal
+
+For simple notifications that require acknowledgment:
+
+```tsx
+import { createSignal } from "solid-js";
+import { Modal, ModalBody, ModalFooter, Button } from "@f0rbit/ui";
+
+function SuccessAlert() {
+  const [open, setOpen] = createSignal(false);
+
+  return (
+    <Modal open={open()} onClose={() => setOpen(false)}>
+      <ModalBody>
+        <div class="alert-content">
+          <CheckIcon class="alert-icon success" />
+          <h3>Changes Saved</h3>
+          <p>Your preferences have been updated successfully.</p>
+        </div>
+      </ModalBody>
+      <ModalFooter>
+        <Button onClick={() => setOpen(false)}>OK</Button>
+      </ModalFooter>
+    </Modal>
+  );
+}
+```
+
+```css
+.alert-content {
+  text-align: center;
+  padding: var(--space-md) 0;
+}
+
+.alert-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--space-md);
+}
+
+.alert-icon.success {
+  color: var(--color-success);
+}
+
+.alert-icon.error {
+  color: var(--color-error);
+}
+
+.alert-content h3 {
+  margin: 0 0 var(--space-sm);
+}
+
+.alert-content p {
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+```
+
+### Error Alert
+
+```tsx
+function ErrorAlert(props: { message: string; onClose: () => void }) {
+  return (
+    <Modal open={true} onClose={props.onClose}>
+      <ModalBody>
+        <div class="alert-content">
+          <AlertIcon class="alert-icon error" />
+          <h3>Something went wrong</h3>
+          <p>{props.message}</p>
+        </div>
+      </ModalBody>
+      <ModalFooter>
+        <Button onClick={props.onClose}>Dismiss</Button>
+      </ModalFooter>
+    </Modal>
+  );
+}
+```
+
+## Modal with Stepper
+
+For multi-step workflows:
+
+```tsx
+import { createSignal } from "solid-js";
+import {
+  Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter,
+  Button, Stepper, Step
+} from "@f0rbit/ui";
+
+function OnboardingModal() {
+  const [open, setOpen] = createSignal(false);
+  const [step, setStep] = createSignal(0);
+
+  const steps = ["Account", "Profile", "Preferences"];
+
+  const handleNext = () => {
+    if (step() < steps.length - 1) {
+      setStep(step() + 1);
+    } else {
+      setOpen(false);
+    }
+  };
+
+  const handleBack = () => {
+    if (step() > 0) setStep(step() - 1);
+  };
+
+  return (
+    <Modal open={open()} onClose={() => setOpen(false)}>
+      <ModalHeader>
+        <ModalTitle>Get Started</ModalTitle>
+      </ModalHeader>
+      <ModalBody>
+        <Stepper current={step()}>
+          {steps.map((label) => (
+            <Step>{label}</Step>
+          ))}
+        </Stepper>
+
+        <div class="step-content">
+          {step() === 0 && <AccountStep />}
+          {step() === 1 && <ProfileStep />}
+          {step() === 2 && <PreferencesStep />}
+        </div>
+      </ModalBody>
+      <ModalFooter>
+        <Button
+          variant="secondary"
+          onClick={handleBack}
+          disabled={step() === 0}
+        >
+          Back
+        </Button>
+        <Button onClick={handleNext}>
+          {step() === steps.length - 1 ? "Finish" : "Next"}
+        </Button>
+      </ModalFooter>
+    </Modal>
+  );
+}
+```
+
+## General Best Practices
+
+1. **Use sparingly** - Modals interrupt workflow; consider inline alternatives
+2. **Keep focused** - One task per modal
+3. **Provide escape routes** - Always allow closing via ESC, clicking outside, or cancel button
+4. **Mobile considerations** - Modals should work well on small screens
+5. **Loading states** - Show progress for async operations in modal footer buttons
+6. **Prevent scroll** - The Modal component handles this automatically

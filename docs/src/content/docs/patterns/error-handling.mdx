@@ -1,0 +1,381 @@
+---
+title: Error Handling
+description: Patterns for displaying validation errors, empty states, and API failures
+---
+
+Effective error handling improves user experience by clearly communicating what went wrong and how to fix it. This guide covers common error handling patterns with @f0rbit/ui.
+
+## Form Validation Errors
+
+Use `FormField` with the `error` prop to display field-level validation messages:
+
+```tsx
+import { createSignal } from "solid-js";
+import { FormField, Input, Button } from "@f0rbit/ui";
+
+function SignupForm() {
+  const [email, setEmail] = createSignal("");
+  const [password, setPassword] = createSignal("");
+  const [errors, setErrors] = createSignal<Record<string, string>>({});
+
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!email()) {
+      newErrors.email = "Email is required";
+    } else if (!email().includes("@")) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    if (!password()) {
+      newErrors.password = "Password is required";
+    } else if (password().length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = () => {
+    if (validate()) {
+      submitForm({ email: email(), password: password() });
+    }
+  };
+
+  return (
+    <form class="stack" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+      <FormField
+        label="Email"
+        error={errors().email}
+        required
+        id="email"
+      >
+        <Input
+          id="email"
+          type="email"
+          value={email()}
+          onInput={(e) => setEmail(e.currentTarget.value)}
+          error={!!errors().email}
+          placeholder="you@example.com"
+        />
+      </FormField>
+
+      <FormField
+        label="Password"
+        error={errors().password}
+        required
+        id="password"
+      >
+        <Input
+          id="password"
+          type="password"
+          value={password()}
+          onInput={(e) => setPassword(e.currentTarget.value)}
+          error={!!errors().password}
+        />
+      </FormField>
+
+      <Button type="submit">Sign Up</Button>
+    </form>
+  );
+}
+```
+
+### Real-time Validation
+
+Clear errors as users correct them:
+
+```tsx
+const handleEmailInput = (value: string) => {
+  setEmail(value);
+  if (errors().email && value.includes("@")) {
+    setErrors((prev) => ({ ...prev, email: undefined }));
+  }
+};
+```
+
+### Validation Best Practices
+
+- Show errors after field blur or form submission, not while typing
+- Use clear, actionable error messages
+- Mark the input with `error` prop for visual indication
+- Clear errors when the user starts correcting the field
+
+## Empty States with Error Recovery
+
+Use the `Empty` component to handle "no data" scenarios with clear calls to action:
+
+```tsx
+import { Empty, Button } from "@f0rbit/ui";
+
+function NoResultsState(props: { onReset: () => void }) {
+  return (
+    <Empty
+      title="No results found"
+      description="Try adjusting your search or filters to find what you're looking for."
+    >
+      <Button variant="secondary" onClick={props.onReset}>
+        Clear Filters
+      </Button>
+    </Empty>
+  );
+}
+```
+
+### Error State with Retry
+
+```tsx
+function ErrorState(props: { onRetry: () => void }) {
+  return (
+    <Empty
+      icon={<AlertCircleIcon />}
+      title="Failed to load data"
+      description="Something went wrong while fetching the data. Please try again."
+    >
+      <Button onClick={props.onRetry}>Try Again</Button>
+    </Empty>
+  );
+}
+```
+
+### Conditional Empty/Error States
+
+```tsx
+import { Show, Switch, Match } from "solid-js";
+import { Empty, Spinner } from "@f0rbit/ui";
+
+function DataList(props: { items: Item[]; loading: boolean; error?: Error }) {
+  return (
+    <Switch>
+      <Match when={props.loading}>
+        <div class="loading-container">
+          <Spinner />
+        </div>
+      </Match>
+
+      <Match when={props.error}>
+        <Empty
+          icon={<AlertCircleIcon />}
+          title="Unable to load items"
+          description={props.error.message}
+        >
+          <Button onClick={() => refetch()}>Retry</Button>
+        </Empty>
+      </Match>
+
+      <Match when={props.items.length === 0}>
+        <Empty
+          title="No items yet"
+          description="Create your first item to get started."
+        >
+          <Button>Create Item</Button>
+        </Empty>
+      </Match>
+
+      <Match when={props.items.length > 0}>
+        <ul class="stack">
+          {props.items.map((item) => (
+            <ItemCard item={item} />
+          ))}
+        </ul>
+      </Match>
+    </Switch>
+  );
+}
+```
+
+## API Error Handling
+
+Pattern for handling async operations with proper error states:
+
+```tsx
+import { createSignal } from "solid-js";
+import { Button, Card, CardContent } from "@f0rbit/ui";
+
+type ApiResult<T> =
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "success"; data: T }
+  | { status: "error"; error: string };
+
+function useApi<T>(fetcher: () => Promise<T>) {
+  const [result, setResult] = createSignal<ApiResult<T>>({ status: "idle" });
+
+  const execute = async () => {
+    setResult({ status: "loading" });
+    try {
+      const data = await fetcher();
+      setResult({ status: "success", data });
+    } catch (e) {
+      setResult({
+        status: "error",
+        error: e instanceof Error ? e.message : "An unknown error occurred",
+      });
+    }
+  };
+
+  return { result, execute };
+}
+
+function SaveButton() {
+  const { result, execute } = useApi(() => saveData());
+
+  return (
+    <div class="stack">
+      <Button
+        loading={result().status === "loading"}
+        onClick={execute}
+      >
+        Save
+      </Button>
+
+      <Show when={result().status === "error"}>
+        <div class="error-message">
+          <AlertIcon />
+          <span>{(result() as { error: string }).error}</span>
+        </div>
+      </Show>
+    </div>
+  );
+}
+```
+
+### Inline Error Messages
+
+```css
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-error-bg);
+  color: var(--color-error);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+}
+
+.error-message svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+```
+
+## Form-Level Error Summary
+
+For complex forms, show a summary of all errors:
+
+```tsx
+import { Show, For } from "solid-js";
+import { Card, CardContent } from "@f0rbit/ui";
+
+function ErrorSummary(props: { errors: Record<string, string> }) {
+  const errorList = () => Object.entries(props.errors);
+
+  return (
+    <Show when={errorList().length > 0}>
+      <Card class="error-summary">
+        <CardContent>
+          <h4>Please fix the following errors:</h4>
+          <ul>
+            <For each={errorList()}>
+              {([field, message]) => (
+                <li>
+                  <a href={`#${field}`}>{message}</a>
+                </li>
+              )}
+            </For>
+          </ul>
+        </CardContent>
+      </Card>
+    </Show>
+  );
+}
+```
+
+```css
+.error-summary {
+  border-color: var(--color-error);
+  background: var(--color-error-bg);
+}
+
+.error-summary h4 {
+  color: var(--color-error);
+  margin: 0 0 var(--space-sm);
+}
+
+.error-summary ul {
+  margin: 0;
+  padding-left: var(--space-lg);
+}
+
+.error-summary a {
+  color: var(--color-error);
+}
+```
+
+## Modal Error States
+
+Display errors within modal context:
+
+```tsx
+import { createSignal } from "solid-js";
+import {
+  Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter, Button
+} from "@f0rbit/ui";
+
+function SubmitModal() {
+  const [error, setError] = createSignal<string | null>(null);
+  const [loading, setLoading] = createSignal(false);
+
+  const handleSubmit = async () => {
+    setError(null);
+    setLoading(true);
+
+    try {
+      await submitData();
+      closeModal();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Submission failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Modal open={open()} onClose={closeModal}>
+      <ModalHeader>
+        <ModalTitle>Submit Form</ModalTitle>
+      </ModalHeader>
+      <ModalBody>
+        <Show when={error()}>
+          <div class="error-message" style={{ "margin-bottom": "var(--space-md)" }}>
+            <AlertIcon />
+            <span>{error()}</span>
+          </div>
+        </Show>
+        <FormContent />
+      </ModalBody>
+      <ModalFooter>
+        <Button variant="secondary" onClick={closeModal}>
+          Cancel
+        </Button>
+        <Button loading={loading()} onClick={handleSubmit}>
+          Submit
+        </Button>
+      </ModalFooter>
+    </Modal>
+  );
+}
+```
+
+## Best Practices
+
+1. **Be specific** - "Email is required" is better than "Invalid input"
+2. **Be helpful** - Explain how to fix the error when possible
+3. **Be timely** - Show errors at the right moment (not too early, not too late)
+4. **Provide recovery** - Always offer a way to retry or recover from errors
+5. **Use visual hierarchy** - Field errors near fields, form errors at form level
+6. **Consider color-blind users** - Don't rely on color alone; use icons and text
+7. **Persist errors appropriately** - Clear them when resolved, but keep them visible until then
