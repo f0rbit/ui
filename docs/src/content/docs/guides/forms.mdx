@@ -1,0 +1,244 @@
+---
+title: Forms Guide
+description: Learn how to compose form components into complete, accessible forms.
+---
+
+## Overview
+
+@f0rbit/ui provides a set of composable form components that work together:
+
+- **FormField** - Wrapper providing label, description, and error states
+- **Input** - Single-line text input
+- **Textarea** - Multi-line text input
+- **Select** - Dropdown selection
+- **Checkbox** - Boolean selection
+- **Toggle** - On/off switch
+
+## Basic Form
+
+Combine `FormField` with inputs and a `Button` for submission:
+
+```tsx
+import { FormField, Input, Button } from "@f0rbit/ui";
+
+function LoginForm() {
+  return (
+    <form class="stack">
+      <FormField label="Email" id="email" required>
+        <Input id="email" type="email" placeholder="you@example.com" />
+      </FormField>
+
+      <FormField label="Password" id="password" required>
+        <Input id="password" type="password" placeholder="Enter password" />
+      </FormField>
+
+      <Button variant="primary" type="submit">Sign In</Button>
+    </form>
+  );
+}
+```
+
+The `.stack` utility class provides consistent vertical spacing between form elements.
+
+## Form Validation
+
+Use signals to track form state and display errors:
+
+```tsx
+import { createSignal } from "solid-js";
+import { FormField, Input, Button } from "@f0rbit/ui";
+
+function ValidatedForm() {
+  const [email, setEmail] = createSignal("");
+  const [errors, setErrors] = createSignal<Record<string, string>>({});
+
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!email()) {
+      newErrors.email = "Email is required";
+    } else if (!email().includes("@")) {
+      newErrors.email = "Please enter a valid email";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e: Event) => {
+    e.preventDefault();
+    if (validate()) {
+      // Submit form
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} class="stack">
+      <FormField
+        label="Email"
+        id="email"
+        error={errors().email}
+        required
+      >
+        <Input
+          id="email"
+          type="email"
+          value={email()}
+          onInput={(e) => setEmail(e.currentTarget.value)}
+          error={!!errors().email}
+        />
+      </FormField>
+
+      <Button variant="primary" type="submit">Submit</Button>
+    </form>
+  );
+}
+```
+
+Key points:
+- Pass `error` string to `FormField` to display the message
+- Pass `error` boolean to `Input` to show the error border
+- Clear errors when the user starts typing for better UX
+
+## Complete Form Example
+
+Here's a realistic settings form using multiple input types:
+
+```tsx
+import { createSignal } from "solid-js";
+import {
+  FormField,
+  Input,
+  Textarea,
+  Select,
+  Checkbox,
+  Toggle,
+  Button,
+} from "@f0rbit/ui";
+
+function SettingsForm() {
+  const [name, setName] = createSignal("");
+  const [email, setEmail] = createSignal("");
+  const [bio, setBio] = createSignal("");
+  const [timezone, setTimezone] = createSignal("");
+  const [marketing, setMarketing] = createSignal(false);
+  const [notifications, setNotifications] = createSignal(true);
+
+  return (
+    <form class="stack">
+      <FormField label="Full Name" id="name" required>
+        <Input
+          id="name"
+          value={name()}
+          onInput={(e) => setName(e.currentTarget.value)}
+        />
+      </FormField>
+
+      <FormField
+        label="Email Address"
+        id="email"
+        description="We'll never share your email"
+        required
+      >
+        <Input
+          id="email"
+          type="email"
+          value={email()}
+          onInput={(e) => setEmail(e.currentTarget.value)}
+        />
+      </FormField>
+
+      <FormField
+        label="Bio"
+        id="bio"
+        description="Brief description for your profile (max 200 characters)"
+      >
+        <Textarea
+          id="bio"
+          value={bio()}
+          onInput={(e) => setBio(e.currentTarget.value)}
+          placeholder="Tell us about yourself..."
+        />
+      </FormField>
+
+      <FormField label="Timezone" id="timezone">
+        <Select
+          id="timezone"
+          value={timezone()}
+          onChange={(e) => setTimezone(e.currentTarget.value)}
+        >
+          <option value="">Select timezone</option>
+          <option value="utc">UTC</option>
+          <option value="est">Eastern Time</option>
+          <option value="pst">Pacific Time</option>
+        </Select>
+      </FormField>
+
+      <Checkbox
+        label="Send me marketing emails"
+        description="Occasional updates about new features"
+        checked={marketing()}
+        onChange={() => setMarketing(!marketing())}
+      />
+
+      <Toggle
+        label="Push notifications"
+        description="Receive alerts for important updates"
+        checked={notifications()}
+        onChange={() => setNotifications(!notifications())}
+      />
+
+      <Button variant="primary" type="submit">Save Settings</Button>
+    </form>
+  );
+}
+```
+
+## Accessibility
+
+### Label Association
+
+Always connect labels to inputs using matching `id` props:
+
+```tsx
+<FormField label="Username" id="username">
+  <Input id="username" />
+</FormField>
+```
+
+### Required Fields
+
+The `required` prop on `FormField` adds a visual indicator and proper `aria-required`:
+
+```tsx
+<FormField label="Email" id="email" required>
+  <Input id="email" type="email" />
+</FormField>
+```
+
+### Error Announcements
+
+When `error` is set on `FormField`, the error message is associated with the input via `aria-describedby`, allowing screen readers to announce validation errors:
+
+```tsx
+<FormField label="Password" id="password" error="Password must be 8+ characters">
+  <Input id="password" type="password" error />
+</FormField>
+```
+
+### Checkbox and Toggle Labels
+
+`Checkbox` and `Toggle` have built-in label association:
+
+```tsx
+<Checkbox label="Accept terms" />
+<Toggle label="Enable feature" />
+```
+
+## Tips
+
+1. **Use `.stack` for layout** - Provides consistent spacing without custom CSS
+2. **Match IDs** - Ensure `FormField` and its child input share the same `id`
+3. **Sync error states** - Pass error message to `FormField` and boolean to input
+4. **Description for context** - Use `description` to add helper text without cluttering labels
+5. **Group related fields** - Use `Card` to visually group related form sections
