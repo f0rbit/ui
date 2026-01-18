@@ -17,3 +17,102 @@ Override any token in your CSS:
 ## Available Tokens
 
 See the [Tokens](/css/tokens/) reference for all available variables.
+
+## Dark Mode
+
+The library automatically supports dark mode based on the user's system preference via `prefers-color-scheme`.
+
+### Automatic (System Preference)
+
+By default, dark mode activates when the user's system is set to dark mode. No additional configuration required.
+
+### Manual Theme Control
+
+Force a specific theme using the `data-theme` attribute on the root element:
+
+```html
+<!-- Force light mode -->
+<html data-theme="light">
+
+<!-- Force dark mode -->
+<html data-theme="dark">
+```
+
+### Theme Toggle Example
+
+```tsx
+function toggleTheme() {
+  const current = document.documentElement.getAttribute("data-theme");
+  const next = current === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+}
+
+<Button onClick={toggleTheme}>Toggle Theme</Button>
+```
+
+### How It Works
+
+The library uses CSS custom properties that update based on theme:
+
+- Light mode: High lightness values for backgrounds, low for text
+- Dark mode: Inverted - low lightness backgrounds, high lightness text
+- All semantic tokens (`--bg`, `--fg`, `--border`, etc.) automatically adapt
+
+## CSS Layers
+
+The library uses CSS cascade layers to provide predictable specificity and easy overriding.
+
+### Layer Order
+
+Styles are organized into four layers, listed from lowest to highest priority:
+
+| Layer | Purpose |
+|-------|---------|
+| `reset` | Minimal CSS reset and base element styles |
+| `tokens` | Design tokens (CSS custom properties) |
+| `components` | Component styles (`.btn`, `.card`, `.modal`, etc.) |
+| `utilities` | Utility classes (`.stack`, `.row`, `.text-muted`, etc.) |
+
+### Overriding Styles
+
+Since library styles are in layers, your unlayered CSS automatically takes precedence:
+
+```css
+/* Your styles override library styles by default */
+.btn {
+  border-radius: 9999px; /* pill-shaped buttons */
+}
+```
+
+### Using Your Own Layers
+
+For more control, define your styles in a higher-priority layer:
+
+```css
+@layer base, overrides;
+
+@layer overrides {
+  .btn {
+    text-transform: uppercase;
+  }
+}
+```
+
+### Layer Import Order
+
+When importing, the layer order is established by the first import:
+
+```css
+/* Establish layer order first */
+@layer reset, tokens, components, utilities, app;
+
+/* Then import library styles */
+@import "@f0rbit/ui/styles";
+
+/* Your app layer has highest priority */
+@layer app {
+  .card {
+    background: var(--bg-alt);
+  }
+}
+```
