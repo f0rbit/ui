@@ -31,13 +31,29 @@ export default defineConfig({
 					label: "Getting Started",
 					items: [
 						{ label: "Installation", slug: "getting-started/installation" },
+						{ label: "TypeScript", slug: "getting-started/typescript" },
 						{ label: "Theming", slug: "getting-started/theming" },
+						{ label: "Troubleshooting", slug: "getting-started/troubleshooting" },
 					],
 				},
 				{
 					label: "Components",
 					autogenerate: { directory: "components" },
 				},
+			{
+				label: "Guides",
+				items: [
+					{ label: "Forms", slug: "guides/forms" },
+				],
+			},
+			{
+				label: "Patterns",
+				items: [
+					{ label: "Loading States", slug: "patterns/loading-states" },
+					{ label: "Modal Patterns", slug: "patterns/modals" },
+					{ label: "Error Handling", slug: "patterns/error-handling" },
+				],
+			},
 			{
 				label: "CSS",
 				items: [
