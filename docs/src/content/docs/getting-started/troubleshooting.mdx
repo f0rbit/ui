@@ -1,0 +1,293 @@
+---
+title: Troubleshooting
+description: Common issues and solutions when using @f0rbit/ui
+---
+
+## CSS Not Loading
+
+### Styles not applied to components
+
+**Symptom**: Components render but appear completely unstyled.
+
+**Solution**: Ensure the styles are imported in your app's entry point, not in individual components:
+
+```tsx
+// ✅ In your main entry file (index.tsx, main.tsx, or layout)
+import "@f0rbit/ui/styles";
+```
+
+### Import order issues
+
+**Symptom**: Some styles work but colors or tokens are missing.
+
+**Solution**: If using granular imports, maintain the correct order:
+
+```tsx
+import "@f0rbit/ui/styles/tokens";      // 1. Variables first
+import "@f0rbit/ui/styles/reset";       // 2. Reset second
+import "@f0rbit/ui/styles/utilities";   // 3. Utilities third
+import "@f0rbit/ui/styles/components";  // 4. Components last
+```
+
+### Build configuration (Vite)
+
+**Symptom**: Styles work in dev but break in production build.
+
+**Solution**: Ensure CSS is not being tree-shaken. In `vite.config.ts`:
+
+```ts
+export default defineConfig({
+  optimizeDeps: {
+    include: ["@f0rbit/ui"],
+  },
+});
+```
+
+---
+
+## Types Not Working
+
+### Missing type definitions
+
+**Symptom**: TypeScript shows "Cannot find module" or missing types.
+
+**Solution**: Update your `tsconfig.json` module resolution:
+
+```json
+{
+  "compilerOptions": {
+    "moduleResolution": "bundler"
+  }
+}
+```
+
+For Node.js 16+ style resolution, use `"node16"` or `"nodenext"`.
+
+### JSX types conflicting
+
+**Symptom**: JSX element type errors or conflicting React/Solid types.
+
+**Solution**: Ensure SolidJS is the JSX source:
+
+```json
+{
+  "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js"
+  }
+}
+```
+
+### Props type inference
+
+**Symptom**: Component props show as `any` or lack autocomplete.
+
+**Solution**: Import prop types explicitly for better inference:
+
+```tsx
+import type { ButtonProps } from "@f0rbit/ui";
+
+const props: ButtonProps = {
+  variant: "primary",  // Now autocompletes
+};
+```
+
+---
+
+## Components Not Rendering
+
+### SSR hydration issues
+
+**Symptom**: Components don't appear, or console shows hydration mismatch errors.
+
+**Cause**: SolidJS components need client-side JavaScript to be interactive.
+
+**Solution for Astro**: Add a `client:` directive to interactive components:
+
+```astro
+---
+import { Button, Modal } from "@f0rbit/ui";
+---
+
+<!-- ✅ Will hydrate and be interactive -->
+<Button client:load onClick={() => console.log("clicked")}>
+  Interactive
+</Button>
+
+<!-- ❌ Won't respond to events -->
+<Button onClick={() => console.log("clicked")}>
+  Static only
+</Button>
+```
+
+### Choosing the right directive
+
+| Directive | Use when |
+|-----------|----------|
+| `client:load` | Component must be interactive immediately |
+| `client:idle` | Can wait until browser is idle |
+| `client:visible` | Only needed when scrolled into view |
+
+### Components render then disappear
+
+**Symptom**: Component briefly shows then vanishes.
+
+**Cause**: Usually a JavaScript error during hydration.
+
+**Solution**: Check browser console for errors. Common causes:
+- Missing peer dependency (`solid-js`)
+- Mismatched SolidJS versions
+- Server/client state mismatch
+
+---
+
+## Styling Conflicts
+
+### Your styles being overridden
+
+**Symptom**: Custom CSS doesn't apply to components.
+
+**Cause**: CSS specificity or load order issues.
+
+**Solution**: @f0rbit/ui uses CSS `@layer` which has lower specificity than regular CSS. Your unlayered styles should win automatically:
+
+```css
+/* This will override component styles */
+.my-custom-button {
+  background: red;
+}
+```
+
+### Component styles overriding yours
+
+**Symptom**: Component styles win over your custom styles.
+
+**Solution**: Place your styles in a higher-priority layer or outside layers entirely:
+
+```css
+/* Option 1: Outside any layer (highest priority) */
+.override {
+  background: red !important; /* Avoid if possible */
+}
+
+/* Option 2: Use a later layer */
+@layer overrides {
+  .my-button {
+    background: red;
+  }
+}
+```
+
+### Properly overriding with CSS layers
+
+The library uses the `f0rbit-ui` layer. Structure your layers:
+
+```css
+@layer f0rbit-ui, app, overrides;
+
+@layer app {
+  /* Your app styles */
+}
+
+@layer overrides {
+  /* Specific component overrides */
+}
+```
+
+### Using CSS variables for theming
+
+The cleanest way to customize is through CSS variables:
+
+```css
+:root {
+  --accent: oklch(55% 0.2 250);
+  --radius-md: 0.5rem;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+```
+
+See [Theming](/ui/getting-started/theming/) for the full list of customizable tokens.
+
+---
+
+## Dark Mode Issues
+
+### Theme not switching
+
+**Symptom**: Dark mode toggle doesn't change component appearance.
+
+**Cause**: The library uses `prefers-color-scheme` by default.
+
+**Solution**: To manually control the theme, add a class to the root element:
+
+```html
+<html class="dark">  <!-- Forces dark mode -->
+<html class="light"> <!-- Forces light mode -->
+<html>               <!-- Uses system preference -->
+```
+
+In JavaScript:
+
+```ts
+const setTheme = (theme: "light" | "dark" | "system") => {
+  document.documentElement.classList.remove("light", "dark");
+  if (theme !== "system") {
+    document.documentElement.classList.add(theme);
+  }
+};
+```
+
+### Flash of wrong theme (FOWT)
+
+**Symptom**: Page briefly shows wrong theme before correcting.
+
+**Cause**: Theme is set after page renders.
+
+**Solution**: Add a blocking script in `<head>` before any styles:
+
+```html
+<head>
+  <script>
+    (function() {
+      const saved = localStorage.getItem("theme");
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const theme = saved || (prefersDark ? "dark" : "light");
+      if (theme === "dark") document.documentElement.classList.add("dark");
+    })();
+  </script>
+  <!-- styles load after -->
+</head>
+```
+
+### Dark mode colors look wrong
+
+**Symptom**: Custom colors don't adapt to dark mode.
+
+**Solution**: Define both light and dark variants using CSS custom properties:
+
+```css
+:root {
+  --my-color: oklch(95% 0.02 250);
+}
+
+:root.dark,
+:root:has(html.dark) {
+  --my-color: oklch(25% 0.02 250);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --my-color: oklch(25% 0.02 250);
+  }
+}
+```
+
+---
+
+## Still Having Issues?
+
+If you're experiencing a problem not covered here:
+
+1. Check the [GitHub Issues](https://github.com/f0rbit/ui/issues) for similar reports
+2. Ensure you're on the latest version: `bun update @f0rbit/ui`
+3. Open a new issue with a minimal reproduction
