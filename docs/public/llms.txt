@@ -1,4 +1,4 @@
-# @f0rbit/ui v0.1.7
+# @f0rbit/ui v0.1.8
 
 > A minimal, composable UI component library for SolidJS
 
@@ -250,6 +250,76 @@ const [checked, setChecked] = createSignal(false);
 ```tsx
 <Checkbox label="Disabled unchecked" disabled />
 <Checkbox label="Disabled checked" disabled checked />
+```
+
+```tsx
+const [selected, setSelected] = createSignal<string[]>([]);
+
+const toggle = (value: string) => {
+  setSelected(prev =>
+    prev.includes(value)
+      ? prev.filter(v => v !== value)
+      : [...prev, value]
+  );
+};
+
+<div class="stack-sm">
+  <Checkbox
+    label="Email notifications"
+    checked={selected().includes("email")}
+    onChange={() => toggle("email")}
+  />
+  <Checkbox
+    label="SMS notifications"
+    checked={selected().includes("sms")}
+    onChange={() => toggle("sms")}
+  />
+  <Checkbox
+    label="Push notifications"
+    checked={selected().includes("push")}
+    onChange={() => toggle("push")}
+  />
+</div>
+```
+
+```tsx
+const items = ["Documents", "Images", "Videos", "Music"];
+const [selected, setSelected] = createSignal<string[]>([]);
+
+const allSelected = () => selected().length === items.length;
+const someSelected = () => selected().length > 0 && !allSelected();
+
+const toggleAll = () => {
+  setSelected(allSelected() ? [] : [...items]);
+};
+
+const toggleItem = (item: string) => {
+  setSelected(prev =>
+    prev.includes(item)
+      ? prev.filter(v => v !== item)
+      : [...prev, item]
+  );
+};
+
+<div class="stack-sm">
+  <Checkbox
+    label="Select all files"
+    checked={allSelected()}
+    indeterminate={someSelected()}
+    onChange={toggleAll}
+  />
+  <div class="stack-sm" style={{ "margin-left": "1.5rem" }}>
+    <For each={items}>
+      {item => (
+        <Checkbox
+          label={item}
+          checked={selected().includes(item)}
+          onChange={() => toggleItem(item)}
+        />
+      )}
+    </For>
+  </div>
+</div>
 ```
 
 ---
@@ -664,6 +734,88 @@ import { Spinner } from "@f0rbit/ui";
 </span>
 ```
 
+```tsx
+const [loading, setLoading] = createSignal(false);
+
+const handleSubmit = async () => {
+  setLoading(true);
+  await submitForm();
+  setLoading(false);
+};
+
+<Button onClick={handleSubmit} disabled={loading()}>
+  {loading() ? (
+    <>
+      <Spinner size="sm" />
+      Saving...
+    </>
+  ) : (
+    "Save changes"
+  )}
+</Button>
+```
+
+```tsx
+<div class="cluster">
+  <Button disabled={loading()}>
+    {loading() ? <Spinner size="sm" /> : null}
+    {loading() ? "Loading..." : "Submit"}
+  </Button>
+  <Button variant="secondary" disabled={loading()}>
+    Cancel
+  </Button>
+</div>
+```
+
+```tsx
+const PageLoader = () => (
+  <div
+    style={{
+      display: "flex",
+      "flex-direction": "column",
+      "align-items": "center",
+      "justify-content": "center",
+      "min-height": "50vh",
+      gap: "1rem",
+    }}
+  >
+    <Spinner size="lg" />
+    <p style={{ color: "var(--text-secondary)" }}>Loading your dashboard...</p>
+  </div>
+);
+
+const Dashboard = () => {
+  const [data] = createResource(fetchDashboardData);
+
+  return (
+    <Show when={!data.loading} fallback={<PageLoader />}>
+      <DashboardContent data={data()} />
+    </Show>
+  );
+};
+```
+
+```tsx
+const FullScreenLoader = () => (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      display: "flex",
+      "align-items": "center",
+      "justify-content": "center",
+      "background-color": "var(--bg-primary)",
+      "z-index": 50,
+    }}
+  >
+    <div class="stack" style={{ "align-items": "center" }}>
+      <Spinner size="lg" />
+      <p>Please wait...</p>
+    </div>
+  </div>
+);
+```
+
 ---
 
 ### Stat
@@ -696,6 +848,78 @@ import { Stat } from "@f0rbit/ui";
   <Stat value={128} label="Team Members" />
   <Stat value="2.5k" label="Commits" />
   <Stat value="99%" label="Test Coverage" />
+</div>
+```
+
+```tsx
+const TrendStat = (props: {
+  value: string | number;
+  label: string;
+  change: number;
+}) => {
+  const isPositive = () => props.change >= 0;
+
+  return (
+    <div class="stack-xs">
+      <Stat value={props.value} label={props.label} />
+      <span
+        style={{
+          color: isPositive() ? "var(--color-success)" : "var(--color-danger)",
+          "font-size": "0.875rem",
+          display: "flex",
+          "align-items": "center",
+          gap: "0.25rem",
+        }}
+      >
+        <Chevron direction={isPositive() ? "up" : "down"} size={12} />
+        {Math.abs(props.change)}%
+      </span>
+    </div>
+  );
+};
+
+<div class="stats-grid">
+  <TrendStat value="$48,352" label="Revenue" change={12.5} />
+  <TrendStat value="2,847" label="Orders" change={8.2} />
+  <TrendStat value="1.2k" label="Returns" change={-3.1} />
+  <TrendStat value="4.8" label="Rating" change={0.3} />
+</div>
+```
+
+```tsx
+const ComparisonStat = (props: {
+  value: string | number;
+  label: string;
+  previousValue: string | number;
+  previousLabel: string;
+}) => (
+  <div class="stack-xs">
+    <Stat value={props.value} label={props.label} />
+    <span style={{ color: "var(--text-secondary)", "font-size": "0.75rem" }}>
+      vs {props.previousValue} {props.previousLabel}
+    </span>
+  </div>
+);
+
+<div class="stats-grid">
+  <ComparisonStat
+    value="1,234"
+    label="Users this month"
+    previousValue="987"
+    previousLabel="last month"
+  />
+  <ComparisonStat
+    value="$52k"
+    label="Revenue this quarter"
+    previousValue="$41k"
+    previousLabel="last quarter"
+  />
+  <ComparisonStat
+    value="89%"
+    label="Satisfaction rate"
+    previousValue="84%"
+    previousLabel="last survey"
+  />
 </div>
 ```
 
@@ -967,6 +1191,77 @@ const [enabled, setEnabled] = createSignal(false);
 <Toggle label="Disabled on" disabled checked />
 ```
 
+```tsx
+const [settings, setSettings] = createSignal({
+  darkMode: true,
+  notifications: true,
+  emailDigest: false,
+  twoFactor: true,
+  analytics: false,
+});
+
+const updateSetting = (key: keyof typeof settings) => {
+  setSettings(prev => ({ ...prev, [key]: !prev[key] }));
+};
+
+<Card>
+  <CardHeader>
+    <CardTitle>Preferences</CardTitle>
+    <CardDescription>Manage your account settings</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div class="stack">
+      <div class="setting-row">
+        <Toggle
+          label="Dark mode"
+          description="Use dark theme across the application"
+          checked={settings().darkMode}
+          onChange={() => updateSetting("darkMode")}
+        />
+      </div>
+      <div class="setting-row">
+        <Toggle
+          label="Push notifications"
+          description="Receive alerts for important updates"
+          checked={settings().notifications}
+          onChange={() => updateSetting("notifications")}
+        />
+      </div>
+      <div class="setting-row">
+        <Toggle
+          label="Weekly email digest"
+          description="Get a summary of activity every Monday"
+          checked={settings().emailDigest}
+          onChange={() => updateSetting("emailDigest")}
+        />
+      </div>
+    </div>
+  </CardContent>
+</Card>
+
+<Card>
+  <CardHeader>
+    <CardTitle>Security</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <div class="stack">
+      <Toggle
+        label="Two-factor authentication"
+        description="Require a code when signing in"
+        checked={settings().twoFactor}
+        onChange={() => updateSetting("twoFactor")}
+      />
+      <Toggle
+        label="Usage analytics"
+        description="Help improve the product by sharing anonymous usage data"
+        checked={settings().analytics}
+        onChange={() => updateSetting("analytics")}
+      />
+    </div>
+  </CardContent>
+</Card>
+```
+
 ---
 
 ## CSS Tokens
@@ -983,173 +1278,11 @@ The library uses CSS custom properties for theming. Key tokens:
 
 ## Utility Classes
 
-### Layout - Stack (Vertical Flex)
-- `.stack` - Vertical flex with medium gap (--space-md)
-- `.stack-sm` - Vertical flex with small gap (--space-sm)
-- `.stack-lg` - Vertical flex with large gap (--space-lg)
-
-### Layout - Row (Horizontal Flex)
-- `.row` - Horizontal flex, centered items, small gap
-- `.row-sm` - Row with extra small gap
-- `.row-lg` - Row with medium gap
-- `.row-between` - Row with space-between
-- `.row-end` - Row with flex-end alignment
-- `.row-start` - Row with flex-start alignment
-
-### Layout - Grid
-- `.grid` - Auto-fit grid with 250px min column width
-- `.grid-2` - Fixed 2-column grid
-- `.grid-3` - Fixed 3-column grid
-- `.grid-4` - Fixed 4-column grid
-
-### Layout - Other
-- `.cluster` - Flex wrap with small gap, centered items
-- `.center` - Max-width container (65ch) with auto margins
-- `.center-narrow` - Narrow center (45ch)
-- `.center-wide` - Wide center (90ch)
-
-### Typography - Colors
-- `.text-primary` - Primary foreground color (--fg)
-- `.text-muted` - Muted text color (--fg-muted)
-- `.text-subtle` - Subtle text color (--fg-subtle)
-- `.text-faint` - Faint text color (--fg-faint)
-- `.text-accent` - Accent color (--accent)
-
-### Typography - Sizes
-- `.text-xs` - Extra small text
-- `.text-sm` - Small text
-- `.text-base` - Base text size
-- `.text-lg` - Large text
-- `.text-xl` - Extra large text
-- `.text-2xl` - 2x large text
-- `.text-3xl` - 3x large text
-- `.text-4xl` - 4x large text
-
-### Typography - Weight & Style
-- `.font-medium` - Medium font weight (500)
-- `.font-bold` - Bold font weight (700)
-- `.font-mono` - Monospace font family
-- `.truncate` - Single-line text with ellipsis overflow
-
-### Lists
-- `.list` - Styled list with proper spacing and markers
-
-### Visibility & Interaction
-- `.sr-only` - Screen reader only (visually hidden)
-- `.hidden` - Display none
-- `.hover-reveal` - Hidden until parent is hovered/focused
-- `.interactive` - Border color transition on hover
-- `.interactive-color` - Text color transition on hover
-- `.hide-mobile` - Hidden on mobile (max-width: 768px)
-
-### Animation
-- `.animate-spin` - Continuous rotation animation
-- `.animate-pulse` - Pulsing opacity animation
-
-## Common Patterns
-
-### Form with Validation
-```tsx
-<form class="stack" onSubmit={handleSubmit}>
-  <FormField label="Email" error={errors().email} required id="email">
-    <Input id="email" type="email" error={!!errors().email} value={email()} onInput={e => setEmail(e.target.value)} />
-  </FormField>
-  <FormField label="Password" error={errors().password} required id="password">
-    <Input id="password" type="password" error={!!errors().password} />
-  </FormField>
-  <Button type="submit" loading={submitting()}>Submit</Button>
-</form>
-```
-
-### Confirmation Modal
-```tsx
-<Modal open={open()} onClose={() => setOpen(false)}>
-  <ModalHeader><ModalTitle>Confirm Delete</ModalTitle></ModalHeader>
-  <ModalBody>Are you sure you want to delete this item?</ModalBody>
-  <ModalFooter>
-    <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
-    <Button variant="danger" onClick={handleDelete}>Delete</Button>
-  </ModalFooter>
-</Modal>
-```
-
-### Card Grid
-```tsx
-<div class="grid">
-  <For each={items()}>
-    {item => (
-      <Card interactive onClick={() => handleClick(item.id)}>
-        <CardHeader>
-          <CardTitle>{item.title}</CardTitle>
-          <CardDescription>{item.description}</CardDescription>
-        </CardHeader>
-        <CardFooter>
-          <Badge variant={item.status}>{item.status}</Badge>
-        </CardFooter>
-      </Card>
-    )}
-  </For>
-</div>
-```
-
-### Loading State
-```tsx
-<Show when={!loading()} fallback={
-  <div class="stack" style="align-items: center; padding: var(--space-lg)">
-    <Spinner />
-    <span class="text-muted">Loading...</span>
-  </div>
-}>
-  <Content />
-</Show>
-```
-
-### Empty State with Action
-```tsx
-<Show when={items().length === 0}>
-  <Empty
-    icon={<InboxIcon />}
-    title="No items yet"
-    description="Get started by creating your first item"
-  >
-    <Button onClick={handleCreate}>Create Item</Button>
-  </Empty>
-</Show>
-```
-
-### Settings Toggle List
-```tsx
-<Card>
-  <CardHeader><CardTitle>Notifications</CardTitle></CardHeader>
-  <CardContent>
-    <div class="stack">
-      <Toggle label="Email notifications" description="Receive updates via email" checked={settings().email} onChange={() => toggle('email')} />
-      <Toggle label="Push notifications" description="Receive mobile alerts" checked={settings().push} onChange={() => toggle('push')} />
-    </div>
-  </CardContent>
-</Card>
-```
-
-## Accessibility Quick Reference
-
-- **Button**: Use `label` prop for icon-only buttons; loading announces via aria-busy
-- **Modal**: Focus trap enabled; ESC closes; uses role='dialog' and aria-modal
-- **Dropdown**: Arrow keys navigate; ESC closes; Enter/Space activates
-- **Tabs**: Arrow keys switch tabs; proper ARIA roles (tablist, tab, tabpanel)
-- **Checkbox/Toggle**: Always provide `label` prop; Space to toggle
-- **Input/Textarea/Select**: Always wrap in FormField for label association
-- **Collapsible**: Uses aria-expanded; Enter/Space to toggle
-- **Spinner**: Respects prefers-reduced-motion; add sr-only text for context
-
-## Common Mistakes to Avoid
-
-- **Button**: Forgetting `label` prop on icon buttons - screen readers won't announce the purpose
-- **Modal**: Forgetting `onClose` handler - modal won't close on backdrop click or ESC
-- **Input**: Using without FormField - missing accessible label
-- **Checkbox**: Using without `label` prop - accessibility issue
-- **Tabs**: Mismatched Tab value and TabPanel value - content won't show
-- **Card**: Using `interactive` without adding click handler or wrapping in link
-- **FormField**: Mismatched `id` between FormField and Input - label won't associate
+- `.stack`, `.stack-sm`, `.stack-lg` - Vertical flex layouts
+- `.row`, `.row-sm`, `.row-lg` - Horizontal flex layouts  
+- `.grid`, `.grid-2`, `.grid-3`, `.grid-4` - Grid layouts
+- `.text-primary`, `.text-muted`, `.text-subtle`, `.text-faint` - Text colors
+- `.truncate`, `.sr-only`, `.hidden` - Utilities
 
 ## Links
 
