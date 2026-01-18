@@ -1,0 +1,130 @@
+---
+title: TypeScript
+description: Using TypeScript types with @f0rbit/ui
+---
+
+## Overview
+
+The library is written in TypeScript and exports all prop types alongside their components. This enables full type safety when using components and makes it easy to extend or wrap them in your application.
+
+## Importing Types
+
+All prop types follow the `{ComponentName}Props` naming convention:
+
+```tsx
+import type { ButtonProps, CardProps, ModalProps } from "@f0rbit/ui";
+```
+
+For components with variants or sizes, those types are also exported:
+
+```tsx
+import type { ButtonVariant, ButtonSize } from "@f0rbit/ui";
+import type { BadgeVariant } from "@f0rbit/ui";
+import type { StatusState } from "@f0rbit/ui";
+import type { SpinnerSize } from "@f0rbit/ui";
+import type { ChevronFacing } from "@f0rbit/ui";
+import type { StepStatus } from "@f0rbit/ui";
+import type { TimelineItemVariant } from "@f0rbit/ui";
+```
+
+## Common Type Patterns
+
+### Extending Component Props
+
+Create wrapper components that accept all original props plus your additions:
+
+```tsx
+import type { ButtonProps } from "@f0rbit/ui";
+import { Button } from "@f0rbit/ui";
+
+type SubmitButtonProps = ButtonProps & {
+  isSubmitting?: boolean;
+};
+
+const SubmitButton = (props: SubmitButtonProps) => (
+  <Button
+    {...props}
+    loading={props.isSubmitting}
+    disabled={props.disabled || props.isSubmitting}
+  >
+    {props.children}
+  </Button>
+);
+```
+
+### Type-Safe Variant Selection
+
+Use the variant types to ensure valid values:
+
+```tsx
+import type { ButtonVariant } from "@f0rbit/ui";
+
+const variantMap: Record<string, ButtonVariant> = {
+  save: "primary",
+  cancel: "outline",
+  delete: "danger",
+};
+```
+
+### Props Spreading with Omit
+
+When wrapping components with custom behavior:
+
+```tsx
+import type { InputProps } from "@f0rbit/ui";
+import { Input } from "@f0rbit/ui";
+
+type CurrencyInputProps = Omit<InputProps, "type" | "value" | "onInput"> & {
+  value: number;
+  onValueChange: (value: number) => void;
+};
+```
+
+## Type Reference
+
+### Component Props
+
+| Type | Description |
+|------|-------------|
+| `ButtonProps` | Button component props including variant, size, loading state |
+| `BadgeProps` | Badge component props with variant options |
+| `CardProps` | Card container props |
+| `CheckboxProps` | Checkbox input with label and description |
+| `ChevronProps` | Directional chevron icon |
+| `ClampProps` | Text clamping component |
+| `CollapsibleProps` | Expandable/collapsible container |
+| `DropdownProps` | Dropdown menu container |
+| `DropdownTriggerProps` | Dropdown trigger element |
+| `DropdownMenuProps` | Dropdown menu panel |
+| `DropdownItemProps` | Individual dropdown item |
+| `EmptyProps` | Empty state placeholder |
+| `FormFieldProps` | Form field wrapper with label and error |
+| `InputProps` | Text input field |
+| `TextareaProps` | Multi-line text input |
+| `SelectProps` | Select dropdown input |
+| `ModalProps` | Modal dialog container |
+| `SpinnerProps` | Loading spinner |
+| `StatProps` | Statistic display |
+| `StatusProps` | Status indicator dot |
+| `StepperProps` | Step progress container |
+| `StepProps` | Individual step item |
+| `TabsProps` | Tabs container |
+| `TabListProps` | Tab button list |
+| `TabProps` | Individual tab button |
+| `TabPanelProps` | Tab content panel |
+| `TimelineProps` | Timeline container |
+| `ToggleProps` | Toggle switch input |
+
+### Variant & Utility Types
+
+| Type | Values |
+|------|--------|
+| `ButtonVariant` | `"primary"` \| `"secondary"` \| `"outline"` \| `"ghost"` \| `"danger"` |
+| `ButtonSize` | `"sm"` \| `"md"` \| `"lg"` |
+| `BadgeVariant` | `"default"` \| `"secondary"` \| `"success"` \| `"warning"` \| `"danger"` |
+| `StatusState` | `"success"` \| `"warning"` \| `"error"` \| `"info"` \| `"inactive"` |
+| `SpinnerSize` | `"sm"` \| `"md"` \| `"lg"` |
+| `ChevronFacing` | `"up"` \| `"down"` \| `"left"` \| `"right"` |
+| `StepStatus` | `"complete"` \| `"current"` \| `"upcoming"` |
+| `TimelineItemVariant` | `"default"` \| `"success"` \| `"warning"` \| `"error"` |
+| `TimelineItem` | Object type for timeline entries |
