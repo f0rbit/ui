@@ -60,6 +60,38 @@ const [activeTab, setActiveTab] = createSignal("tab1");
 </Tabs>
 ```
 
+## Keyboard Navigation
+
+The Tabs component supports keyboard interaction following WAI-ARIA patterns:
+
+| Key | Action |
+|-----|--------|
+| `Tab` | Moves focus into the tab list, landing on the active tab |
+| `Enter` / `Space` | Activates the focused tab (if not already active) |
+| `Tab` (from tab list) | Moves focus to the active panel content |
+
+Note: Arrow key navigation between tabs is not currently implemented. Users can navigate between tabs using `Tab` to move focus out and back into the tab list, or by clicking directly on tabs.
+
+## Accessibility
+
+The Tabs component implements proper ARIA attributes for screen reader support:
+
+### ARIA Roles & Attributes
+- **TabList**: `role="tablist"` - identifies the container as a tab list
+- **Tab**: `role="tab"` with `aria-selected` - indicates the tab's selection state
+- **TabPanel**: `role="tabpanel"` with `hidden` - associates content with its tab
+
+### Focus Management
+- Active tab has `tabindex="0"` (focusable in normal tab order)
+- Inactive tabs have `tabindex="-1"` (focusable only programmatically)
+- Only the active panel is visible; others are hidden from the DOM
+
+### Screen Reader Behavior
+Screen readers will announce:
+- The tab role and its label
+- Whether the tab is selected
+- The position in the tab list (e.g., "tab 1 of 3")
+
 ## Props
 
 ### Tabs
