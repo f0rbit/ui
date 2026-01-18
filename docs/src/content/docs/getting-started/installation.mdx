@@ -6,13 +6,41 @@ description: How to install @f0rbit/ui
 ## Install the package
 
 ```bash
+# bun (recommended)
 bun add @f0rbit/ui
+
+# npm
+npm install @f0rbit/ui
+
+# pnpm
+pnpm add @f0rbit/ui
+```
+
+### Peer Dependencies
+
+This library requires SolidJS ^1.8.0 as a peer dependency. If you don't have it installed:
+
+```bash
+bun add solid-js
 ```
 
 ## Import styles
 
+Import the styles once in your app's entry point:
+
 ```tsx
 import "@f0rbit/ui/styles";
+```
+
+### Granular Style Imports
+
+If you prefer more control, import individual style layers:
+
+```tsx
+import "@f0rbit/ui/styles/tokens";      // CSS variables (colors, spacing, etc.)
+import "@f0rbit/ui/styles/reset";       // CSS reset
+import "@f0rbit/ui/styles/utilities";   // Utility classes
+import "@f0rbit/ui/styles/components";  // Component styles
 ```
 
 ## Use components
@@ -24,3 +52,209 @@ import { Button, Card } from "@f0rbit/ui";
   <Button>Click me</Button>
 </Card>
 ```
+
+---
+
+## Framework Integration
+
+### Vite + SolidJS
+
+For a standard Vite + SolidJS project:
+
+```tsx
+// src/index.tsx (or main.tsx)
+import { render } from "solid-js/web";
+import "@f0rbit/ui/styles";
+import App from "./App";
+
+render(() => <App />, document.getElementById("root")!);
+```
+
+Your `vite.config.ts` typically requires no special configuration:
+
+```ts
+import { defineConfig } from "vite";
+import solidPlugin from "vite-plugin-solid";
+
+export default defineConfig({
+  plugins: [solidPlugin()],
+});
+```
+
+### Astro + SolidJS
+
+For Astro with the SolidJS integration:
+
+1. Ensure you have the SolidJS integration installed:
+
+```bash
+bun add @astrojs/solid-js
+```
+
+2. Import styles in your layout or page:
+
+```astro
+---
+// src/layouts/Layout.astro
+import "@f0rbit/ui/styles";
+---
+
+<html>
+  <body>
+    <slot />
+  </body>
+</html>
+```
+
+3. Use components in `.astro` files with the `client:` directive:
+
+```astro
+---
+import { Button } from "@f0rbit/ui";
+---
+
+<Button client:load>Click me</Button>
+```
+
+Or in SolidJS components (`.tsx` files) as normal:
+
+```tsx
+// src/components/MyComponent.tsx
+import { Button, Card } from "@f0rbit/ui";
+
+export default function MyComponent() {
+  return (
+    <Card>
+      <Button>Click me</Button>
+    </Card>
+  );
+}
+```
+
+---
+
+## TypeScript Configuration
+
+@f0rbit/ui ships with full TypeScript support. Types are automatically resolved from the package.
+
+### Recommended tsconfig.json
+
+```json
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  }
+}
+```
+
+### Type Imports
+
+All component props are exported as types:
+
+```tsx
+import type { ButtonProps, CardProps, ModalProps } from "@f0rbit/ui";
+
+const myButtonProps: ButtonProps = {
+  variant: "primary",
+  size: "md",
+  loading: false,
+};
+```
+
+---
+
+## Troubleshooting
+
+### Styles not loading
+
+**Symptom**: Components render but appear unstyled.
+
+**Solution**: Ensure you import styles in your app's entry point:
+
+```tsx
+import "@f0rbit/ui/styles";
+```
+
+For Vite, verify the import is in your `index.tsx` or `main.tsx`, not just in individual components.
+
+For Astro, import in your layout file or use `is:global` in a style tag.
+
+### Types not working
+
+**Symptom**: TypeScript errors or missing type definitions.
+
+**Solution**: Check your `tsconfig.json`:
+
+1. Ensure `moduleResolution` is set to `"bundler"` or `"node16"`:
+
+```json
+{
+  "compilerOptions": {
+    "moduleResolution": "bundler"
+  }
+}
+```
+
+2. If using older module resolution, try adding the package to `types`:
+
+```json
+{
+  "compilerOptions": {
+    "types": ["@f0rbit/ui"]
+  }
+}
+```
+
+### Components not rendering (SSR)
+
+**Symptom**: Components don't appear or throw hydration errors in SSR frameworks.
+
+**Solution**: For Astro, ensure you add a `client:` directive:
+
+```astro
+<Button client:load>Works</Button>  <!-- Correct -->
+<Button>Missing directive</Button>  <!-- Won't hydrate -->
+```
+
+Available directives: `client:load`, `client:idle`, `client:visible`.
+
+### CSS specificity conflicts
+
+**Symptom**: Your custom styles are being overridden by component styles.
+
+**Solution**: @f0rbit/ui uses CSS `@layer` for lower specificity. Your styles should naturally win. If not, wrap your overrides:
+
+```css
+/* Your styles will override component styles */
+.my-button {
+  background: red;
+}
+```
+
+Or use CSS variables for theming instead:
+
+```css
+:root {
+  --accent: oklch(55% 0.2 250);
+}
+```
+
+### Dark mode not working
+
+**Symptom**: Components don't respond to dark mode.
+
+**Solution**: @f0rbit/ui automatically respects `prefers-color-scheme`. To force a mode, add a class to your root element:
+
+```html
+<html class="dark">  <!-- Force dark mode -->
+<html class="light"> <!-- Force light mode -->
+```
+
+Or use CSS custom properties to override token values. See [Theming](/getting-started/theming/) for details.
