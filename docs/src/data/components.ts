@@ -16,6 +16,9 @@ export interface ComponentMeta {
 	importStatement: string;
 	props: PropMeta[];
 	examples: ExampleMeta[];
+	accessibilityNotes?: string[];
+	compositionPatterns?: string[];
+	commonMistakes?: string[];
 }
 
 export const components: ComponentMeta[] = [
@@ -38,6 +41,21 @@ export const components: ComponentMeta[] = [
 			{ title: "Loading", code: "<Button loading>Loading...</Button>" },
 			{ title: "Icon Button", code: '<Button icon label="Add"><PlusIcon /></Button>\n<Button icon label="Edit" variant="ghost"><EditIcon /></Button>' },
 		],
+		accessibilityNotes: [
+			"Always use the label prop for icon-only buttons (sets aria-label)",
+			"Loading state announces to screen readers via aria-busy",
+			"Disabled buttons are focusable but not interactive",
+		],
+		compositionPatterns: [
+			"Use with Dropdown: <DropdownTrigger><Button>Menu</Button></DropdownTrigger>",
+			"Use in Modal footer: <ModalFooter><Button variant=\"ghost\">Cancel</Button><Button>Confirm</Button></ModalFooter>",
+			"Use in Card: <CardFooter><Button>Action</Button></CardFooter>",
+		],
+		commonMistakes: [
+			"Forgetting label prop on icon buttons - screen readers won't announce the purpose",
+			"Using loading without disabling form submission - can cause double submits",
+			"Using ghost variant for primary actions - use primary for main CTAs",
+		],
 	},
 	{
 		name: "Badge",
@@ -47,6 +65,19 @@ export const components: ComponentMeta[] = [
 		examples: [
 			{ title: "Basic", code: "<Badge>Default</Badge>" },
 			{ title: "Variants", code: '<Badge variant="success">Success</Badge>\n<Badge variant="error">Error</Badge>\n<Badge variant="warning">Warning</Badge>\n<Badge variant="info">Info</Badge>\n<Badge variant="accent">Accent</Badge>' },
+		],
+		accessibilityNotes: [
+			"Badge is purely visual - not announced separately by screen readers",
+			"Content inside Badge is read as normal text",
+		],
+		compositionPatterns: [
+			"In Card header: <CardTitle>Title <Badge>New</Badge></CardTitle>",
+			"With Button: <Button>Updates <Badge variant=\"accent\">3</Badge></Button>",
+			"Group badges with cluster: <div class=\"cluster\"><Badge>Tag1</Badge><Badge>Tag2</Badge></div>",
+		],
+		commonMistakes: [
+			"Using Badge for interactive elements - use Button instead",
+			"Relying on color alone to convey meaning - always include text",
 		],
 	},
 	{
@@ -60,6 +91,20 @@ export const components: ComponentMeta[] = [
 				code: "<Card>\n  <CardHeader>\n    <CardTitle>Card Title</CardTitle>\n    <CardDescription>Card description text</CardDescription>\n  </CardHeader>\n  <CardContent>Main content goes here</CardContent>\n  <CardFooter>Footer content</CardFooter>\n</Card>",
 			},
 			{ title: "Interactive", code: "<Card interactive>\n  <CardContent>Click me!</CardContent>\n</Card>" },
+		],
+		accessibilityNotes: [
+			"Interactive cards should have role='button' or be wrapped in a link",
+			"Use CardTitle for proper heading hierarchy",
+		],
+		compositionPatterns: [
+			"With form: <Card><CardContent><FormField>...</FormField></CardContent><CardFooter><Button>Submit</Button></CardFooter></Card>",
+			"With tabs: <Card><Tabs>...</Tabs></Card>",
+			"Card grid: <div class=\"grid\"><Card>...</Card><Card>...</Card></div>",
+		],
+		commonMistakes: [
+			"Using interactive without adding click handler or wrapping in link",
+			"Nesting interactive cards - avoid nested clickable elements",
+			"Missing CardHeader/CardContent structure - use sub-components for consistency",
 		],
 	},
 	{
@@ -76,6 +121,23 @@ export const components: ComponentMeta[] = [
 				code: "const [open, setOpen] = createSignal(false);\n\n<Button onClick={() => setOpen(true)}>Open Modal</Button>\n<Modal open={open()} onClose={() => setOpen(false)}>\n  <ModalHeader>\n    <ModalTitle>Modal Title</ModalTitle>\n  </ModalHeader>\n  <ModalBody>Modal content</ModalBody>\n  <ModalFooter>\n    <Button onClick={() => setOpen(false)}>Close</Button>\n  </ModalFooter>\n</Modal>",
 			},
 		],
+		accessibilityNotes: [
+			"Focus is trapped inside modal when open",
+			"ESC key closes the modal",
+			"Clicking backdrop closes the modal",
+			"Uses aria-modal and role='dialog'",
+			"ModalTitle is announced as the dialog label",
+		],
+		compositionPatterns: [
+			"Confirmation dialog: <ModalFooter><Button variant=\"ghost\" onClick={onClose}>Cancel</Button><Button variant=\"danger\" onClick={onConfirm}>Delete</Button></ModalFooter>",
+			"Form modal: <ModalBody><form><FormField>...</FormField></form></ModalBody>",
+			"With Stepper: <ModalBody><Stepper>...</Stepper></ModalBody> for wizard flows",
+		],
+		commonMistakes: [
+			"Forgetting onClose handler - modal won't close on backdrop click or ESC",
+			"Not providing ModalTitle - screen readers need a label for the dialog",
+			"Putting autofocus elements without considering keyboard users",
+		],
 	},
 	{
 		name: "Dropdown",
@@ -87,6 +149,21 @@ export const components: ComponentMeta[] = [
 				title: "Basic",
 				code: '<Dropdown>\n  <DropdownTrigger>\n    <Button>Open Menu</Button>\n  </DropdownTrigger>\n  <DropdownMenu>\n    <DropdownItem onClick={() => console.log("Item 1")}>Item 1</DropdownItem>\n    <DropdownItem onClick={() => console.log("Item 2")}>Item 2</DropdownItem>\n    <DropdownDivider />\n    <DropdownItem onClick={() => console.log("Item 3")}>Item 3</DropdownItem>\n  </DropdownMenu>\n</Dropdown>',
 			},
+		],
+		accessibilityNotes: [
+			"Menu opens on click, closes on outside click or ESC",
+			"Arrow keys navigate between items",
+			"Enter/Space activates focused item",
+		],
+		compositionPatterns: [
+			"Actions menu: <DropdownItem><EditIcon /> Edit</DropdownItem>",
+			"Danger item: Use text-danger class for destructive actions",
+			"With Button: <DropdownTrigger><Button icon label=\"More\"><MoreIcon /></Button></DropdownTrigger>",
+		],
+		commonMistakes: [
+			"Putting complex interactive content in DropdownItem - keep items simple",
+			"Using for navigation - consider a proper nav component instead",
+			"Forgetting DropdownTrigger wrapper around the trigger element",
 		],
 	},
 	{
@@ -103,6 +180,20 @@ export const components: ComponentMeta[] = [
 			{ title: "Basic", code: '<Collapsible trigger="Click to expand">\n  <p>This content is collapsible.</p>\n</Collapsible>' },
 			{ title: "Default Open", code: '<Collapsible trigger="Already expanded" defaultOpen>\n  <p>This is visible by default.</p>\n</Collapsible>' },
 		],
+		accessibilityNotes: [
+			"Trigger is keyboard accessible (Enter/Space to toggle)",
+			"Uses aria-expanded to announce state",
+			"Content region is properly associated with trigger",
+		],
+		compositionPatterns: [
+			"FAQ list: <div class=\"stack\">{faqs.map(faq => <Collapsible trigger={faq.q}>{faq.a}</Collapsible>)}</div>",
+			"Custom trigger: <Collapsible trigger={<div class=\"row\"><span>Title</span><Chevron /></div>}>...</Collapsible>",
+			"Nested: Collapsibles can be nested for hierarchical content",
+		],
+		commonMistakes: [
+			"Using both defaultOpen and open props - pick controlled or uncontrolled",
+			"Complex interactive content in trigger - keep trigger simple",
+		],
 	},
 	{
 		name: "Stepper",
@@ -115,6 +206,18 @@ export const components: ComponentMeta[] = [
 				code: '<Stepper>\n  <Step title="Step 1" description="First step" status="completed" />\n  <Step title="Step 2" description="Second step" status="current" />\n  <Step title="Step 3" description="Third step" status="upcoming" />\n</Stepper>',
 			},
 			{ title: "Vertical", code: '<Stepper orientation="vertical">\n  <Step title="Step 1" status="completed" />\n  <Step title="Step 2" status="current" />\n  <Step title="Step 3" status="upcoming" />\n</Stepper>' },
+		],
+		accessibilityNotes: [
+			"Steps announce their status via aria-current for current step",
+			"Completed steps show checkmark for visual confirmation",
+		],
+		compositionPatterns: [
+			"Wizard in Modal: <ModalBody><Stepper>...</Stepper><div>{stepContent()}</div></ModalBody>",
+			"Checkout flow: Map step index to status based on current step",
+		],
+		commonMistakes: [
+			"Making Step indicators clickable without implementing navigation",
+			"Not updating status props when step changes",
 		],
 	},
 	{
@@ -146,6 +249,20 @@ export const components: ComponentMeta[] = [
 			{ title: "Error State", code: '<Input error placeholder="Invalid input" />' },
 			{ title: "Disabled", code: '<Input disabled value="Disabled input" />' },
 		],
+		accessibilityNotes: [
+			"Always pair with FormField for proper label association",
+			"Error state is visual only - use FormField error prop for error message",
+			"Use aria-describedby for additional context if not using FormField",
+		],
+		compositionPatterns: [
+			"With FormField: <FormField label=\"Email\" id=\"email\"><Input id=\"email\" type=\"email\" /></FormField>",
+			"With icon: Wrap in div.row and add icon before/after Input",
+		],
+		commonMistakes: [
+			"Using Input without FormField - missing accessible label",
+			"Setting error={true} without showing error message",
+			"Forgetting to match id prop with FormField id",
+		],
 	},
 	{
 		name: "Textarea",
@@ -160,6 +277,16 @@ export const components: ComponentMeta[] = [
 			{ title: "Basic", code: '<Textarea placeholder="Enter multiple lines..." />' },
 			{ title: "Error State", code: '<Textarea error placeholder="Invalid content" />' },
 		],
+		accessibilityNotes: [
+			"Always pair with FormField for proper label association",
+			"Same accessibility considerations as Input",
+		],
+		compositionPatterns: [
+			"With FormField: <FormField label=\"Description\"><Textarea rows={4} /></FormField>",
+		],
+		commonMistakes: [
+			"Using Textarea without FormField - missing accessible label",
+		],
 	},
 	{
 		name: "Select",
@@ -172,6 +299,17 @@ export const components: ComponentMeta[] = [
 		examples: [
 			{ title: "Basic", code: '<Select>\n  <option value="">Select an option</option>\n  <option value="1">Option 1</option>\n  <option value="2">Option 2</option>\n  <option value="3">Option 3</option>\n</Select>' },
 			{ title: "Error State", code: '<Select error>\n  <option value="">Select required</option>\n</Select>' },
+		],
+		accessibilityNotes: [
+			"Uses native select element - fully accessible by default",
+			"Pair with FormField for label association",
+		],
+		compositionPatterns: [
+			"With FormField: <FormField label=\"Country\" required><Select>...</Select></FormField>",
+		],
+		commonMistakes: [
+			"Using Select without FormField - missing accessible label",
+			"Forgetting empty first option for placeholder",
 		],
 	},
 	{
@@ -186,6 +324,17 @@ export const components: ComponentMeta[] = [
 			{ title: "States", code: '<Status state="active" />\n<Status state="inactive" />\n<Status state="error" />\n<Status state="pending" />' },
 			{ title: "Custom Label", code: '<Status state="active" label="Online" />' },
 		],
+		accessibilityNotes: [
+			"Status label is always shown (not just color)",
+			"Color is supplementary, not sole indicator",
+		],
+		compositionPatterns: [
+			"In table row: <td><Status state={row.status} /></td>",
+			"In Card header: <CardHeader><div class=\"row-between\"><CardTitle>Server</CardTitle><Status state=\"active\" /></div></CardHeader>",
+		],
+		commonMistakes: [
+			"Relying on color alone - always provide meaningful label",
+		],
 	},
 	{
 		name: "Stat",
@@ -199,6 +348,16 @@ export const components: ComponentMeta[] = [
 			{ title: "Basic", code: '<Stat value={42} label="Total Users" />' },
 			{ title: "String Value", code: '<Stat value="99.9%" label="Uptime" />' },
 		],
+		accessibilityNotes: [
+			"Label and value are properly associated for screen readers",
+		],
+		compositionPatterns: [
+			"Stats grid: <div class=\"grid-3\">{stats.map(s => <Stat value={s.value} label={s.label} />)}</div>",
+			"In Card: <Card><CardContent><div class=\"grid-3\"><Stat /><Stat /><Stat /></div></CardContent></Card>",
+		],
+		commonMistakes: [
+			"Using for interactive data - Stat is display only",
+		],
 	},
 	{
 		name: "Spinner",
@@ -206,6 +365,18 @@ export const components: ComponentMeta[] = [
 		importStatement: 'import { Spinner } from "@f0rbit/ui";',
 		props: [{ name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Size of the spinner" }],
 		examples: [{ title: "Sizes", code: '<Spinner size="sm" />\n<Spinner size="md" />\n<Spinner size="lg" />' }],
+		accessibilityNotes: [
+			"Respects prefers-reduced-motion (animation disabled)",
+			"Add aria-label or sr-only text for screen readers when used standalone",
+		],
+		compositionPatterns: [
+			"In Button: <Button loading> uses Spinner internally",
+			"Loading state: <Show when={loading()} fallback={<Content />}><Spinner /></Show>",
+			"Centered loading: <div class=\"stack\" style=\"align-items: center\"><Spinner /><span class=\"text-muted\">Loading...</span></div>",
+		],
+		commonMistakes: [
+			"Using without accessible label - add sr-only text nearby",
+		],
 	},
 	{
 		name: "Empty",
@@ -220,6 +391,17 @@ export const components: ComponentMeta[] = [
 		examples: [
 			{ title: "Basic", code: '<Empty\n  title="No items found"\n  description="Try adjusting your filters"\n/>' },
 			{ title: "With Action", code: '<Empty title="No data" description="Get started by adding an item">\n  <Button>Add Item</Button>\n</Empty>' },
+		],
+		accessibilityNotes: [
+			"Title is a heading (h3) for proper document structure",
+			"Action buttons remain fully accessible",
+		],
+		compositionPatterns: [
+			"List empty state: <Show when={items.length === 0}><Empty title=\"No items\" /></Show>",
+			"Search empty: <Empty icon={<SearchIcon />} title=\"No results\" description={`No results for \"${query}\"`} />",
+		],
+		commonMistakes: [
+			"Using Empty for error states - consider a dedicated error component",
 		],
 	},
 	{
@@ -237,6 +419,17 @@ export const components: ComponentMeta[] = [
 				code: "<Clamp lines={2}>\n  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n  Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n  Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>\n</Clamp>",
 			},
 		],
+		accessibilityNotes: [
+			"Expand/collapse button is keyboard accessible",
+			"Full content is accessible when expanded",
+		],
+		compositionPatterns: [
+			"Description preview: <Clamp lines={3}>{longDescription}</Clamp>",
+		],
+		commonMistakes: [
+			"Using with very short content - button shows when not needed",
+			"Using lines={1} - consider truncate utility class instead",
+		],
 	},
 	{
 		name: "Chevron",
@@ -250,6 +443,17 @@ export const components: ComponentMeta[] = [
 		examples: [
 			{ title: "Basic", code: "<Chevron />\n<Chevron expanded />" },
 			{ title: "Facing Down", code: '<Chevron facing="down" />\n<Chevron facing="down" expanded />' },
+		],
+		accessibilityNotes: [
+			"Decorative - use with proper ARIA on parent element",
+			"Rotation animation respects prefers-reduced-motion",
+		],
+		compositionPatterns: [
+			"Custom Collapsible trigger: <div class=\"row\"><span>Section</span><Chevron expanded={isOpen()} /></div>",
+			"Tree view: <button onClick={toggle}><Chevron expanded={expanded()} /> {name}</button>",
+		],
+		commonMistakes: [
+			"Using as standalone button - wrap in button with aria-expanded",
 		],
 	},
 	{
@@ -266,6 +470,21 @@ export const components: ComponentMeta[] = [
 				title: "Basic",
 				code: '<Tabs defaultValue="tab1">\n  <TabList>\n    <Tab value="tab1">Tab 1</Tab>\n    <Tab value="tab2">Tab 2</Tab>\n  </TabList>\n  <TabPanel value="tab1">Content 1</TabPanel>\n  <TabPanel value="tab2">Content 2</TabPanel>\n</Tabs>',
 			},
+		],
+		accessibilityNotes: [
+			"Arrow keys navigate between tabs",
+			"Tab/Shift+Tab moves focus in/out of tab list",
+			"Uses proper ARIA roles (tablist, tab, tabpanel)",
+			"Active tab indicated via aria-selected",
+		],
+		compositionPatterns: [
+			"In Card: <Card><CardContent><Tabs>...</Tabs></CardContent></Card>",
+			"With icons: <Tab value=\"settings\"><SettingsIcon /> Settings</Tab>",
+		],
+		commonMistakes: [
+			"Mismatched Tab value and TabPanel value - content won't show",
+			"Using both defaultValue and value - pick controlled or uncontrolled",
+			"Putting TabPanel outside of Tabs - context won't work",
 		],
 	},
 	
@@ -286,6 +505,19 @@ export const components: ComponentMeta[] = [
 			{ title: "With Label", code: '<Checkbox label="Accept terms and conditions" />' },
 			{ title: "With Description", code: '<Checkbox label="Email notifications" description="Receive email updates about your account" />' },
 		],
+		accessibilityNotes: [
+			"Label prop creates proper label association automatically",
+			"Keyboard accessible - Space to toggle",
+			"Indeterminate state announced by screen readers",
+		],
+		compositionPatterns: [
+			"Checkbox group: <div class=\"stack-sm\">{options.map(o => <Checkbox label={o.label} checked={selected.has(o.id)} />)}</div>",
+			"Select all: <Checkbox indeterminate={someSelected && !allSelected} checked={allSelected} label=\"Select all\" />",
+		],
+		commonMistakes: [
+			"Using Checkbox without label prop - accessibility issue",
+			"Forgetting onChange handler for controlled checkboxes",
+		],
 	},
 	{
 		name: "Toggle",
@@ -304,6 +536,18 @@ export const components: ComponentMeta[] = [
 			{ title: "With Label", code: '<Toggle label="Dark mode" />' },
 			{ title: "With Description", code: '<Toggle label="Push notifications" description="Receive alerts when someone mentions you" />' },
 		],
+		accessibilityNotes: [
+			"Uses role='switch' for proper screen reader announcement",
+			"Space/Enter to toggle",
+			"Label prop creates proper association",
+		],
+		compositionPatterns: [
+			"Settings page: <Card><CardContent><div class=\"stack\">{settings.map(s => <Toggle label={s.name} description={s.desc} />)}</div></CardContent></Card>",
+		],
+		commonMistakes: [
+			"Using Toggle without label - accessibility issue",
+			"Using Toggle for multi-option selection - use Checkbox or radio instead",
+		],
 	},
 	{
 		name: "FormField",
@@ -320,6 +564,19 @@ export const components: ComponentMeta[] = [
 			{ title: "Basic", code: '<FormField label="Username" id="username">\n  <Input id="username" placeholder="Enter username" />\n</FormField>' },
 			{ title: "With Error", code: '<FormField label="Email" error="Invalid email address" id="email">\n  <Input id="email" error />\n</FormField>' },
 		],
+		accessibilityNotes: [
+			"Automatically associates label with input via htmlFor/id",
+			"Error messages are linked via aria-describedby",
+			"Required indicator shown visually and via aria-required",
+		],
+		compositionPatterns: [
+			"Form layout: <form class=\"stack\"><FormField>...</FormField><FormField>...</FormField><Button type=\"submit\">Submit</Button></form>",
+			"With any input type: Works with Input, Textarea, Select",
+		],
+		commonMistakes: [
+			"Mismatched id between FormField and Input - label won't associate",
+			"Setting error on FormField but forgetting error prop on Input - visual mismatch",
+		],
 	},
 	{
 		name: "Timeline",
@@ -330,6 +587,17 @@ export const components: ComponentMeta[] = [
 		],
 		examples: [
 			{ title: "Basic", code: '<Timeline items={[\n  { id: 1, title: "Order placed", timestamp: "10:30 AM" },\n  { id: 2, title: "Processing", timestamp: "10:45 AM" },\n  { id: 3, title: "Shipped", timestamp: "2:15 PM" },\n]} />' },
+		],
+		accessibilityNotes: [
+			"Uses list semantics for proper screen reader navigation",
+			"Timestamps are properly associated with events",
+		],
+		compositionPatterns: [
+			"Activity log: <Timeline items={activities.map(a => ({ id: a.id, title: a.action, timestamp: formatDate(a.time), description: a.details }))} />",
+			"With custom icons: TimelineItem supports icon property",
+		],
+		commonMistakes: [
+			"Large datasets without virtualization - consider pagination",
 		],
 	},
 	{
