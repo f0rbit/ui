@@ -1,10 +1,11 @@
 import type { APIRoute } from "astro";
 import { components } from "../../data/components";
+import pkg from "../../../../package.json";
 
 export const GET: APIRoute = () => {
 	const data = {
 		library: "@f0rbit/ui",
-		version: "0.1.0",
+		version: pkg.version,
 		description: "A minimal, composable UI component library for SolidJS",
 		installation: {
 			command: "bun add @f0rbit/ui",
