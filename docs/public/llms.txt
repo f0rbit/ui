@@ -361,6 +361,72 @@ const [expanded, setExpanded] = createSignal(false);
 
 ---
 
+### ChipInput
+An input field for managing a collection of string values displayed as removable chips
+
+**Exports:** ChipInput
+
+**Examples:**
+
+```tsx
+import { ChipInput } from "@f0rbit/ui";
+
+const [tags, setTags] = createSignal<string[]>([]);
+
+<ChipInput
+  value={tags()}
+  onChange={setTags}
+  placeholder="Add a tag..."
+/>
+```
+
+```tsx
+// With transform to lowercase
+<ChipInput
+  value={tags()}
+  onChange={setTags}
+  transform={(s) => s.trim().toLowerCase()}
+  placeholder="Lowercase tags..."
+/>
+```
+
+```tsx
+// With validation
+const isValidEmail = (email: string) =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+<ChipInput
+  value={emails()}
+  onChange={setEmails}
+  validate={(email) => isValidEmail(email)}
+  placeholder="Add email..."
+/>
+```
+
+```tsx
+// Custom add keys
+<ChipInput
+  value={items()}
+  onChange={setItems}
+  addKeys={["Enter", ","]}
+  placeholder="Press Enter or comma..."
+/>
+```
+
+```tsx
+// With FormField
+<FormField label="Tags" error={error()}>
+  <ChipInput
+    value={tags()}
+    onChange={setTags}
+    error={!!error()}
+    placeholder="Add tags..."
+  />
+</FormField>
+```
+
+---
+
 ### Clamp
 A text clamping component with expand/collapse functionality.
 

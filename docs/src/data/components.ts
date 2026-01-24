@@ -627,6 +627,42 @@ export const components: ComponentMeta[] = [
 		],
 		examples: [],
 	},
+	{
+		name: "ChipInput",
+		description: "An input field for managing a collection of string values displayed as removable chips.",
+		importStatement: 'import { ChipInput } from "@f0rbit/ui";',
+		props: [
+			{ name: "value", type: "string[]", description: "Array of chip values" },
+			{ name: "onChange", type: "(value: string[]) => void", description: "Callback when chips change" },
+			{ name: "transform", type: "(input: string) => string", description: "Transform input before adding (e.g., lowercase)" },
+			{ name: "validate", type: "(input: string, current: string[]) => boolean", description: "Validate input before adding" },
+			{ name: "allowDuplicates", type: "boolean", default: "false", description: "Allow duplicate chip values" },
+			{ name: "addKeys", type: "string[]", default: '["Enter"]', description: "Keys that trigger adding a chip" },
+			{ name: "placeholder", type: "string", description: "Placeholder text for the input" },
+			{ name: "disabled", type: "boolean", default: "false", description: "Disable the input" },
+			{ name: "error", type: "boolean", default: "false", description: "Show error styling" },
+		],
+		examples: [
+			{ title: "Basic", code: '<ChipInput value={tags()} onChange={setTags} placeholder="Add tag..." />' },
+			{ title: "With Transform", code: '<ChipInput value={tags()} onChange={setTags} transform={(s) => s.toLowerCase()} />' },
+			{ title: "Email Validation", code: '<ChipInput value={emails()} onChange={setEmails} validate={(email) => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)} />' },
+		],
+		accessibilityNotes: [
+			"Each chip has an accessible remove button with aria-label",
+			"Input is keyboard navigable - Enter to add chips",
+			"Use with FormField for proper label association",
+		],
+		compositionPatterns: [
+			"With FormField: <FormField label=\"Tags\"><ChipInput value={tags()} onChange={setTags} /></FormField>",
+			"Email list: <ChipInput validate={(e) => isValidEmail(e)} placeholder=\"Add email...\" />",
+			"Comma-separated: <ChipInput addKeys={[\"Enter\", \",\"]} />",
+		],
+		commonMistakes: [
+			"Forgetting to handle onChange - chips won't update",
+			"Using without FormField - missing accessible label",
+			"Setting error={true} without visual feedback to user about what's wrong",
+		],
+	},
 ];
 
 export const componentsByName = new Map(components.map(c => [c.name, c]));

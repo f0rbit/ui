@@ -1055,4 +1055,38 @@
 		background: var(--info);
 		box-shadow: 0 0 0 2px var(--info);
 	}
+
+	/* Badge removable variant */
+	.badge-removable {
+		padding-right: var(--space-xs);
+	}
+
+	.badge-remove {
+		margin-left: var(--space-xs);
+		padding: 0 !important;
+		width: auto !important;
+		height: auto !important;
+		color: inherit;
+		opacity: 0.6;
+	}
+
+	.badge-remove:hover {
+		opacity: 1;
+	}
+
+	/* ChipInput */
+	.chip-input {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+	}
+
+	.chip-input-left {
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.chip-input-left > .input {
+		flex: 1;
+	}
 }

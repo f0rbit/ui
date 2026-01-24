@@ -63,3 +63,4 @@ export {
 	type TimelineItem,
 	type TimelineItemVariant,
 } from "./components/Timeline";
+export { ChipInput, type ChipInputProps, type ChipInputLayout } from "./components/ChipInput";

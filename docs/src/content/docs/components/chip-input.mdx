@@ -1,0 +1,133 @@
+---
+title: ChipInput
+description: An input field for managing a collection of string values displayed as removable chips
+---
+
+import { ChipInputDemo } from '../../../components/demos/ChipInputDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<ChipInputDemo client:load />
+
+## Usage
+
+```tsx
+import { ChipInput } from "@f0rbit/ui";
+
+const [tags, setTags] = createSignal<string[]>([]);
+
+<ChipInput
+  value={tags()}
+  onChange={setTags}
+  placeholder="Add a tag..."
+/>
+```
+
+## Props
+
+<PropsTable props={getComponent("ChipInput").props} client:load />
+
+## Transform
+
+Use the `transform` prop to modify input before adding as a chip:
+
+```tsx
+<ChipInput
+  value={tags()}
+  onChange={setTags}
+  transform={(s) => s.trim().toLowerCase()}
+  placeholder="Lowercase tags..."
+/>
+```
+
+## Validation
+
+Use the `validate` prop to control which values can be added:
+
+```tsx
+const isValidEmail = (email: string) =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+<ChipInput
+  value={emails()}
+  onChange={setEmails}
+  validate={(email) => isValidEmail(email)}
+  placeholder="Add email..."
+/>
+```
+
+## Custom Add Keys
+
+By default, pressing Enter adds a chip. Use `addKeys` to customize:
+
+```tsx
+<ChipInput
+  value={items()}
+  onChange={setItems}
+  addKeys={["Enter", ","]}
+  placeholder="Press Enter or comma..."
+/>
+```
+
+## Allow Duplicates
+
+By default, duplicate values are prevented. Enable with `allowDuplicates`:
+
+```tsx
+<ChipInput
+  value={items()}
+  onChange={setItems}
+  allowDuplicates
+  placeholder="Duplicates allowed..."
+/>
+```
+
+## With FormField
+
+Combine with FormField for labels and error messages:
+
+```tsx
+<FormField label="Tags" error={error()}>
+  <ChipInput
+    value={tags()}
+    onChange={setTags}
+    error={!!error()}
+    placeholder="Add tags..."
+  />
+</FormField>
+```
+
+## Common Use Cases
+
+### Tag Input
+
+```tsx
+<ChipInput
+  value={tags()}
+  onChange={setTags}
+  transform={(s) => s.trim().toLowerCase()}
+  placeholder="Add tag..."
+/>
+```
+
+### Email List
+
+```tsx
+<ChipInput
+  value={emails()}
+  onChange={setEmails}
+  validate={(email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)}
+  placeholder="Add email address..."
+/>
+```
+
+### Comma-Separated Values
+
+```tsx
+<ChipInput
+  value={values()}
+  onChange={setValues}
+  addKeys={["Enter", ","]}
+  placeholder="Type values separated by comma..."
+/>
+```
