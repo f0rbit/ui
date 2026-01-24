@@ -1173,4 +1173,60 @@
 	.tree-empty {
 		color: var(--fg-faint);
 	}
+
+	/* MultiSelect */
+	.multi-select {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+	}
+
+	.multi-select-disabled {
+		opacity: 0.5;
+		pointer-events: none;
+	}
+
+	.multi-select-header {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+	}
+
+	.multi-select-header > .cluster {
+		flex: 1;
+	}
+
+	.multi-select-left .multi-select-header > .cluster {
+		flex: 1;
+	}
+
+	.multi-select-below .multi-select-header {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.multi-select-menu {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		margin-top: var(--space-xs);
+		max-height: 240px;
+		overflow-y: auto;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+		padding: var(--space-xs);
+	}
+
+	.multi-select-menu .input {
+		margin-bottom: var(--space-xs);
+	}
+
+	.multi-select-empty {
+		padding: var(--space-sm);
+		text-align: center;
+		color: var(--fg-faint);
+	}
 }

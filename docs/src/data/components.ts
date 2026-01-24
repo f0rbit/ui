@@ -699,6 +699,47 @@ export const components: ComponentMeta[] = [
 			"Deep nesting without guides - use showGuides={true} for clarity",
 		],
 	},
+	{
+		name: "MultiSelect",
+		description: "A dropdown for selecting multiple items from a list with searchable dropdown.",
+		importStatement: 'import { MultiSelect, type MultiSelectOption } from "@f0rbit/ui";',
+		props: [
+			{ name: "options", type: "MultiSelectOption[]", description: "Available options to select from" },
+			{ name: "value", type: "T[]", description: "Array of selected values" },
+			{ name: "onChange", type: "(value: T[]) => void", description: "Callback when selection changes" },
+			{ name: "placeholder", type: "string", default: '"Nothing selected"', description: "Placeholder when empty" },
+			{ name: "addLabel", type: "string", default: '"Add"', description: "Label for the add button" },
+			{ name: "doneLabel", type: "string", default: '"Done"', description: "Label for the done button" },
+			{ name: "emptyMessage", type: "string", default: '"No options available"', description: "Message when no options match" },
+			{ name: "searchable", type: "boolean", default: "false", description: "Enable search filtering" },
+			{ name: "searchPlaceholder", type: "string", default: '"Search..."', description: "Search input placeholder" },
+			{ name: "max", type: "number", description: "Maximum number of selections" },
+			{ name: "disabled", type: "boolean", default: "false", description: "Disable the select" },
+			{ name: "renderBadge", type: "(option: MultiSelectOption) => JSX.Element", description: "Custom badge rendering" },
+			{ name: "renderOption", type: "(option: MultiSelectOption) => JSX.Element", description: "Custom option rendering" },
+		],
+		examples: [
+			{ title: "Basic", code: '<MultiSelect options={options} value={selected()} onChange={setSelected} />' },
+			{ title: "Searchable", code: '<MultiSelect options={options} value={selected()} onChange={setSelected} searchable />' },
+			{ title: "With Max", code: '<MultiSelect options={options} value={selected()} onChange={setSelected} max={3} />' },
+		],
+		accessibilityNotes: [
+			"Uses listbox role with aria-multiselectable",
+			"Keyboard navigation with arrow keys",
+			"Escape closes dropdown",
+			"Selected items have accessible remove buttons",
+		],
+		compositionPatterns: [
+			"Tag assignment: <MultiSelect options={tags} searchable placeholder=\"Add tags...\" />",
+			"Role picker: <MultiSelect options={roles} max={3} addLabel=\"Assign\" />",
+			"Custom badges: <MultiSelect renderBadge={(opt) => <Badge variant=\"accent\">{opt.label}</Badge>} />",
+		],
+		commonMistakes: [
+			"Forgetting onChange handler - selections won't persist",
+			"Not providing unique values in options - selection tracking breaks",
+			"Using max without communicating limit to user",
+		],
+	},
 ];
 
 export const componentsByName = new Map(components.map(c => [c.name, c]));

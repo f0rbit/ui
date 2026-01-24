@@ -71,3 +71,9 @@ export {
 	type TreeNode,
 	type FlatTreeItem,
 } from "./components/Tree";
+export {
+	MultiSelect,
+	type MultiSelectProps,
+	type MultiSelectOption,
+	type MultiSelectLayout,
+} from "./components/MultiSelect";

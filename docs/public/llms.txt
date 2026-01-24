@@ -778,6 +778,79 @@ const [open, setOpen] = createSignal(false);
 
 ---
 
+### MultiSelect
+A dropdown for selecting multiple items from a list with searchable dropdown
+
+**Exports:** MultiSelect, MultiSelectOption (type)
+
+**Examples:**
+
+```tsx
+import { MultiSelect, type MultiSelectOption } from "@f0rbit/ui";
+
+const options: MultiSelectOption[] = [
+  { value: "apple", label: "Apple" },
+  { value: "banana", label: "Banana" },
+  { value: "cherry", label: "Cherry" },
+];
+
+const [selected, setSelected] = createSignal<string[]>([]);
+
+<MultiSelect
+  options={options}
+  value={selected()}
+  onChange={setSelected}
+  placeholder="Select fruits..."
+/>
+```
+
+```tsx
+// With search
+<MultiSelect
+  options={options}
+  value={selected()}
+  onChange={setSelected}
+  searchable
+  searchPlaceholder="Search options..."
+/>
+```
+
+```tsx
+// Options with descriptions
+const roles: MultiSelectOption[] = [
+  { value: "admin", label: "Admin", description: "Full system access" },
+  { value: "editor", label: "Editor", description: "Can edit content" },
+  { value: "viewer", label: "Viewer", description: "Read-only access" },
+];
+
+<MultiSelect
+  options={roles}
+  value={selected()}
+  onChange={setSelected}
+/>
+```
+
+```tsx
+// Maximum selection limit
+<MultiSelect
+  options={options}
+  value={selected()}
+  onChange={setSelected}
+  max={3}
+  placeholder="Select up to 3..."
+/>
+```
+
+```tsx
+// Disabled options
+const options: MultiSelectOption[] = [
+  { value: "available", label: "Available" },
+  { value: "unavailable", label: "Unavailable", disabled: true },
+];
+```
+
+---
+
 ### Spinner
 A loading indicator animation for async operations.
 

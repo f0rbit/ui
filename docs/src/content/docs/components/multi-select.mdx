@@ -1,0 +1,193 @@
+---
+title: MultiSelect
+description: A dropdown for selecting multiple items from a list with searchable dropdown
+---
+
+import { MultiSelectDemo } from '../../../components/demos/MultiSelectDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<MultiSelectDemo client:load />
+
+## Usage
+
+```tsx
+import { MultiSelect, type MultiSelectOption } from "@f0rbit/ui";
+
+const options: MultiSelectOption[] = [
+  { value: "apple", label: "Apple" },
+  { value: "banana", label: "Banana" },
+  { value: "cherry", label: "Cherry" },
+];
+
+const [selected, setSelected] = createSignal<string[]>([]);
+
+<MultiSelect
+  options={options}
+  value={selected()}
+  onChange={setSelected}
+  placeholder="Select fruits..."
+/>
+```
+
+## Props
+
+<PropsTable props={getComponent("MultiSelect").props} client:load />
+
+## Searchable
+
+Enable search filtering with `searchable`:
+
+```tsx
+<MultiSelect
+  options={options}
+  value={selected()}
+  onChange={setSelected}
+  searchable
+  searchPlaceholder="Search options..."
+/>
+```
+
+## Options with Descriptions
+
+Add descriptions to options for more context:
+
+```tsx
+const roles: MultiSelectOption[] = [
+  { value: "admin", label: "Admin", description: "Full system access" },
+  { value: "editor", label: "Editor", description: "Can edit content" },
+  { value: "viewer", label: "Viewer", description: "Read-only access" },
+];
+
+<MultiSelect
+  options={roles}
+  value={selected()}
+  onChange={setSelected}
+/>
+```
+
+## Disabled Options
+
+Individual options can be disabled:
+
+```tsx
+const options: MultiSelectOption[] = [
+  { value: "available", label: "Available" },
+  { value: "unavailable", label: "Unavailable", disabled: true },
+];
+```
+
+## Maximum Selection
+
+Limit the number of selections with `max`:
+
+```tsx
+<MultiSelect
+  options={options}
+  value={selected()}
+  onChange={setSelected}
+  max={3}
+  placeholder="Select up to 3..."
+/>
+```
+
+## Custom Labels
+
+Customize the Add/Done button labels:
+
+```tsx
+<MultiSelect
+  options={options}
+  value={selected()}
+  onChange={setSelected}
+  addLabel="Assign"
+  doneLabel="Close"
+/>
+```
+
+## Custom Badge Rendering
+
+Customize how selected items appear with `renderBadge`:
+
+```tsx
+<MultiSelect
+  options={tags}
+  value={selected()}
+  onChange={setSelected}
+  renderBadge={(opt) => (
+    <Badge variant={opt.value === "urgent" ? "error" : "default"}>
+      {opt.label}
+    </Badge>
+  )}
+/>
+```
+
+## Custom Option Rendering
+
+Customize dropdown options with `renderOption`:
+
+```tsx
+<MultiSelect
+  options={users}
+  value={selected()}
+  onChange={setSelected}
+  renderOption={(opt) => (
+    <div class="row">
+      <Avatar src={opt.data.avatar} />
+      <span>{opt.label}</span>
+    </div>
+  )}
+/>
+```
+
+## Empty State
+
+Customize the empty dropdown message:
+
+```tsx
+<MultiSelect
+  options={[]}
+  value={[]}
+  onChange={() => {}}
+  emptyMessage="No options available"
+/>
+```
+
+## Common Use Cases
+
+### Tag Assignment
+
+```tsx
+<MultiSelect
+  options={availableTags}
+  value={selectedTags()}
+  onChange={setSelectedTags}
+  searchable
+  placeholder="Add tags..."
+  addLabel="Add Tags"
+/>
+```
+
+### Role Assignment
+
+```tsx
+<MultiSelect
+  options={roles}
+  value={userRoles()}
+  onChange={setUserRoles}
+  placeholder="Assign roles..."
+  max={3}
+/>
+```
+
+### Category Filter
+
+```tsx
+<MultiSelect
+  options={categories}
+  value={activeFilters()}
+  onChange={setActiveFilters}
+  searchable
+  placeholder="Filter by category..."
+/>
+```
