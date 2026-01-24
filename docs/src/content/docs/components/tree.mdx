@@ -1,0 +1,169 @@
+---
+title: Tree
+description: A hierarchical tree view for nested data structures with expand/collapse
+---
+
+import { TreeDemo } from '../../../components/demos/TreeDemo';
+import { PropsTable } from '../../../components/shared/PropsTable';
+import { getComponent } from '../../../data/components';
+
+<TreeDemo client:load />
+
+## Usage
+
+```tsx
+import { Tree, type TreeNode } from "@f0rbit/ui";
+
+const nodes: TreeNode[] = [
+  {
+    id: "src",
+    label: "src",
+    children: [
+      { id: "index", label: "index.ts" },
+      { id: "utils", label: "utils.ts" },
+    ],
+  },
+];
+
+<Tree nodes={nodes} />
+```
+
+## Props
+
+<PropsTable props={getComponent("Tree").props} client:load />
+
+## Building from Flat Data
+
+Use the `buildTree` utility to convert flat data with `parentId` references:
+
+```tsx
+import { Tree, buildTree, type FlatTreeItem } from "@f0rbit/ui";
+
+const items: FlatTreeItem[] = [
+  { id: "1", label: "Root", parentId: null },
+  { id: "2", label: "Child", parentId: "1" },
+  { id: "3", label: "Grandchild", parentId: "2" },
+];
+
+<Tree nodes={buildTree(items)} />
+```
+
+## Default Expansion
+
+Control initial expansion state with `defaultExpanded`:
+
+```tsx
+// All collapsed
+<Tree nodes={nodes} defaultExpanded={false} />
+
+// All expanded
+<Tree nodes={nodes} defaultExpanded />
+
+// Specific nodes expanded
+<Tree nodes={nodes} defaultExpanded={["src", "components"]} />
+```
+
+## Controlled Expansion
+
+For controlled expansion, use `expanded` and `onExpandedChange`:
+
+```tsx
+const [expanded, setExpanded] = createSignal<string[]>(["src"]);
+
+<Tree
+  nodes={nodes}
+  expanded={expanded()}
+  onExpandedChange={setExpanded}
+/>
+```
+
+## Custom Node Rendering
+
+Customize how nodes are rendered with `renderNode`:
+
+```tsx
+<Tree
+  nodes={nodes}
+  renderNode={(node, depth) => (
+    <span style={{ color: depth === 0 ? "blue" : "inherit" }}>
+      {node.label}
+    </span>
+  )}
+/>
+```
+
+## Node Actions
+
+Add action buttons to nodes with `renderActions`:
+
+```tsx
+<Tree
+  nodes={nodes}
+  renderActions={(node) => (
+    <Button size="sm" variant="ghost" onClick={() => handleSelect(node)}>
+      Select
+    </Button>
+  )}
+/>
+```
+
+## Guides
+
+Tree guides are shown by default. Disable with `showGuides={false}`:
+
+```tsx
+<Tree nodes={nodes} showGuides={false} />
+```
+
+## Empty State
+
+Customize the empty state message:
+
+```tsx
+<Tree nodes={[]} emptyMessage="No files found" />
+```
+
+## Common Use Cases
+
+### File Browser
+
+```tsx
+<Tree
+  nodes={fileSystem}
+  defaultExpanded={["src"]}
+  renderNode={(node) => (
+    <span>
+      {node.children?.length ? "folder" : "file"} {node.label}
+    </span>
+  )}
+/>
+```
+
+### Organization Chart
+
+```tsx
+const orgChart = buildTree(employees);
+
+<Tree
+  nodes={orgChart}
+  defaultExpanded
+  renderActions={(node) => (
+    <Button size="sm" onClick={() => viewEmployee(node.data)}>
+      View
+    </Button>
+  )}
+/>
+```
+
+### Category Navigation
+
+```tsx
+<Tree
+  nodes={categories}
+  expanded={expanded()}
+  onExpandedChange={setExpanded}
+  renderNode={(node) => (
+    <a href={`/category/${node.id}`}>{node.label}</a>
+  )}
+/>
+```

@@ -64,3 +64,10 @@ export {
 	type TimelineItemVariant,
 } from "./components/Timeline";
 export { ChipInput, type ChipInputProps, type ChipInputLayout } from "./components/ChipInput";
+export {
+	Tree,
+	buildTree,
+	type TreeProps,
+	type TreeNode,
+	type FlatTreeItem,
+} from "./components/Tree";

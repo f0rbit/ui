@@ -663,6 +663,42 @@ export const components: ComponentMeta[] = [
 			"Setting error={true} without visual feedback to user about what's wrong",
 		],
 	},
+	{
+		name: "Tree",
+		description: "A hierarchical tree view for nested data structures with expand/collapse.",
+		importStatement: 'import { Tree, buildTree, type TreeNode, type FlatTreeItem } from "@f0rbit/ui";',
+		props: [
+			{ name: "nodes", type: "TreeNode[] | TreeNode", description: "Tree node(s) to render" },
+			{ name: "renderNode", type: "(node: TreeNode, depth: number) => JSX.Element", description: "Custom node label rendering" },
+			{ name: "renderActions", type: "(node: TreeNode, depth: number) => JSX.Element", description: "Render action buttons for each node" },
+			{ name: "showGuides", type: "boolean", default: "true", description: "Show tree guide lines" },
+			{ name: "defaultExpanded", type: "boolean | string[]", default: "true", description: "Initial expansion state (uncontrolled)" },
+			{ name: "expanded", type: "string[]", description: "Controlled expansion state (node IDs)" },
+			{ name: "onExpandedChange", type: "(expanded: string[]) => void", description: "Callback when expansion changes" },
+			{ name: "emptyMessage", type: "string", default: '"No items"', description: "Message when tree is empty" },
+		],
+		examples: [
+			{ title: "Basic", code: '<Tree nodes={fileTree} />' },
+			{ title: "From Flat Data", code: 'const tree = buildTree(flatItems);\n<Tree nodes={tree} />' },
+			{ title: "With Actions", code: '<Tree nodes={nodes} renderActions={(node) => <Button size="sm">Select</Button>} />' },
+		],
+		accessibilityNotes: [
+			"Uses proper ARIA tree roles (tree, treeitem)",
+			"Expand/collapse buttons have aria-label",
+			"aria-expanded indicates node state",
+			"Keyboard navigation supported",
+		],
+		compositionPatterns: [
+			"File browser: <Tree nodes={files} renderNode={(n) => <><FileIcon /> {n.label}</>} />",
+			"With actions: <Tree renderActions={(node) => <Dropdown>...</Dropdown>} />",
+			"Controlled: <Tree expanded={expanded()} onExpandedChange={setExpanded} />",
+		],
+		commonMistakes: [
+			"Using both defaultExpanded and expanded - pick controlled or uncontrolled",
+			"Forgetting unique IDs for nodes - expansion won't work correctly",
+			"Deep nesting without guides - use showGuides={true} for clarity",
+		],
+	},
 ];
 
 export const componentsByName = new Map(components.map(c => [c.name, c]));

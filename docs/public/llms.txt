@@ -1330,6 +1330,92 @@ const updateSetting = (key: keyof typeof settings) => {
 
 ---
 
+### Tree
+A hierarchical tree view for nested data structures with expand/collapse
+
+**Exports:** Tree, buildTree, TreeNode (type), FlatTreeItem (type)
+
+**Examples:**
+
+```tsx
+import { Tree, type TreeNode } from "@f0rbit/ui";
+
+const nodes: TreeNode[] = [
+  {
+    id: "src",
+    label: "src",
+    children: [
+      { id: "index", label: "index.ts" },
+      { id: "utils", label: "utils.ts" },
+    ],
+  },
+];
+
+<Tree nodes={nodes} />
+```
+
+```tsx
+// Build from flat data with parentId references
+import { Tree, buildTree, type FlatTreeItem } from "@f0rbit/ui";
+
+const items: FlatTreeItem[] = [
+  { id: "1", label: "Root", parentId: null },
+  { id: "2", label: "Child", parentId: "1" },
+  { id: "3", label: "Grandchild", parentId: "2" },
+];
+
+<Tree nodes={buildTree(items)} />
+```
+
+```tsx
+// Default expansion options
+<Tree nodes={nodes} defaultExpanded={false} />  // All collapsed
+<Tree nodes={nodes} defaultExpanded />          // All expanded
+<Tree nodes={nodes} defaultExpanded={["src", "components"]} />  // Specific nodes
+```
+
+```tsx
+// Controlled expansion
+const [expanded, setExpanded] = createSignal<string[]>(["src"]);
+
+<Tree
+  nodes={nodes}
+  expanded={expanded()}
+  onExpandedChange={setExpanded}
+/>
+```
+
+```tsx
+// Custom node rendering
+<Tree
+  nodes={nodes}
+  renderNode={(node, depth) => (
+    <span style={{ color: depth === 0 ? "blue" : "inherit" }}>
+      {node.label}
+    </span>
+  )}
+/>
+```
+
+```tsx
+// Node actions
+<Tree
+  nodes={nodes}
+  renderActions={(node) => (
+    <Button size="sm" variant="ghost" onClick={() => handleSelect(node)}>
+      Select
+    </Button>
+  )}
+/>
+```
+
+```tsx
+// Empty state
+<Tree nodes={[]} emptyMessage="No files found" />
+```
+
+---
+
 ## CSS Tokens
 
 The library uses CSS custom properties for theming. Key tokens:

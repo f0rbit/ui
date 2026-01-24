@@ -1089,4 +1089,88 @@
 	.chip-input-left > .input {
 		flex: 1;
 	}
+
+	/* Tree */
+	.tree {
+		font-size: var(--text-sm);
+		line-height: 0;
+	}
+
+	.tree-node {
+		display: flex;
+		align-items: center;
+		gap: var(--space-xs);
+		line-height: var(--text-sm-lh);
+	}
+
+	.tree-toggle {
+		padding: 2px;
+	}
+
+	.tree-content {
+		flex: 1;
+	}
+
+	.tree-actions {
+		opacity: 0;
+	}
+
+	.tree-node:hover .tree-actions {
+		opacity: 1;
+	}
+
+	.tree-guides {
+		display: flex;
+		align-items: stretch;
+		height: 24px;
+	}
+
+	.tree-guide-line,
+	.tree-guide-empty,
+	.tree-guide-corner,
+	.tree-guide-tee {
+		width: 20px;
+		position: relative;
+		flex-shrink: 0;
+	}
+
+	.tree-guide-line::before {
+		content: "";
+		position: absolute;
+		left: 9px;
+		top: 0;
+		bottom: 0;
+		width: 1px;
+		background: var(--border);
+	}
+
+	.tree-guide-corner::before,
+	.tree-guide-tee::before {
+		content: "";
+		position: absolute;
+		left: 9px;
+		top: 0;
+		height: 50%;
+		width: 1px;
+		background: var(--border);
+	}
+
+	.tree-guide-corner::after,
+	.tree-guide-tee::after {
+		content: "";
+		position: absolute;
+		left: 9px;
+		top: 50%;
+		width: 10px;
+		height: 1px;
+		background: var(--border);
+	}
+
+	.tree-guide-tee::before {
+		height: 100%;
+	}
+
+	.tree-empty {
+		color: var(--fg-faint);
+	}
 }
