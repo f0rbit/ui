@@ -1,4 +1,4 @@
-# @f0rbit/ui v0.1.8 - Full Documentation
+# @f0rbit/ui v0.1.9 - Full Documentation
 
 > A minimal, composable UI component library for SolidJS
 
@@ -24,12 +24,17 @@ import { Button, Card, Modal } from "@f0rbit/ui";
 ### Badge
 
 ```tsx
-import { JSX, splitProps } from "solid-js";
+import { type JSX, splitProps, Show } from "solid-js";
+import { Button } from "./Button";
 
 export type BadgeVariant = "default" | "success" | "error" | "warning" | "info" | "accent";
 
 export interface BadgeProps extends JSX.HTMLAttributes<HTMLSpanElement> {
 	variant?: BadgeVariant;
+	/** When provided, renders a remove button */
+	onRemove?: (e: MouseEvent) => void;
+	/** Accessible label for the remove button */
+	removeLabel?: string;
 }
 
 const variantClasses: Record<BadgeVariant, string> = {
@@ -41,14 +46,23 @@ const variantClasses: Record<BadgeVariant, string> = {
 	accent: "badge-accent",
 };
 
+const CloseIcon = () => (
+	<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+		<path d="M18 6L6 18M6 6l12 12" />
+	</svg>
+);
+
 export function Badge(props: BadgeProps) {
-	const [local, rest] = splitProps(props, ["variant", "class", "children"]);
+	const [local, rest] = splitProps(props, ["variant", "class", "children", "onRemove", "removeLabel"]);
 
 	const classes = () => {
 		const parts = ["badge"];
 		const variant = local.variant ?? "default";
 		if (variant !== "default") {
 			parts.push(variantClasses[variant]);
+		}
+		if (local.onRemove) {
+			parts.push("badge-removable");
 		}
 		if (local.class) {
 			parts.push(local.class);
@@ -59,6 +73,21 @@ export function Badge(props: BadgeProps) {
 	return (
 		<span class={classes()} {...rest}>
 			{local.children}
+			<Show when={local.onRemove}>
+				<Button
+					variant="ghost"
+					icon
+					size="sm"
+					class="badge-remove"
+					onClick={(e) => {
+						e.stopPropagation();
+						local.onRemove?.(e);
+					}}
+					aria-label={local.removeLabel ?? "Remove"}
+				>
+					<CloseIcon />
+				</Button>
+			</Show>
 		</span>
 	);
 }
@@ -315,6 +344,109 @@ export function Chevron(props: ChevronProps) {
 		<svg class={classes()} viewBox="0 0 24 24" width={size()} height={size()} fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...rest}>
 			<path d="m9 18 6-6-6-6" />
 		</svg>
+	);
+}
+
+```
+
+---
+
+### ChipInput
+
+```tsx
+import { type JSX, splitProps, For, Show, createSignal } from "solid-js";
+import { Badge } from "./Badge";
+import { Input } from "./Input";
+
+export type ChipInputLayout = "above" | "below" | "left";
+
+export interface ChipInputProps extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> {
+	value: string[];
+	onChange: (value: string[]) => void;
+	transform?: (input: string) => string;
+	validate?: (input: string, current: string[]) => boolean;
+	allowDuplicates?: boolean;
+	addKeys?: string[];
+	error?: boolean;
+	/** Where to display the chips relative to the input. Default: "above" */
+	layout?: ChipInputLayout;
+}
+
+export function ChipInput(props: ChipInputProps) {
+	const [local, rest] = splitProps(props, [
+		"value", "onChange", "transform", "validate", "allowDuplicates",
+		"addKeys", "error", "class", "disabled", "layout",
+	]);
+
+	const [inputValue, setInputValue] = createSignal("");
+
+	const transform = () => local.transform ?? ((s: string) => s.trim());
+	const addKeys = () => local.addKeys ?? ["Enter"];
+	const validate = () => local.validate ?? ((s: string, current: string[]) => 
+		s.length > 0 && (local.allowDuplicates || !current.includes(s))
+	);
+	const layout = () => local.layout ?? "above";
+
+	const addChip = () => {
+		const transformed = transform()(inputValue());
+		if (!validate()(transformed, local.value)) return;
+		local.onChange([...local.value, transformed]);
+		setInputValue("");
+	};
+
+	const removeChip = (index: number) => {
+		local.onChange(local.value.filter((_, i) => i !== index));
+	};
+
+	const handleKeyDown: JSX.EventHandler<HTMLInputElement, KeyboardEvent> = (e) => {
+		if (addKeys().includes(e.key)) {
+			e.preventDefault();
+			addChip();
+		}
+	};
+
+	const chips = () => (
+		<Show when={local.value.length > 0}>
+			<div class="cluster">
+				<For each={local.value}>
+					{(chip, index) => (
+						<Badge
+							onRemove={local.disabled ? undefined : () => removeChip(index())}
+							removeLabel={`Remove ${chip}`}
+						>
+							{chip}
+						</Badge>
+					)}
+				</For>
+			</div>
+		</Show>
+	);
+
+	const input = () => (
+		<Input
+			value={inputValue()}
+			onInput={(e) => setInputValue(e.currentTarget.value)}
+			onKeyDown={handleKeyDown}
+			disabled={local.disabled}
+			error={local.error}
+			{...rest}
+		/>
+	);
+
+	const containerClass = () => {
+		const parts = ["chip-input"];
+		if (layout() === "left") parts.push("chip-input-left");
+		if (local.class) parts.push(local.class);
+		return parts.join(" ");
+	};
+
+	return (
+		<div class={containerClass()}>
+			<Show when={layout() === "above"}>{chips()}</Show>
+			<Show when={layout() === "left"}>{chips()}</Show>
+			{input()}
+			<Show when={layout() === "below"}>{chips()}</Show>
+		</div>
 	);
 }
 
@@ -770,6 +902,246 @@ export function ModalFooter(props: ModalFooterProps) {
 	return (
 		<div class={`modal-footer ${local.class ?? ""}`.trim()} {...rest}>
 			{local.children}
+		</div>
+	);
+}
+
+```
+
+---
+
+### MultiSelect
+
+```tsx
+import { type JSX, splitProps, createSignal, createEffect, For, Show, onMount, onCleanup } from "solid-js";
+import { isServer } from "solid-js/web";
+import { Badge } from "./Badge";
+import { Button } from "./Button";
+import { Input } from "./Input";
+
+export interface MultiSelectOption<T = string> {
+	value: T;
+	label: string;
+	description?: string;
+	disabled?: boolean;
+}
+
+export type MultiSelectLayout = "left" | "right" | "below";
+
+export interface MultiSelectProps<T = string> {
+	options: MultiSelectOption<T>[];
+	value: T[];
+	onChange: (value: T[]) => void;
+	placeholder?: string;
+	addLabel?: string;
+	doneLabel?: string;
+	emptyMessage?: string;
+	searchable?: boolean;
+	searchPlaceholder?: string;
+	max?: number;
+	disabled?: boolean;
+	class?: string;
+	/** Where to display the button relative to the badges. Default: "right" */
+	layout?: MultiSelectLayout;
+	renderBadge?: (option: MultiSelectOption<T>) => JSX.Element;
+	renderOption?: (option: MultiSelectOption<T>) => JSX.Element;
+}
+
+export function MultiSelect<T = string>(props: MultiSelectProps<T>) {
+	const [local, rest] = splitProps(props, [
+		"options", "value", "onChange", "placeholder", "addLabel", "doneLabel",
+		"emptyMessage", "searchable", "searchPlaceholder", "max", "disabled",
+		"class", "layout", "renderBadge", "renderOption",
+	]);
+
+	const [open, setOpen] = createSignal(false);
+	const [search, setSearch] = createSignal("");
+	const [focusedIndex, setFocusedIndex] = createSignal(-1);
+
+	let containerRef: HTMLDivElement | undefined;
+	let searchInputRef: HTMLInputElement | undefined;
+
+	const selectedSet = () => new Set(local.value);
+	const isMaxReached = () => local.max !== undefined && local.value.length >= local.max;
+	const layout = () => local.layout ?? "right";
+
+	const selectedOptions = () => local.options.filter((opt) => selectedSet().has(opt.value));
+
+	const availableOptions = () => {
+		const selected = selectedSet();
+		const query = search().toLowerCase();
+		return local.options.filter((opt) => {
+			if (selected.has(opt.value)) return false;
+			if (query && !opt.label.toLowerCase().includes(query)) return false;
+			return true;
+		});
+	};
+
+	const toggleOption = (opt: MultiSelectOption<T>) => {
+		if (opt.disabled) return;
+		const selected = selectedSet();
+		if (selected.has(opt.value)) {
+			local.onChange(local.value.filter((v) => v !== opt.value));
+		} else if (!isMaxReached()) {
+			local.onChange([...local.value, opt.value]);
+		}
+	};
+
+	const removeOption = (opt: MultiSelectOption<T>) => {
+		if (local.disabled) return;
+		local.onChange(local.value.filter((v) => v !== opt.value));
+	};
+
+	const handleToggleClick = () => {
+		if (local.disabled) return;
+		if (isMaxReached() && !open()) return; // Can't open if max reached
+		setOpen(!open());
+		setSearch("");
+		setFocusedIndex(-1);
+	};
+
+	const handleClickOutside = (e: MouseEvent) => {
+		if (!containerRef?.contains(e.target as Node)) {
+			setOpen(false);
+			setSearch("");
+		}
+	};
+
+	const handleKeyDown = (e: KeyboardEvent) => {
+		if (!open()) return;
+		if (e.key === "Escape") {
+			setOpen(false);
+			setSearch("");
+			return;
+		}
+		const opts = availableOptions();
+		if (opts.length === 0) return;
+		if (e.key === "ArrowDown") {
+			e.preventDefault();
+			setFocusedIndex((i) => (i + 1) % opts.length);
+		} else if (e.key === "ArrowUp") {
+			e.preventDefault();
+			setFocusedIndex((i) => (i - 1 + opts.length) % opts.length);
+		} else if (e.key === "Enter") {
+			e.preventDefault();
+			const idx = focusedIndex();
+			if (idx >= 0 && idx < opts.length) toggleOption(opts[idx]);
+		}
+	};
+
+	createEffect(() => {
+		if (open() && local.searchable && searchInputRef) searchInputRef.focus();
+	});
+
+	onMount(() => {
+		if (isServer) return;
+		document.addEventListener("click", handleClickOutside);
+		document.addEventListener("keydown", handleKeyDown);
+	});
+
+	onCleanup(() => {
+		if (isServer) return;
+		document.removeEventListener("click", handleClickOutside);
+		document.removeEventListener("keydown", handleKeyDown);
+	});
+
+	const containerClass = () => {
+		const parts = ["multi-select", "dropdown"];
+		if (layout() === "below") parts.push("multi-select-below");
+		if (layout() === "left") parts.push("multi-select-left");
+		if (local.disabled) parts.push("multi-select-disabled");
+		if (local.class) parts.push(local.class);
+		return parts.join(" ");
+	};
+
+	const badges = () => (
+		<div class="cluster">
+			<Show when={selectedOptions().length > 0} fallback={
+				<span class="text-muted">{local.placeholder ?? "Nothing selected"}</span>
+			}>
+				<For each={selectedOptions()}>
+					{(opt) => (
+						<Badge
+							onRemove={local.disabled ? undefined : () => removeOption(opt)}
+							removeLabel={`Remove ${opt.label}`}
+						>
+							{local.renderBadge ? local.renderBadge(opt) : opt.label}
+						</Badge>
+					)}
+				</For>
+			</Show>
+		</div>
+	);
+
+	const button = () => (
+		<Button
+			size="sm"
+			onClick={handleToggleClick}
+			disabled={local.disabled || (isMaxReached() && !open())}
+			aria-expanded={open()}
+			aria-haspopup="listbox"
+		>
+			{open() ? (local.doneLabel ?? "Done") : (local.addLabel ?? "Add")}
+		</Button>
+	);
+
+	return (
+		<div
+			ref={(el) => (containerRef = el)}
+			class={containerClass()}
+			role="listbox"
+			aria-multiselectable="true"
+			aria-disabled={local.disabled}
+		>
+			<div class="multi-select-header">
+				<Show when={layout() === "left"}>{button()}</Show>
+				{badges()}
+				<Show when={layout() === "right"}>{button()}</Show>
+			</div>
+			<Show when={layout() === "below"}>
+				{button()}
+			</Show>
+
+			<Show when={open()}>
+				<div class="dropdown-menu multi-select-menu">
+					<Show when={local.searchable}>
+						<Input
+							ref={(el) => (searchInputRef = el)}
+							placeholder={local.searchPlaceholder ?? "Search..."}
+							value={search()}
+							onInput={(e) => {
+								setSearch(e.currentTarget.value);
+								setFocusedIndex(-1);
+							}}
+						/>
+					</Show>
+					<Show when={availableOptions().length > 0} fallback={
+						<div class="multi-select-empty">{local.emptyMessage ?? "No options available"}</div>
+					}>
+						<For each={availableOptions()}>
+							{(opt, index) => (
+								<button
+									type="button"
+									class={`dropdown-item ${index() === focusedIndex() ? "active" : ""}`}
+									onClick={() => toggleOption(opt)}
+									disabled={opt.disabled || (isMaxReached() && !selectedSet().has(opt.value))}
+									role="option"
+									aria-selected={selectedSet().has(opt.value)}
+								>
+									{local.renderOption ? local.renderOption(opt) : (
+										<>
+											<span>{opt.label}</span>
+											<Show when={opt.description}>
+												<span class="text-muted text-xs">{opt.description}</span>
+											</Show>
+										</>
+									)}
+								</button>
+							)}
+						</For>
+					</Show>
+				</div>
+			</Show>
 		</div>
 	);
 }
@@ -1367,6 +1739,161 @@ export function Toggle(props: ToggleProps) {
 				</span>
 			)}
 		</label>
+	);
+}
+
+```
+
+---
+
+### Tree
+
+```tsx
+import { type JSX, splitProps, createSignal, For, Show } from "solid-js";
+import { Chevron } from "./Chevron";
+import { Button } from "./Button";
+
+export interface TreeNode<T = unknown> {
+	id: string;
+	label: string;
+	children?: TreeNode<T>[];
+	data?: T;
+}
+
+export interface TreeProps<T = unknown> {
+	nodes: TreeNode<T>[] | TreeNode<T>;
+	renderNode?: (node: TreeNode<T>, depth: number) => JSX.Element;
+	renderActions?: (node: TreeNode<T>, depth: number) => JSX.Element;
+	showGuides?: boolean;
+	defaultExpanded?: boolean | string[];
+	expanded?: string[];
+	onExpandedChange?: (expanded: string[]) => void;
+	emptyMessage?: string;
+	class?: string;
+}
+
+export interface FlatTreeItem {
+	id: string;
+	label: string;
+	parentId?: string | null;
+	[key: string]: unknown;
+}
+
+const collectAllIds = <T,>(nodes: TreeNode<T>[]): string[] =>
+	nodes.flatMap((n) => [n.id, ...(n.children ? collectAllIds(n.children) : [])]);
+
+export function buildTree<T extends FlatTreeItem>(items: T[]): TreeNode<T>[] {
+	const childrenMap = new Map<string | null, T[]>();
+	for (const item of items) {
+		const parentId = item.parentId ?? null;
+		const siblings = childrenMap.get(parentId) ?? [];
+		siblings.push(item);
+		childrenMap.set(parentId, siblings);
+	}
+
+	const build = (parentId: string | null): TreeNode<T>[] => {
+		const children = childrenMap.get(parentId) ?? [];
+		return children.map((item) => ({
+			id: item.id,
+			label: item.label,
+			data: item,
+			children: build(item.id),
+		}));
+	};
+
+	return build(null);
+}
+
+export function Tree<T = unknown>(props: TreeProps<T>) {
+	const [local, rest] = splitProps(props, [
+		"nodes", "renderNode", "renderActions", "showGuides",
+		"defaultExpanded", "expanded", "onExpandedChange", "emptyMessage", "class",
+	]);
+
+	const normalizedNodes = (): TreeNode<T>[] => {
+		const n = local.nodes;
+		return Array.isArray(n) ? n : [n];
+	};
+
+	const initExpanded = (): string[] => {
+		if (local.defaultExpanded === false) return [];
+		if (Array.isArray(local.defaultExpanded)) return local.defaultExpanded;
+		return collectAllIds(normalizedNodes());
+	};
+
+	const [internalExpanded, setInternalExpanded] = createSignal<string[]>(initExpanded());
+	const isControlled = () => local.expanded !== undefined;
+	const expandedIds = () => (isControlled() ? local.expanded! : internalExpanded());
+	const showGuides = () => local.showGuides !== false;
+
+	const toggle = (id: string) => {
+		const current = expandedIds();
+		const next = current.includes(id) ? current.filter((x) => x !== id) : [...current, id];
+		if (!isControlled()) setInternalExpanded(next);
+		local.onExpandedChange?.(next);
+	};
+
+	const renderTreeNode = (
+		node: TreeNode<T>,
+		depth: number,
+		index: number,
+		siblingCount: number,
+		ancestorIsLast: boolean[]
+	): JSX.Element => {
+		const hasChildren = () => (node.children?.length ?? 0) > 0;
+		const isLast = () => index === siblingCount - 1;
+		const expanded = () => expandedIds().includes(node.id);
+
+		return (
+			<>
+				<div class="tree-node" role="treeitem" aria-expanded={hasChildren() ? expanded() : undefined}>
+					<Show when={showGuides()}>
+						<div class="tree-guides">
+							<For each={ancestorIsLast}>
+								{(wasLast) => <span class={wasLast ? "tree-guide-empty" : "tree-guide-line"} />}
+							</For>
+							<Show when={depth > 0}>
+								<span class={isLast() ? "tree-guide-corner" : "tree-guide-tee"} />
+							</Show>
+						</div>
+					</Show>
+				<Show when={hasChildren()}>
+					<Button
+						variant="ghost"
+						icon
+						size="sm"
+						onClick={() => toggle(node.id)}
+						aria-label={expanded() ? "Collapse" : "Expand"}
+						class="tree-toggle"
+					>
+						<Chevron expanded={expanded()} size="0.75em" />
+					</Button>
+				</Show>
+					<span class="tree-content">
+						{local.renderNode ? local.renderNode(node, depth) : node.label}
+					</span>
+					<Show when={local.renderActions}>
+						<span class="tree-actions">{local.renderActions!(node, depth)}</span>
+					</Show>
+				</div>
+				<Show when={hasChildren() && expanded()}>
+					<For each={node.children}>
+						{(child, i) => renderTreeNode(child, depth + 1, i(), node.children!.length, [...ancestorIsLast, isLast()])}
+					</For>
+				</Show>
+			</>
+		);
+	};
+
+	return (
+		<div class={`tree ${local.class ?? ""}`} role="tree" {...rest}>
+			<Show when={normalizedNodes().length === 0}>
+				<div class="tree-empty">{local.emptyMessage ?? "No items"}</div>
+			</Show>
+			<For each={normalizedNodes()}>
+				{(node, i) => renderTreeNode(node, 0, i(), normalizedNodes().length, [])}
+			</For>
+		</div>
 	);
 }
 
@@ -2971,6 +3498,180 @@ export function Toggle(props: ToggleProps) {
 	.timeline-item-info .timeline-dot {
 		background: var(--info);
 		box-shadow: 0 0 0 2px var(--info);
+	}
+
+	/* Badge removable variant */
+	.badge-removable {
+		padding-right: var(--space-xs);
+	}
+
+	.badge-remove {
+		margin-left: var(--space-xs);
+		padding: 0 !important;
+		width: auto !important;
+		height: auto !important;
+		color: inherit;
+		opacity: 0.6;
+	}
+
+	.badge-remove:hover {
+		opacity: 1;
+	}
+
+	/* ChipInput */
+	.chip-input {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+	}
+
+	.chip-input-left {
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.chip-input-left > .input {
+		flex: 1;
+	}
+
+	/* Tree */
+	.tree {
+		font-size: var(--text-sm);
+		line-height: 0;
+	}
+
+	.tree-node {
+		display: flex;
+		align-items: center;
+		gap: var(--space-xs);
+		line-height: var(--text-sm-lh);
+	}
+
+	.tree-toggle {
+		padding: 2px;
+	}
+
+	.tree-content {
+		flex: 1;
+	}
+
+	.tree-actions {
+		opacity: 0;
+	}
+
+	.tree-node:hover .tree-actions {
+		opacity: 1;
+	}
+
+	.tree-guides {
+		display: flex;
+		align-items: stretch;
+		height: 24px;
+	}
+
+	.tree-guide-line,
+	.tree-guide-empty,
+	.tree-guide-corner,
+	.tree-guide-tee {
+		width: 20px;
+		position: relative;
+		flex-shrink: 0;
+	}
+
+	.tree-guide-line::before {
+		content: "";
+		position: absolute;
+		left: 9px;
+		top: 0;
+		bottom: 0;
+		width: 1px;
+		background: var(--border);
+	}
+
+	.tree-guide-corner::before,
+	.tree-guide-tee::before {
+		content: "";
+		position: absolute;
+		left: 9px;
+		top: 0;
+		height: 50%;
+		width: 1px;
+		background: var(--border);
+	}
+
+	.tree-guide-corner::after,
+	.tree-guide-tee::after {
+		content: "";
+		position: absolute;
+		left: 9px;
+		top: 50%;
+		width: 10px;
+		height: 1px;
+		background: var(--border);
+	}
+
+	.tree-guide-tee::before {
+		height: 100%;
+	}
+
+	.tree-empty {
+		color: var(--fg-faint);
+	}
+
+	/* MultiSelect */
+	.multi-select {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+	}
+
+	.multi-select-disabled {
+		opacity: 0.5;
+		pointer-events: none;
+	}
+
+	.multi-select-header {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+	}
+
+	.multi-select-header > .cluster {
+		flex: 1;
+	}
+
+	.multi-select-left .multi-select-header > .cluster {
+		flex: 1;
+	}
+
+	.multi-select-below .multi-select-header {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.multi-select-menu {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		margin-top: var(--space-xs);
+		max-height: 240px;
+		overflow-y: auto;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+		padding: var(--space-xs);
+	}
+
+	.multi-select-menu .input {
+		margin-bottom: var(--space-xs);
+	}
+
+	.multi-select-empty {
+		padding: var(--space-sm);
+		text-align: center;
+		color: var(--fg-faint);
 	}
 }
 

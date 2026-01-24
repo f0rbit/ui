@@ -1,4 +1,4 @@
-# @f0rbit/ui v0.1.8
+# @f0rbit/ui v0.1.9
 
 > A minimal, composable UI component library for SolidJS
 
@@ -362,68 +362,7 @@ const [expanded, setExpanded] = createSignal(false);
 ---
 
 ### ChipInput
-An input field for managing a collection of string values displayed as removable chips
-
 **Exports:** ChipInput
-
-**Examples:**
-
-```tsx
-import { ChipInput } from "@f0rbit/ui";
-
-const [tags, setTags] = createSignal<string[]>([]);
-
-<ChipInput
-  value={tags()}
-  onChange={setTags}
-  placeholder="Add a tag..."
-/>
-```
-
-```tsx
-// With transform to lowercase
-<ChipInput
-  value={tags()}
-  onChange={setTags}
-  transform={(s) => s.trim().toLowerCase()}
-  placeholder="Lowercase tags..."
-/>
-```
-
-```tsx
-// With validation
-const isValidEmail = (email: string) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-<ChipInput
-  value={emails()}
-  onChange={setEmails}
-  validate={(email) => isValidEmail(email)}
-  placeholder="Add email..."
-/>
-```
-
-```tsx
-// Custom add keys
-<ChipInput
-  value={items()}
-  onChange={setItems}
-  addKeys={["Enter", ","]}
-  placeholder="Press Enter or comma..."
-/>
-```
-
-```tsx
-// With FormField
-<FormField label="Tags" error={error()}>
-  <ChipInput
-    value={tags()}
-    onChange={setTags}
-    error={!!error()}
-    placeholder="Add tags..."
-  />
-</FormField>
-```
 
 ---
 
@@ -779,75 +718,7 @@ const [open, setOpen] = createSignal(false);
 ---
 
 ### MultiSelect
-A dropdown for selecting multiple items from a list with searchable dropdown
-
-**Exports:** MultiSelect, MultiSelectOption (type)
-
-**Examples:**
-
-```tsx
-import { MultiSelect, type MultiSelectOption } from "@f0rbit/ui";
-
-const options: MultiSelectOption[] = [
-  { value: "apple", label: "Apple" },
-  { value: "banana", label: "Banana" },
-  { value: "cherry", label: "Cherry" },
-];
-
-const [selected, setSelected] = createSignal<string[]>([]);
-
-<MultiSelect
-  options={options}
-  value={selected()}
-  onChange={setSelected}
-  placeholder="Select fruits..."
-/>
-```
-
-```tsx
-// With search
-<MultiSelect
-  options={options}
-  value={selected()}
-  onChange={setSelected}
-  searchable
-  searchPlaceholder="Search options..."
-/>
-```
-
-```tsx
-// Options with descriptions
-const roles: MultiSelectOption[] = [
-  { value: "admin", label: "Admin", description: "Full system access" },
-  { value: "editor", label: "Editor", description: "Can edit content" },
-  { value: "viewer", label: "Viewer", description: "Read-only access" },
-];
-
-<MultiSelect
-  options={roles}
-  value={selected()}
-  onChange={setSelected}
-/>
-```
-
-```tsx
-// Maximum selection limit
-<MultiSelect
-  options={options}
-  value={selected()}
-  onChange={setSelected}
-  max={3}
-  placeholder="Select up to 3..."
-/>
-```
-
-```tsx
-// Disabled options
-const options: MultiSelectOption[] = [
-  { value: "available", label: "Available" },
-  { value: "unavailable", label: "Unavailable", disabled: true },
-];
-```
+**Exports:** MultiSelect
 
 ---
 
@@ -1406,7 +1277,7 @@ const updateSetting = (key: keyof typeof settings) => {
 ### Tree
 A hierarchical tree view for nested data structures with expand/collapse
 
-**Exports:** Tree, buildTree, TreeNode (type), FlatTreeItem (type)
+**Exports:** buildTree, Tree
 
 **Examples:**
 
@@ -1428,7 +1299,6 @@ const nodes: TreeNode[] = [
 ```
 
 ```tsx
-// Build from flat data with parentId references
 import { Tree, buildTree, type FlatTreeItem } from "@f0rbit/ui";
 
 const items: FlatTreeItem[] = [
@@ -1441,14 +1311,17 @@ const items: FlatTreeItem[] = [
 ```
 
 ```tsx
-// Default expansion options
-<Tree nodes={nodes} defaultExpanded={false} />  // All collapsed
-<Tree nodes={nodes} defaultExpanded />          // All expanded
-<Tree nodes={nodes} defaultExpanded={["src", "components"]} />  // Specific nodes
+// All collapsed
+<Tree nodes={nodes} defaultExpanded={false} />
+
+// All expanded
+<Tree nodes={nodes} defaultExpanded />
+
+// Specific nodes expanded
+<Tree nodes={nodes} defaultExpanded={["src", "components"]} />
 ```
 
 ```tsx
-// Controlled expansion
 const [expanded, setExpanded] = createSignal<string[]>(["src"]);
 
 <Tree
@@ -1459,7 +1332,6 @@ const [expanded, setExpanded] = createSignal<string[]>(["src"]);
 ```
 
 ```tsx
-// Custom node rendering
 <Tree
   nodes={nodes}
   renderNode={(node, depth) => (
@@ -1471,7 +1343,6 @@ const [expanded, setExpanded] = createSignal<string[]>(["src"]);
 ```
 
 ```tsx
-// Node actions
 <Tree
   nodes={nodes}
   renderActions={(node) => (
@@ -1483,8 +1354,48 @@ const [expanded, setExpanded] = createSignal<string[]>(["src"]);
 ```
 
 ```tsx
-// Empty state
+<Tree nodes={nodes} showGuides={false} />
+```
+
+```tsx
 <Tree nodes={[]} emptyMessage="No files found" />
+```
+
+```tsx
+<Tree
+  nodes={fileSystem}
+  defaultExpanded={["src"]}
+  renderNode={(node) => (
+    <span>
+      {node.children?.length ? "folder" : "file"} {node.label}
+    </span>
+  )}
+/>
+```
+
+```tsx
+const orgChart = buildTree(employees);
+
+<Tree
+  nodes={orgChart}
+  defaultExpanded
+  renderActions={(node) => (
+    <Button size="sm" onClick={() => viewEmployee(node.data)}>
+      View
+    </Button>
+  )}
+/>
+```
+
+```tsx
+<Tree
+  nodes={categories}
+  expanded={expanded()}
+  onExpandedChange={setExpanded}
+  renderNode={(node) => (
+    <a href={`/category/${node.id}`}>{node.label}</a>
+  )}
+/>
 ```
 
 ---
