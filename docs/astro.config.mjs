@@ -25,6 +25,13 @@ export default defineConfig({
 						content: "/ui/og-image.png",
 					},
 				},
+				{
+					tag: "meta",
+					attrs: {
+						name: "google-site-verification",
+						content: "3ilm2YAZDrg4jakb38CkhoubqHXKA_o4mMh4tFYCVls",
+					},
+				},
 			],
 			sidebar: [
 				{
