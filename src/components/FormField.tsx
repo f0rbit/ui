@@ -18,7 +18,9 @@ export function FormField(props: FormFieldProps) {
 			<label class="form-field-label" for={local.id}>
 				{local.label}
 				<Show when={local.required}>
-					<span class="form-field-required" aria-hidden="true">*</span>
+					<span class="form-field-required" aria-hidden="true">
+						*
+					</span>
 				</Show>
 			</label>
 			<Show when={local.description}>
@@ -26,7 +28,9 @@ export function FormField(props: FormFieldProps) {
 			</Show>
 			{local.children}
 			<Show when={local.error}>
-				<span class="form-field-error" role="alert">{local.error}</span>
+				<span class="form-field-error" role="alert">
+					{local.error}
+				</span>
 			</Show>
 		</div>
 	);

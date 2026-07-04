@@ -40,9 +40,7 @@ export function Timeline(props: TimelineProps) {
 		<div class={classes()} {...rest}>
 			<For each={local.items}>
 				{(item, index) => (
-					<div
-						class={`timeline-item vertical-connector-item ${variantClasses[item.variant ?? "default"]}`}
-					>
+					<div class={`timeline-item vertical-connector-item ${variantClasses[item.variant ?? "default"]}`}>
 						<div class="timeline-indicator vertical-indicator">
 							<Show when={item.icon} fallback={<DefaultDot />}>
 								{item.icon}

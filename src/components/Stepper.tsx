@@ -33,7 +33,16 @@ const statusClasses: Record<StepStatus, string> = {
 
 function CheckIcon() {
 	return (
-		<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+		<svg
+			width="16"
+			height="16"
+			viewBox="0 0 16 16"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		>
 			<polyline points="13 4 6 12 3 9" />
 		</svg>
 	);
@@ -46,7 +55,16 @@ type StepContextValue = {
 const StepContext = createContext<StepContextValue>();
 
 export function Step(props: StepProps) {
-	const [local, rest] = splitProps(props, ["title", "description", "icon", "status", "class", "children", "number", "orientation"]);
+	const [local, rest] = splitProps(props, [
+		"title",
+		"description",
+		"icon",
+		"status",
+		"class",
+		"children",
+		"number",
+		"orientation",
+	]);
 	const stepperCtx = useContext(StepperContext);
 	const stepCtx = useContext(StepContext);
 

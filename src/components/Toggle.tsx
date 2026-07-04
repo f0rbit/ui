@@ -9,7 +9,7 @@ export interface ToggleProps extends Omit<JSX.InputHTMLAttributes<HTMLInputEleme
 export function Toggle(props: ToggleProps) {
 	const [local, rest] = splitProps(props, ["label", "description", "size", "class", "disabled"]);
 	const size = () => local.size ?? "md";
-	const classes = () => 
+	const classes = () =>
 		`toggle ${size() === "sm" ? "toggle-sm" : ""} ${local.disabled ? "toggle-disabled" : ""} ${local.class ?? ""}`.trim();
 
 	return (

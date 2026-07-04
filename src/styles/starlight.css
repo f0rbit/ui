@@ -53,7 +53,9 @@ header.header {
 .sl-markdown-content :not(h1, h2, h3, h4, h5, h6) + :is(h1, h2, h3, h4, h5, h6):not(:where(.not-content, .sl-steps *)) {
 	margin-top: 0 !important;
 }
-.sl-markdown-content :not(a, strong, em, del, span, input, code, br) + :not(a, strong, em, del, span, input, code, br, :where(.not-content, .sl-steps *)) {
+.sl-markdown-content
+	:not(a, strong, em, del, span, input, code, br)
+	+ :not(a, strong, em, del, span, input, code, br, :where(.not-content, .sl-steps *)) {
 	margin-top: 0 !important;
 }
 
@@ -210,7 +212,9 @@ h1#_top,
 	box-shadow: none;
 	color: var(--fg-muted);
 	background: transparent;
-	transition: border-color var(--transition), color var(--transition);
+	transition:
+		border-color var(--transition),
+		color var(--transition);
 }
 
 .pagination-links a:hover {

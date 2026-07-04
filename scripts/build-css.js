@@ -25,7 +25,7 @@ for (const file of cssFiles) {
 // Create combined styles.css with layer order declaration
 const layerOrder = "@layer reset, tokens, components, utilities;\n\n";
 const combined = cssFiles
-	.map(file => {
+	.map((file) => {
 		const content = readFileSync(join(srcDir, file), "utf-8");
 		return `/* ===== ${file} ===== */\n\n${content}`;
 	})

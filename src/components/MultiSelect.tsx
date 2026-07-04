@@ -34,9 +34,21 @@ export interface MultiSelectProps<T = string> {
 
 export function MultiSelect<T = string>(props: MultiSelectProps<T>) {
 	const [local, rest] = splitProps(props, [
-		"options", "value", "onChange", "placeholder", "addLabel", "doneLabel",
-		"emptyMessage", "searchable", "searchPlaceholder", "max", "disabled",
-		"class", "layout", "renderBadge", "renderOption",
+		"options",
+		"value",
+		"onChange",
+		"placeholder",
+		"addLabel",
+		"doneLabel",
+		"emptyMessage",
+		"searchable",
+		"searchPlaceholder",
+		"max",
+		"disabled",
+		"class",
+		"layout",
+		"renderBadge",
+		"renderOption",
 	]);
 
 	const [open, setOpen] = createSignal(false);
@@ -141,15 +153,13 @@ export function MultiSelect<T = string>(props: MultiSelectProps<T>) {
 
 	const badges = () => (
 		<div class="cluster">
-			<Show when={selectedOptions().length > 0} fallback={
-				<span class="text-muted">{local.placeholder ?? "Nothing selected"}</span>
-			}>
+			<Show
+				when={selectedOptions().length > 0}
+				fallback={<span class="text-muted">{local.placeholder ?? "Nothing selected"}</span>}
+			>
 				<For each={selectedOptions()}>
 					{(opt) => (
-						<Badge
-							onRemove={local.disabled ? undefined : () => removeOption(opt)}
-							removeLabel={`Remove ${opt.label}`}
-						>
+						<Badge onRemove={local.disabled ? undefined : () => removeOption(opt)} removeLabel={`Remove ${opt.label}`}>
 							{local.renderBadge ? local.renderBadge(opt) : opt.label}
 						</Badge>
 					)}
@@ -183,9 +193,7 @@ export function MultiSelect<T = string>(props: MultiSelectProps<T>) {
 				{badges()}
 				<Show when={layout() === "right"}>{button()}</Show>
 			</div>
-			<Show when={layout() === "below"}>
-				{button()}
-			</Show>
+			<Show when={layout() === "below"}>{button()}</Show>
 
 			<Show when={open()}>
 				<div class="dropdown-menu multi-select-menu">
@@ -200,9 +208,10 @@ export function MultiSelect<T = string>(props: MultiSelectProps<T>) {
 							}}
 						/>
 					</Show>
-					<Show when={availableOptions().length > 0} fallback={
-						<div class="multi-select-empty">{local.emptyMessage ?? "No options available"}</div>
-					}>
+					<Show
+						when={availableOptions().length > 0}
+						fallback={<div class="multi-select-empty">{local.emptyMessage ?? "No options available"}</div>}
+					>
 						<For each={availableOptions()}>
 							{(opt, index) => (
 								<button
@@ -213,7 +222,9 @@ export function MultiSelect<T = string>(props: MultiSelectProps<T>) {
 									role="option"
 									aria-selected={selectedSet().has(opt.value)}
 								>
-									{local.renderOption ? local.renderOption(opt) : (
+									{local.renderOption ? (
+										local.renderOption(opt)
+									) : (
 										<>
 											<span>{opt.label}</span>
 											<Show when={opt.description}>

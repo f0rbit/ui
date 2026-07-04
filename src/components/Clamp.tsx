@@ -23,7 +23,7 @@ export function Clamp(props: ClampProps) {
 		setOverflows(contentRef.scrollHeight > contentRef.clientHeight);
 	};
 
-	const toggle = () => setExpanded(prev => !prev);
+	const toggle = () => setExpanded((prev) => !prev);
 
 	const wrapperClasses = () => `clamp ${local.class ?? ""}`.trim();
 
@@ -32,7 +32,7 @@ export function Clamp(props: ClampProps) {
 	return (
 		<div class={wrapperClasses()} {...rest}>
 			<div
-				ref={el => {
+				ref={(el) => {
 					contentRef = el;
 					requestAnimationFrame(checkOverflow);
 				}}

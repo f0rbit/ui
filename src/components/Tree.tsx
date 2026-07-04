@@ -55,8 +55,15 @@ export function buildTree<T extends FlatTreeItem>(items: T[]): TreeNode<T>[] {
 
 export function Tree<T = unknown>(props: TreeProps<T>) {
 	const [local, rest] = splitProps(props, [
-		"nodes", "renderNode", "renderActions", "showGuides",
-		"defaultExpanded", "expanded", "onExpandedChange", "emptyMessage", "class",
+		"nodes",
+		"renderNode",
+		"renderActions",
+		"showGuides",
+		"defaultExpanded",
+		"expanded",
+		"onExpandedChange",
+		"emptyMessage",
+		"class",
 	]);
 
 	const normalizedNodes = (): TreeNode<T>[] => {
@@ -87,7 +94,7 @@ export function Tree<T = unknown>(props: TreeProps<T>) {
 		depth: number,
 		index: number,
 		siblingCount: number,
-		ancestorIsLast: boolean[]
+		ancestorIsLast: boolean[],
 	): JSX.Element => {
 		const hasChildren = () => (node.children?.length ?? 0) > 0;
 		const isLast = () => index === siblingCount - 1;
@@ -106,21 +113,19 @@ export function Tree<T = unknown>(props: TreeProps<T>) {
 							</Show>
 						</div>
 					</Show>
-				<Show when={hasChildren()}>
-					<Button
-						variant="ghost"
-						icon
-						size="sm"
-						onClick={() => toggle(node.id)}
-						aria-label={expanded() ? "Collapse" : "Expand"}
-						class="tree-toggle"
-					>
-						<Chevron expanded={expanded()} size="0.75em" />
-					</Button>
-				</Show>
-					<span class="tree-content">
-						{local.renderNode ? local.renderNode(node, depth) : node.label}
-					</span>
+					<Show when={hasChildren()}>
+						<Button
+							variant="ghost"
+							icon
+							size="sm"
+							onClick={() => toggle(node.id)}
+							aria-label={expanded() ? "Collapse" : "Expand"}
+							class="tree-toggle"
+						>
+							<Chevron expanded={expanded()} size="0.75em" />
+						</Button>
+					</Show>
+					<span class="tree-content">{local.renderNode ? local.renderNode(node, depth) : node.label}</span>
 					<Show when={local.renderActions}>
 						<span class="tree-actions">{local.renderActions!(node, depth)}</span>
 					</Show>
@@ -139,9 +144,7 @@ export function Tree<T = unknown>(props: TreeProps<T>) {
 			<Show when={normalizedNodes().length === 0}>
 				<div class="tree-empty">{local.emptyMessage ?? "No items"}</div>
 			</Show>
-			<For each={normalizedNodes()}>
-				{(node, i) => renderTreeNode(node, 0, i(), normalizedNodes().length, [])}
-			</For>
+			<For each={normalizedNodes()}>{(node, i) => renderTreeNode(node, 0, i(), normalizedNodes().length, [])}</For>
 		</div>
 	);
 }
