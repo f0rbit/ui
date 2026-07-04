@@ -12,7 +12,7 @@ const presetOptions: preset.PresetOptions = {
 	cjs: false,
 };
 
-export default defineConfig(config => {
+export default defineConfig((config) => {
 	const watching = !!config.watch;
 	const parsed = preset.parsePresetOptions(presetOptions, watching);
 	return preset.generateTsupOptions(parsed);

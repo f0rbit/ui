@@ -31,16 +31,16 @@ Use in your SolidJS app:
 
 ```tsx
 function App() {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Hello World</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Button variant="primary">Click me</Button>
-      </CardContent>
-    </Card>
-  );
+	return (
+		<Card>
+			<CardHeader>
+				<CardTitle>Hello World</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<Button variant="primary">Click me</Button>
+			</CardContent>
+		</Card>
+	);
 }
 ```
 
@@ -55,9 +55,9 @@ Import all styles at once:
 Or import layers individually for finer control:
 
 ```css
-@import "@f0rbit/ui/styles/tokens";     /* Design tokens (colors, spacing, typography) */
-@import "@f0rbit/ui/styles/reset";      /* CSS reset */
-@import "@f0rbit/ui/styles/utilities";  /* Layout utilities (.stack, .row, .grid, etc.) */
+@import "@f0rbit/ui/styles/tokens"; /* Design tokens (colors, spacing, typography) */
+@import "@f0rbit/ui/styles/reset"; /* CSS reset */
+@import "@f0rbit/ui/styles/utilities"; /* Layout utilities (.stack, .row, .grid, etc.) */
 @import "@f0rbit/ui/styles/components"; /* Component styles */
 ```
 
@@ -67,9 +67,9 @@ Override design tokens via CSS custom properties:
 
 ```css
 :root {
-  --accent: oklch(60% 0.15 250);
-  --radius: 0.5rem;
-  --space-md: 1rem;
+	--accent: oklch(60% 0.15 250);
+	--radius: 0.5rem;
+	--space-md: 1rem;
 }
 ```
 
@@ -77,22 +77,22 @@ Dark mode is automatic via `prefers-color-scheme: dark`.
 
 ## Components
 
-| Component | Description |
-|-----------|-------------|
-| `Button` | Primary, secondary, ghost, and danger variants with size options |
-| `Badge` | Status indicators with semantic variants (success, error, warning, info) |
-| `Card` | Container with optional header, content, footer, and interactive state |
-| `Input`, `Textarea`, `Select` | Form inputs with error states |
-| `Modal` | Dialog overlay with header, body, footer composition |
-| `Dropdown` | Menu trigger with items and keyboard support |
-| `Status` | Dot indicator with state labels (active, inactive, error, pending) |
-| `Stat` | Value + label display for metrics |
-| `Spinner` | Loading indicator in three sizes |
-| `Chevron` | Directional icon with rotation states |
-| `Empty` | Empty state placeholder with icon, title, description |
-| `Clamp` | Text truncation with expand/collapse toggle |
-| `Collapsible` | Expandable content sections |
-| `Stepper` | Multi-step progress indicator (horizontal/vertical) |
+| Component                     | Description                                                              |
+| ----------------------------- | ------------------------------------------------------------------------ |
+| `Button`                      | Primary, secondary, ghost, and danger variants with size options         |
+| `Badge`                       | Status indicators with semantic variants (success, error, warning, info) |
+| `Card`                        | Container with optional header, content, footer, and interactive state   |
+| `Input`, `Textarea`, `Select` | Form inputs with error states                                            |
+| `Modal`                       | Dialog overlay with header, body, footer composition                     |
+| `Dropdown`                    | Menu trigger with items and keyboard support                             |
+| `Status`                      | Dot indicator with state labels (active, inactive, error, pending)       |
+| `Stat`                        | Value + label display for metrics                                        |
+| `Spinner`                     | Loading indicator in three sizes                                         |
+| `Chevron`                     | Directional icon with rotation states                                    |
+| `Empty`                       | Empty state placeholder with icon, title, description                    |
+| `Clamp`                       | Text truncation with expand/collapse toggle                              |
+| `Collapsible`                 | Expandable content sections                                              |
+| `Stepper`                     | Multi-step progress indicator (horizontal/vertical)                      |
 
 ## Project Structure
 
@@ -146,4 +146,3 @@ bun run typecheck
 ## License
 
 MIT
-

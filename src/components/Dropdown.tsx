@@ -59,7 +59,7 @@ export function Dropdown(props: DropdownProps) {
 
 	return (
 		<DropdownContext.Provider value={{ open, setOpen, close }}>
-			<div ref={el => (containerRef = el)} class="dropdown">
+			<div ref={(el) => (containerRef = el)} class="dropdown">
 				{props.children}
 			</div>
 		</DropdownContext.Provider>

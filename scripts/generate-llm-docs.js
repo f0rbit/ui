@@ -14,7 +14,7 @@ const componentDocsDir = join(docsDir, "components");
 const pkg = JSON.parse(readFileSync(join(rootDir, "package.json"), "utf-8"));
 
 // Get all component files
-const componentFiles = readdirSync(componentsDir).filter(f => f.endsWith(".tsx"));
+const componentFiles = readdirSync(componentsDir).filter((f) => f.endsWith(".tsx"));
 
 // Get all CSS files
 const cssFiles = ["tokens.css", "reset.css", "utilities.css", "components.css"];
@@ -24,32 +24,32 @@ function extractExamples(mdxContent) {
 	const examples = [];
 	const codeBlockRegex = /```tsx\n([\s\S]*?)```/g;
 	let match;
-	
+
 	while ((match = codeBlockRegex.exec(mdxContent)) !== null) {
 		examples.push(match[1].trim());
 	}
-	
+
 	return examples;
 }
 
 // Get documentation for a component from its mdx file
 function getComponentDocs(componentName) {
 	const mdxPath = join(componentDocsDir, `${componentName.toLowerCase()}.mdx`);
-	
+
 	if (!existsSync(mdxPath)) {
 		return null;
 	}
-	
+
 	const content = readFileSync(mdxPath, "utf-8");
 	const examples = extractExamples(content);
-	
+
 	// Extract description from frontmatter
 	const descMatch = content.match(/description:\s*(.+)/);
 	const description = descMatch ? descMatch[1].trim() : "";
-	
+
 	return {
 		description,
-		examples
+		examples,
 	};
 }
 
@@ -57,18 +57,18 @@ function getComponentDocs(componentName) {
 function extractComponentInfo(filename) {
 	const content = readFileSync(join(componentsDir, filename), "utf-8");
 	const name = filename.replace(".tsx", "");
-	
+
 	// Extract interface/type definitions
 	const interfaceMatch = content.match(/export interface (\w+Props)[^{]*\{([^}]+)\}/g) || [];
 	const typeMatch = content.match(/export type (\w+) = ([^;]+);/g) || [];
-	
+
 	// Extract export names
 	const exportMatch = content.match(/export function (\w+)/g) || [];
-	const exports = exportMatch.map(e => e.replace("export function ", ""));
-	
+	const exports = exportMatch.map((e) => e.replace("export function ", ""));
+
 	// Get docs/examples
 	const docs = getComponentDocs(name);
-	
+
 	return {
 		name,
 		exports,
@@ -76,7 +76,7 @@ function extractComponentInfo(filename) {
 		types: typeMatch.join("\n"),
 		source: content,
 		description: docs?.description || "",
-		examples: docs?.examples || []
+		examples: docs?.examples || [],
 	};
 }
 
@@ -115,7 +115,7 @@ import { Button, Card, Modal } from "${pkg.name}";
 			output += `${info.description}\n\n`;
 		}
 		output += `**Exports:** ${info.exports.join(", ")}\n\n`;
-		
+
 		if (info.examples.length > 0) {
 			output += `**Examples:**\n\n`;
 			for (const example of info.examples) {

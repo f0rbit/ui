@@ -25,7 +25,16 @@ const sizeClasses: Record<ButtonSize, string> = {
 };
 
 export function Button(props: ButtonProps) {
-	const [local, rest] = splitProps(props, ["variant", "size", "icon", "label", "loading", "class", "disabled", "children"]);
+	const [local, rest] = splitProps(props, [
+		"variant",
+		"size",
+		"icon",
+		"label",
+		"loading",
+		"class",
+		"disabled",
+		"children",
+	]);
 
 	const classes = () => {
 		const parts = ["btn"];

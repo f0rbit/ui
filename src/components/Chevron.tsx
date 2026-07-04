@@ -29,7 +29,18 @@ export function Chevron(props: ChevronProps) {
 	const size = () => local.size ?? "1em";
 
 	return (
-		<svg class={classes()} viewBox="0 0 24 24" width={size()} height={size()} fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" {...rest}>
+		<svg
+			class={classes()}
+			viewBox="0 0 24 24"
+			width={size()}
+			height={size()}
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			{...rest}
+		>
 			<path d="m9 18 6-6-6-6" />
 		</svg>
 	);

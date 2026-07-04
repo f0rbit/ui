@@ -4,7 +4,7 @@ import { Input } from "./Input";
 
 export type ChipInputLayout = "above" | "below" | "left";
 
-export interface ChipInputProps extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> {
+export interface ChipInputProps extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange"> {
 	value: string[];
 	onChange: (value: string[]) => void;
 	transform?: (input: string) => string;
@@ -18,17 +18,25 @@ export interface ChipInputProps extends Omit<JSX.InputHTMLAttributes<HTMLInputEl
 
 export function ChipInput(props: ChipInputProps) {
 	const [local, rest] = splitProps(props, [
-		"value", "onChange", "transform", "validate", "allowDuplicates",
-		"addKeys", "error", "class", "disabled", "layout",
+		"value",
+		"onChange",
+		"transform",
+		"validate",
+		"allowDuplicates",
+		"addKeys",
+		"error",
+		"class",
+		"disabled",
+		"layout",
 	]);
 
 	const [inputValue, setInputValue] = createSignal("");
 
 	const transform = () => local.transform ?? ((s: string) => s.trim());
 	const addKeys = () => local.addKeys ?? ["Enter"];
-	const validate = () => local.validate ?? ((s: string, current: string[]) => 
-		s.length > 0 && (local.allowDuplicates || !current.includes(s))
-	);
+	const validate = () =>
+		local.validate ??
+		((s: string, current: string[]) => s.length > 0 && (local.allowDuplicates || !current.includes(s)));
 	const layout = () => local.layout ?? "above";
 
 	const addChip = () => {
@@ -54,10 +62,7 @@ export function ChipInput(props: ChipInputProps) {
 			<div class="cluster">
 				<For each={local.value}>
 					{(chip, index) => (
-						<Badge
-							onRemove={local.disabled ? undefined : () => removeChip(index())}
-							removeLabel={`Remove ${chip}`}
-						>
+						<Badge onRemove={local.disabled ? undefined : () => removeChip(index())} removeLabel={`Remove ${chip}`}>
 							{chip}
 						</Badge>
 					)}
