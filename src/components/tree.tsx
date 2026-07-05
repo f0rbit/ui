@@ -2,14 +2,14 @@ import { type JSX, splitProps, createSignal, For, Show } from "solid-js";
 import { Chevron } from "./chevron";
 import { Button } from "./button";
 
-export interface TreeNode<T = unknown> {
+export type TreeNode<T = unknown> = {
 	id: string;
 	label: string;
 	children?: TreeNode<T>[];
 	data?: T;
-}
+};
 
-export interface TreeProps<T = unknown> {
+export type TreeProps<T = unknown> = {
 	nodes: TreeNode<T>[] | TreeNode<T>;
 	renderNode?: (node: TreeNode<T>, depth: number) => JSX.Element;
 	renderActions?: (node: TreeNode<T>, depth: number) => JSX.Element;
@@ -19,14 +19,14 @@ export interface TreeProps<T = unknown> {
 	onExpandedChange?: (expanded: string[]) => void;
 	emptyMessage?: string;
 	class?: string;
-}
+};
 
-export interface FlatTreeItem {
+export type FlatTreeItem = {
 	id: string;
 	label: string;
 	parentId?: string | null;
 	[key: string]: unknown;
-}
+};
 
 const collectAllIds = <T,>(nodes: TreeNode<T>[]): string[] =>
 	nodes.flatMap((n) => [n.id, ...(n.children ? collectAllIds(n.children) : [])]);

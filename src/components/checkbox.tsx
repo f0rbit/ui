@@ -1,10 +1,10 @@
 import { type JSX, splitProps, createEffect, onMount } from "solid-js";
 
-export interface CheckboxProps extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "type"> {
+export type CheckboxProps = {
 	label?: string;
 	description?: string;
 	indeterminate?: boolean;
-}
+} & Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "type">;
 
 export function Checkbox(props: CheckboxProps) {
 	const [local, rest] = splitProps(props, ["label", "description", "indeterminate", "class", "disabled", "id"]);

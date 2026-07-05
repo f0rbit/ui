@@ -1,16 +1,16 @@
 import { type JSX, splitProps } from "solid-js";
 
-export interface InputProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
+export type InputProps = {
 	error?: boolean;
-}
+} & JSX.InputHTMLAttributes<HTMLInputElement>;
 
-export interface TextareaProps extends JSX.TextareaHTMLAttributes<HTMLTextAreaElement> {
+export type TextareaProps = {
 	error?: boolean;
-}
+} & JSX.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
-export interface SelectProps extends JSX.SelectHTMLAttributes<HTMLSelectElement> {
+export type SelectProps = {
 	error?: boolean;
-}
+} & JSX.SelectHTMLAttributes<HTMLSelectElement>;
 
 export function Input(props: InputProps) {
 	const [local, rest] = splitProps(props, ["error", "class", "disabled"]);

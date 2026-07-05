@@ -1,10 +1,10 @@
 import { type JSX, splitProps, createSignal, Show } from "solid-js";
 
-export interface ClampProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type ClampProps = {
 	lines?: number;
 	showMoreText?: string;
 	showLessText?: string;
-}
+} & JSX.HTMLAttributes<HTMLDivElement>;
 
 export function Clamp(props: ClampProps) {
 	const [local, rest] = splitProps(props, ["lines", "showMoreText", "showLessText", "class", "children"]);

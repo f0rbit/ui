@@ -4,10 +4,10 @@ import { Portal, isServer } from "solid-js/web";
 type ModalContextValue = { onClose: () => void };
 const ModalContext = createContext<ModalContextValue>();
 
-export interface ModalProps extends JSX.DialogHtmlAttributes<HTMLDialogElement> {
+export type ModalProps = {
 	open: boolean;
 	onClose: () => void;
-}
+} & JSX.DialogHtmlAttributes<HTMLDialogElement>;
 
 export type ModalHeaderProps = JSX.HTMLAttributes<HTMLDivElement>;
 export type ModalTitleProps = JSX.HTMLAttributes<HTMLHeadingElement>;

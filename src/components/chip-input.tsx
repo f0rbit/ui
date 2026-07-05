@@ -4,7 +4,7 @@ import { Input } from "./input";
 
 export type ChipInputLayout = "above" | "below" | "left";
 
-export interface ChipInputProps extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange"> {
+export type ChipInputProps = {
 	value: string[];
 	onChange: (value: string[]) => void;
 	transform?: (input: string) => string;
@@ -14,7 +14,7 @@ export interface ChipInputProps extends Omit<JSX.InputHTMLAttributes<HTMLInputEl
 	error?: boolean;
 	/** Where to display the chips relative to the input. Default: "above" */
 	layout?: ChipInputLayout;
-}
+} & Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange">;
 
 export function ChipInput(props: ChipInputProps) {
 	const [local, rest] = splitProps(props, [

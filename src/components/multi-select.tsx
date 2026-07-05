@@ -4,16 +4,16 @@ import { Badge } from "./badge";
 import { Button } from "./button";
 import { Input } from "./input";
 
-export interface MultiSelectOption<T = string> {
+export type MultiSelectOption<T = string> = {
 	value: T;
 	label: string;
 	description?: string;
 	disabled?: boolean;
-}
+};
 
 export type MultiSelectLayout = "left" | "right" | "below";
 
-export interface MultiSelectProps<T = string> {
+export type MultiSelectProps<T = string> = {
 	options: MultiSelectOption<T>[];
 	value: T[];
 	onChange: (value: T[]) => void;
@@ -30,7 +30,7 @@ export interface MultiSelectProps<T = string> {
 	layout?: MultiSelectLayout;
 	renderBadge?: (option: MultiSelectOption<T>) => JSX.Element;
 	renderOption?: (option: MultiSelectOption<T>) => JSX.Element;
-}
+};
 
 export function MultiSelect<T = string>(props: MultiSelectProps<T>) {
 	const [local] = splitProps(props, [

@@ -2,12 +2,12 @@ import { type JSX, splitProps } from "solid-js";
 
 export type ChevronFacing = "right" | "down";
 
-export interface ChevronProps extends JSX.SvgSVGAttributes<SVGSVGElement> {
+export type ChevronProps = {
 	expanded?: boolean;
 	/** Which way the chevron points. Default: "right" */
 	facing?: ChevronFacing;
 	size?: number | string;
-}
+} & JSX.SvgSVGAttributes<SVGSVGElement>;
 
 export function Chevron(props: ChevronProps) {
 	const [local, rest] = splitProps(props, ["expanded", "facing", "size", "class"]);

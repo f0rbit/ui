@@ -2,10 +2,10 @@ import { type JSX, splitProps } from "solid-js";
 
 export type StatusState = "active" | "inactive" | "error" | "pending";
 
-export interface StatusProps extends JSX.HTMLAttributes<HTMLSpanElement> {
+export type StatusProps = {
 	state: StatusState;
 	label?: string;
-}
+} & JSX.HTMLAttributes<HTMLSpanElement>;
 
 const stateClasses: Record<StatusState, string> = {
 	active: "status-active",

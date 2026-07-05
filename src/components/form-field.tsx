@@ -1,13 +1,13 @@
 import { type JSX, splitProps, Show } from "solid-js";
 
-export interface FormFieldProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type FormFieldProps = {
 	label: string;
 	error?: string;
 	description?: string;
 	required?: boolean;
 	children: JSX.Element;
 	id?: string;
-}
+} & JSX.HTMLAttributes<HTMLDivElement>;
 
 export function FormField(props: FormFieldProps) {
 	const [local, rest] = splitProps(props, ["label", "error", "description", "required", "children", "id", "class"]);

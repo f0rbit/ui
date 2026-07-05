@@ -51,11 +51,11 @@ import { type JSX, splitProps, onMount, onCleanup, createSignal } from "solid-js
  * // Then in Astro: <MyTabs client:load />
  * ```
  */
-export interface TabsProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type TabsProps = {
 	/** The value of the initially selected tab */
 	defaultValue?: string;
 	children: JSX.Element;
-}
+} & JSX.HTMLAttributes<HTMLDivElement>;
 
 export function Tabs(props: TabsProps) {
 	const [local, rest] = splitProps(props, ["defaultValue", "children", "class"]);
@@ -137,9 +137,9 @@ export function Tabs(props: TabsProps) {
  *
  * In Astro, requires `client:load` directive.
  */
-export interface TabListProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type TabListProps = {
 	children: JSX.Element;
-}
+} & JSX.HTMLAttributes<HTMLDivElement>;
 
 export function TabList(props: TabListProps) {
 	const [local, rest] = splitProps(props, ["children", "class"]);
@@ -158,11 +158,11 @@ export function TabList(props: TabListProps) {
  * The `value` prop must match a corresponding `TabPanel` value.
  * In Astro, requires `client:load` directive.
  */
-export interface TabProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
+export type TabProps = {
 	/** Unique identifier that links this tab to its panel */
 	value: string;
 	children: JSX.Element;
-}
+} & JSX.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export function Tab(props: TabProps) {
 	const [local, rest] = splitProps(props, ["value", "children", "class"]);
@@ -190,11 +190,11 @@ export function Tab(props: TabProps) {
  * Panels are hidden by default and shown when their tab is selected.
  * In Astro, requires `client:load` directive.
  */
-export interface TabPanelProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type TabPanelProps = {
 	/** Unique identifier that links this panel to its tab */
 	value: string;
 	children: JSX.Element;
-}
+} & JSX.HTMLAttributes<HTMLDivElement>;
 
 export function TabPanel(props: TabPanelProps) {
 	const [local, rest] = splitProps(props, ["value", "children", "class"]);

@@ -3,13 +3,13 @@ import { type JSX, splitProps } from "solid-js";
 export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
 export type ButtonSize = "sm" | "md" | "lg";
 
-export interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
+export type ButtonProps = {
 	variant?: ButtonVariant;
 	size?: ButtonSize;
 	icon?: boolean;
 	label?: string;
 	loading?: boolean;
-}
+} & JSX.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const variantClasses: Record<ButtonVariant, string> = {
 	primary: "",
