@@ -98,10 +98,10 @@ Dark mode is automatic via `prefers-color-scheme: dark`.
 
 ```
 src/
-├── components/       # SolidJS components (.tsx)
-│   ├── Button.tsx
-│   ├── Card.tsx
-│   ├── Modal.tsx
+├── components/       # SolidJS components (.tsx, kebab-case filenames)
+│   ├── button.tsx
+│   ├── card.tsx
+│   ├── modal.tsx
 │   └── ...
 ├── styles/           # CSS source files
 │   ├── tokens.css    # Design tokens (colors, spacing, typography)
