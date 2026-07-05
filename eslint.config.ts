@@ -4,6 +4,9 @@ export default define_lint_config({
 	naming: "camelCase",
 	package_name: "@f0rbit/ui",
 	tsconfig_root_dir: import.meta.dirname,
+	// ui is bundler-resolved (tsup) — extensionless relative imports are the norm,
+	// not the "add .js/.ts extensions" convention node-esm mode expects.
+	module_resolution: "bundler",
 	overrides: [
 		{
 			// tsup.config.ts is root-level TS like eslint.config.ts, but the factory's
