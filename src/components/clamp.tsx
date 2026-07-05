@@ -16,11 +16,11 @@ export function Clamp(props: ClampProps) {
 	const [expanded, setExpanded] = createSignal(false);
 	const [overflows, setOverflows] = createSignal(false);
 
-	let contentRef: HTMLDivElement | undefined;
+	let content_ref: HTMLDivElement | undefined;
 
 	const checkOverflow = () => {
-		if (!contentRef) return;
-		setOverflows(contentRef.scrollHeight > contentRef.clientHeight);
+		if (!content_ref) return;
+		setOverflows(content_ref.scrollHeight > content_ref.clientHeight);
 	};
 
 	const toggle = () => setExpanded((prev) => !prev);
@@ -33,11 +33,11 @@ export function Clamp(props: ClampProps) {
 		<div class={wrapperClasses()} {...rest}>
 			<div
 				ref={(el) => {
-					contentRef = el;
+					content_ref = el;
 					requestAnimationFrame(checkOverflow);
 				}}
 				class={contentClasses()}
-				style={`--clamp-lines: ${lines()}`}
+				style={`--clamp-lines: ${String(lines())}`}
 			>
 				{local.children}
 			</div>

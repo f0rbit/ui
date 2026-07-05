@@ -59,13 +59,13 @@ export interface TabsProps extends JSX.HTMLAttributes<HTMLDivElement> {
 
 export function Tabs(props: TabsProps) {
 	const [local, rest] = splitProps(props, ["defaultValue", "children", "class"]);
-	let containerRef: HTMLDivElement | undefined;
+	let container_ref: HTMLDivElement | undefined;
 	const [activeTab, setActiveTab] = createSignal(local.defaultValue ?? "");
 
 	const updateTabs = (value: string) => {
-		if (!containerRef) return;
+		if (!container_ref) return;
 
-		const tabs = containerRef.querySelectorAll<HTMLButtonElement>("[data-tab-value]");
+		const tabs = container_ref.querySelectorAll<HTMLButtonElement>("[data-tab-value]");
 		tabs.forEach((tab) => {
 			const isActive = tab.dataset.tabValue === value;
 			tab.setAttribute("aria-selected", String(isActive));
@@ -73,7 +73,7 @@ export function Tabs(props: TabsProps) {
 			tab.classList.toggle("active", isActive);
 		});
 
-		const panels = containerRef.querySelectorAll<HTMLDivElement>("[data-panel-value]");
+		const panels = container_ref.querySelectorAll<HTMLDivElement>("[data-panel-value]");
 		panels.forEach((panel) => {
 			const isActive = panel.dataset.panelValue === value;
 			panel.hidden = !isActive;
@@ -81,11 +81,11 @@ export function Tabs(props: TabsProps) {
 	};
 
 	const initializeTabs = () => {
-		if (!containerRef) return;
+		if (!container_ref) return;
 
 		let value = activeTab();
 		if (!value) {
-			const firstTab = containerRef.querySelector<HTMLButtonElement>("[data-tab-value]");
+			const firstTab = container_ref.querySelector<HTMLButtonElement>("[data-tab-value]");
 			value = firstTab?.dataset.tabValue ?? "";
 			if (value) setActiveTab(value);
 		}
@@ -94,10 +94,10 @@ export function Tabs(props: TabsProps) {
 	};
 
 	onMount(() => {
-		if (!containerRef) return;
+		if (!container_ref) return;
 
 		// Use event delegation for clicks - handles dynamically added children
-		containerRef.addEventListener("click", (e) => {
+		container_ref.addEventListener("click", (e) => {
 			const tab = (e.target as HTMLElement).closest<HTMLButtonElement>("[data-tab-value]");
 			if (tab?.dataset.tabValue) {
 				setActiveTab(tab.dataset.tabValue);
@@ -113,18 +113,20 @@ export function Tabs(props: TabsProps) {
 			initializeTabs();
 		});
 
-		observer.observe(containerRef, {
+		observer.observe(container_ref, {
 			childList: true,
 			subtree: true,
 		});
 
-		onCleanup(() => observer.disconnect());
+		onCleanup(() => {
+			observer.disconnect();
+		});
 	});
 
 	const classes = () => `tabs ${local.class ?? ""}`.trim();
 
 	return (
-		<div ref={containerRef} class={classes()} data-default-value={local.defaultValue} {...rest}>
+		<div ref={(el) => (container_ref = el)} class={classes()} data-default-value={local.defaultValue} {...rest}>
 			{local.children}
 		</div>
 	);

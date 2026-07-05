@@ -1,5 +1,5 @@
 import { type JSX, splitProps, createSignal, Show } from "solid-js";
-import { Chevron } from "./Chevron";
+import { Chevron } from "./chevron";
 
 export interface CollapsibleProps {
 	defaultOpen?: boolean;
@@ -10,12 +10,12 @@ export interface CollapsibleProps {
 }
 
 export function Collapsible(props: CollapsibleProps) {
-	const [local, rest] = splitProps(props, ["defaultOpen", "open", "onOpenChange", "children", "trigger"]);
+	const [local] = splitProps(props, ["defaultOpen", "open", "onOpenChange", "children", "trigger"]);
 
 	const [internalOpen, setInternalOpen] = createSignal(local.defaultOpen ?? false);
 
 	const isControlled = () => local.open !== undefined;
-	const isOpen = () => (isControlled() ? local.open! : internalOpen());
+	const isOpen = () => (local.open !== undefined ? local.open : internalOpen());
 
 	const toggle = () => {
 		const next = !isOpen();

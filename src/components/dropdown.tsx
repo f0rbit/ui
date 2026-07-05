@@ -29,12 +29,12 @@ export interface DropdownItemProps extends JSX.ButtonHTMLAttributes<HTMLButtonEl
 
 export function Dropdown(props: DropdownProps) {
 	const [open, setOpen] = createSignal(false);
-	let containerRef: HTMLDivElement | undefined;
+	let container_ref: HTMLDivElement | undefined;
 
 	const close = () => setOpen(false);
 
 	const handleClickOutside = (e: MouseEvent) => {
-		if (!containerRef?.contains(e.target as Node)) {
+		if (!container_ref?.contains(e.target as Node)) {
 			close();
 		}
 	};
@@ -59,7 +59,7 @@ export function Dropdown(props: DropdownProps) {
 
 	return (
 		<DropdownContext.Provider value={{ open, setOpen, close }}>
-			<div ref={(el) => (containerRef = el)} class="dropdown">
+			<div ref={(el) => (container_ref = el)} class="dropdown">
 				{props.children}
 			</div>
 		</DropdownContext.Provider>

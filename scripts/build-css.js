@@ -2,9 +2,9 @@ import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const srcDir = join(__dirname, "../src/styles");
-const distDir = join(__dirname, "../dist");
+const scriptDir = dirname(fileURLToPath(import.meta.url));
+const srcDir = join(scriptDir, "../src/styles");
+const distDir = join(scriptDir, "../dist");
 
 // Ensure dist directory exists
 mkdirSync(distDir, { recursive: true });

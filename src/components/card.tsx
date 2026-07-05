@@ -1,14 +1,14 @@
-import { JSX, splitProps } from "solid-js";
+import { type JSX, splitProps } from "solid-js";
 
 export interface CardProps extends JSX.HTMLAttributes<HTMLDivElement> {
 	interactive?: boolean;
 }
 
-export interface CardHeaderProps extends JSX.HTMLAttributes<HTMLDivElement> {}
-export interface CardTitleProps extends JSX.HTMLAttributes<HTMLHeadingElement> {}
-export interface CardDescriptionProps extends JSX.HTMLAttributes<HTMLParagraphElement> {}
-export interface CardContentProps extends JSX.HTMLAttributes<HTMLDivElement> {}
-export interface CardFooterProps extends JSX.HTMLAttributes<HTMLDivElement> {}
+export type CardHeaderProps = JSX.HTMLAttributes<HTMLDivElement>;
+export type CardTitleProps = JSX.HTMLAttributes<HTMLHeadingElement>;
+export type CardDescriptionProps = JSX.HTMLAttributes<HTMLParagraphElement>;
+export type CardContentProps = JSX.HTMLAttributes<HTMLDivElement>;
+export type CardFooterProps = JSX.HTMLAttributes<HTMLDivElement>;
 
 export function Card(props: CardProps) {
 	const [local, rest] = splitProps(props, ["interactive", "class", "children"]);

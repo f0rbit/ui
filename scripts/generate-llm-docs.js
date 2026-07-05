@@ -2,8 +2,8 @@ import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const rootDir = join(__dirname, "..");
+const scriptDir = dirname(fileURLToPath(import.meta.url));
+const rootDir = join(scriptDir, "..");
 const srcDir = join(rootDir, "src");
 const componentsDir = join(srcDir, "components");
 const stylesDir = join(srcDir, "styles");

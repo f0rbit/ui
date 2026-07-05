@@ -1,6 +1,6 @@
 import { type JSX, splitProps, For, Show, createSignal } from "solid-js";
-import { Badge } from "./Badge";
-import { Input } from "./Input";
+import { Badge } from "./badge";
+import { Input } from "./input";
 
 export type ChipInputLayout = "above" | "below" | "left";
 
@@ -62,7 +62,16 @@ export function ChipInput(props: ChipInputProps) {
 			<div class="cluster">
 				<For each={local.value}>
 					{(chip, index) => (
-						<Badge onRemove={local.disabled ? undefined : () => removeChip(index())} removeLabel={`Remove ${chip}`}>
+						<Badge
+							onRemove={
+								local.disabled
+									? undefined
+									: () => {
+											removeChip(index());
+										}
+							}
+							removeLabel={`Remove ${chip}`}
+						>
 							{chip}
 						</Badge>
 					)}

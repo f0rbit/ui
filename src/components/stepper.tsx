@@ -1,4 +1,4 @@
-import { type JSX, splitProps, For, Show, createContext, useContext } from "solid-js";
+import { type JSX, splitProps, Show, createContext, useContext } from "solid-js";
 
 export type StepStatus = "completed" | "current" | "upcoming";
 
@@ -140,8 +140,8 @@ export function Step(props: StepProps) {
 export function Stepper(props: StepperProps) {
 	const [local, rest] = splitProps(props, ["orientation", "class", "children"]);
 
-	let stepCounter = 0;
-	const registerStep = () => ++stepCounter;
+	let step_counter = 0;
+	const registerStep = () => ++step_counter;
 
 	const orientation = () => local.orientation ?? "horizontal";
 
