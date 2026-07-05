@@ -8,12 +8,12 @@ type StepperContextValue = {
 
 const StepperContext = createContext<StepperContextValue>();
 
-export interface StepperProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type StepperProps = {
 	orientation?: "horizontal" | "vertical";
 	children: JSX.Element;
-}
+} & JSX.HTMLAttributes<HTMLDivElement>;
 
-export interface StepProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type StepProps = {
 	title: string;
 	description?: string;
 	icon?: JSX.Element;
@@ -23,7 +23,7 @@ export interface StepProps extends JSX.HTMLAttributes<HTMLDivElement> {
 	number?: number;
 	/** Explicit orientation (optional, uses context if not provided) */
 	orientation?: "horizontal" | "vertical";
-}
+} & JSX.HTMLAttributes<HTMLDivElement>;
 
 const statusClasses: Record<StepStatus, string> = {
 	completed: "step-completed",

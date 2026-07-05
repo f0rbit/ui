@@ -2,9 +2,9 @@ import { type JSX, splitProps } from "solid-js";
 
 export type SpinnerSize = "sm" | "md" | "lg";
 
-export interface SpinnerProps extends JSX.HTMLAttributes<HTMLSpanElement> {
+export type SpinnerProps = {
 	size?: SpinnerSize;
-}
+} & JSX.HTMLAttributes<HTMLSpanElement>;
 
 const sizeClasses: Record<SpinnerSize, string> = {
 	sm: "spinner-sm",

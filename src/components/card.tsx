@@ -1,8 +1,8 @@
 import { type JSX, splitProps } from "solid-js";
 
-export interface CardProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type CardProps = {
 	interactive?: boolean;
-}
+} & JSX.HTMLAttributes<HTMLDivElement>;
 
 export type CardHeaderProps = JSX.HTMLAttributes<HTMLDivElement>;
 export type CardTitleProps = JSX.HTMLAttributes<HTMLHeadingElement>;

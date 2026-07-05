@@ -3,13 +3,13 @@ import { Button } from "./button";
 
 export type BadgeVariant = "default" | "success" | "error" | "warning" | "info" | "accent";
 
-export interface BadgeProps extends JSX.HTMLAttributes<HTMLSpanElement> {
+export type BadgeProps = {
 	variant?: BadgeVariant;
 	/** When provided, renders a remove button */
 	onRemove?: (e: MouseEvent) => void;
 	/** Accessible label for the remove button */
 	removeLabel?: string;
-}
+} & JSX.HTMLAttributes<HTMLSpanElement>;
 
 const variantClasses: Record<BadgeVariant, string> = {
 	default: "",

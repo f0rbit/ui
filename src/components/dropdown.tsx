@@ -9,23 +9,23 @@ type DropdownContextValue = {
 
 const DropdownContext = createContext<DropdownContextValue>();
 
-export interface DropdownProps {
+export type DropdownProps = {
 	children: JSX.Element;
-}
+};
 
-export interface DropdownTriggerProps {
+export type DropdownTriggerProps = {
 	children: JSX.Element;
-}
+};
 
-export interface DropdownMenuProps {
+export type DropdownMenuProps = {
 	children: JSX.Element;
-}
+};
 
-export interface DropdownItemProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
+export type DropdownItemProps = {
 	onClick?: () => void;
 	active?: boolean;
 	children: JSX.Element;
-}
+} & JSX.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export function Dropdown(props: DropdownProps) {
 	const [open, setOpen] = createSignal(false);

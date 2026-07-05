@@ -1,10 +1,10 @@
 import { type JSX, splitProps } from "solid-js";
 
-export interface ToggleProps extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "type" | "size"> {
+export type ToggleProps = {
 	label?: string;
 	description?: string;
 	size?: "sm" | "md";
-}
+} & Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "type" | "size">;
 
 export function Toggle(props: ToggleProps) {
 	const [local, rest] = splitProps(props, ["label", "description", "size", "class", "disabled"]);

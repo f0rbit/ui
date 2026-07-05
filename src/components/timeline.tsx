@@ -2,18 +2,18 @@ import { type JSX, splitProps, For, Show } from "solid-js";
 
 export type TimelineItemVariant = "default" | "success" | "error" | "warning" | "info";
 
-export interface TimelineItem {
+export type TimelineItem = {
 	id: string | number;
 	icon?: JSX.Element;
 	title: string | JSX.Element;
 	description?: string | JSX.Element;
 	timestamp?: string | JSX.Element;
 	variant?: TimelineItemVariant;
-}
+};
 
-export interface TimelineProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type TimelineProps = {
 	items: TimelineItem[];
-}
+} & JSX.HTMLAttributes<HTMLDivElement>;
 
 const variantClasses: Record<TimelineItemVariant, string> = {
 	default: "",

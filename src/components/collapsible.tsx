@@ -1,13 +1,13 @@
 import { type JSX, splitProps, createSignal, Show } from "solid-js";
 import { Chevron } from "./chevron";
 
-export interface CollapsibleProps {
+export type CollapsibleProps = {
 	defaultOpen?: boolean;
 	open?: boolean;
 	onOpenChange?: (open: boolean) => void;
 	children: JSX.Element;
 	trigger: JSX.Element | string;
-}
+};
 
 export function Collapsible(props: CollapsibleProps) {
 	const [local] = splitProps(props, ["defaultOpen", "open", "onOpenChange", "children", "trigger"]);
