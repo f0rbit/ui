@@ -1,8 +1,8 @@
 import { type JSX, splitProps, createSignal, createEffect, For, Show, onMount, onCleanup } from "solid-js";
 import { isServer } from "solid-js/web";
-import { Badge } from "./Badge";
-import { Button } from "./Button";
-import { Input } from "./Input";
+import { Badge } from "./badge";
+import { Button } from "./button";
+import { Input } from "./input";
 
 export interface MultiSelectOption<T = string> {
 	value: T;
@@ -33,7 +33,7 @@ export interface MultiSelectProps<T = string> {
 }
 
 export function MultiSelect<T = string>(props: MultiSelectProps<T>) {
-	const [local, rest] = splitProps(props, [
+	const [local] = splitProps(props, [
 		"options",
 		"value",
 		"onChange",
@@ -55,8 +55,8 @@ export function MultiSelect<T = string>(props: MultiSelectProps<T>) {
 	const [search, setSearch] = createSignal("");
 	const [focusedIndex, setFocusedIndex] = createSignal(-1);
 
-	let containerRef: HTMLDivElement | undefined;
-	let searchInputRef: HTMLInputElement | undefined;
+	let container_ref: HTMLDivElement | undefined;
+	let search_input_ref: HTMLInputElement | undefined;
 
 	const selectedSet = () => new Set(local.value);
 	const isMaxReached = () => local.max !== undefined && local.value.length >= local.max;
@@ -98,7 +98,7 @@ export function MultiSelect<T = string>(props: MultiSelectProps<T>) {
 	};
 
 	const handleClickOutside = (e: MouseEvent) => {
-		if (!containerRef?.contains(e.target as Node)) {
+		if (!container_ref?.contains(e.target as Node)) {
 			setOpen(false);
 			setSearch("");
 		}
@@ -127,7 +127,7 @@ export function MultiSelect<T = string>(props: MultiSelectProps<T>) {
 	};
 
 	createEffect(() => {
-		if (open() && local.searchable && searchInputRef) searchInputRef.focus();
+		if (open() && local.searchable && search_input_ref) search_input_ref.focus();
 	});
 
 	onMount(() => {
@@ -159,7 +159,16 @@ export function MultiSelect<T = string>(props: MultiSelectProps<T>) {
 			>
 				<For each={selectedOptions()}>
 					{(opt) => (
-						<Badge onRemove={local.disabled ? undefined : () => removeOption(opt)} removeLabel={`Remove ${opt.label}`}>
+						<Badge
+							onRemove={
+								local.disabled
+									? undefined
+									: () => {
+											removeOption(opt);
+										}
+							}
+							removeLabel={`Remove ${opt.label}`}
+						>
 							{local.renderBadge ? local.renderBadge(opt) : opt.label}
 						</Badge>
 					)}
@@ -182,7 +191,7 @@ export function MultiSelect<T = string>(props: MultiSelectProps<T>) {
 
 	return (
 		<div
-			ref={(el) => (containerRef = el)}
+			ref={(el) => (container_ref = el)}
 			class={containerClass()}
 			role="listbox"
 			aria-multiselectable="true"
@@ -199,7 +208,7 @@ export function MultiSelect<T = string>(props: MultiSelectProps<T>) {
 				<div class="dropdown-menu multi-select-menu">
 					<Show when={local.searchable}>
 						<Input
-							ref={(el) => (searchInputRef = el)}
+							ref={(el) => (search_input_ref = el)}
 							placeholder={local.searchPlaceholder ?? "Search..."}
 							value={search()}
 							onInput={(e) => {
@@ -217,7 +226,9 @@ export function MultiSelect<T = string>(props: MultiSelectProps<T>) {
 								<button
 									type="button"
 									class={`dropdown-item ${index() === focusedIndex() ? "active" : ""}`}
-									onClick={() => toggleOption(opt)}
+									onClick={() => {
+										toggleOption(opt);
+									}}
 									disabled={opt.disabled || (isMaxReached() && !selectedSet().has(opt.value))}
 									role="option"
 									aria-selected={selectedSet().has(opt.value)}

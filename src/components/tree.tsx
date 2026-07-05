@@ -1,6 +1,6 @@
 import { type JSX, splitProps, createSignal, For, Show } from "solid-js";
-import { Chevron } from "./Chevron";
-import { Button } from "./Button";
+import { Chevron } from "./chevron";
+import { Button } from "./button";
 
 export interface TreeNode<T = unknown> {
 	id: string;
@@ -40,8 +40,8 @@ export function buildTree<T extends FlatTreeItem>(items: T[]): TreeNode<T>[] {
 		childrenMap.set(parentId, siblings);
 	}
 
-	const build = (parentId: string | null): TreeNode<T>[] => {
-		const children = childrenMap.get(parentId) ?? [];
+	const build = (parent_id: string | null): TreeNode<T>[] => {
+		const children = childrenMap.get(parent_id) ?? [];
 		return children.map((item) => ({
 			id: item.id,
 			label: item.label,
@@ -79,7 +79,7 @@ export function Tree<T = unknown>(props: TreeProps<T>) {
 
 	const [internalExpanded, setInternalExpanded] = createSignal<string[]>(initExpanded());
 	const isControlled = () => local.expanded !== undefined;
-	const expandedIds = () => (isControlled() ? local.expanded! : internalExpanded());
+	const expandedIds = () => (local.expanded !== undefined ? local.expanded : internalExpanded());
 	const showGuides = () => local.showGuides !== false;
 
 	const toggle = (id: string) => {
@@ -93,11 +93,11 @@ export function Tree<T = unknown>(props: TreeProps<T>) {
 		node: TreeNode<T>,
 		depth: number,
 		index: number,
-		siblingCount: number,
-		ancestorIsLast: boolean[],
+		sibling_count: number,
+		ancestor_is_last: boolean[],
 	): JSX.Element => {
 		const hasChildren = () => (node.children?.length ?? 0) > 0;
-		const isLast = () => index === siblingCount - 1;
+		const isLast = () => index === sibling_count - 1;
 		const expanded = () => expandedIds().includes(node.id);
 
 		return (
@@ -105,8 +105,8 @@ export function Tree<T = unknown>(props: TreeProps<T>) {
 				<div class="tree-node" role="treeitem" aria-expanded={hasChildren() ? expanded() : undefined}>
 					<Show when={showGuides()}>
 						<div class="tree-guides">
-							<For each={ancestorIsLast}>
-								{(wasLast) => <span class={wasLast ? "tree-guide-empty" : "tree-guide-line"} />}
+							<For each={ancestor_is_last}>
+								{(was_last) => <span class={was_last ? "tree-guide-empty" : "tree-guide-line"} />}
 							</For>
 							<Show when={depth > 0}>
 								<span class={isLast() ? "tree-guide-corner" : "tree-guide-tee"} />
@@ -118,7 +118,9 @@ export function Tree<T = unknown>(props: TreeProps<T>) {
 							variant="ghost"
 							icon
 							size="sm"
-							onClick={() => toggle(node.id)}
+							onClick={() => {
+								toggle(node.id);
+							}}
 							aria-label={expanded() ? "Collapse" : "Expand"}
 							class="tree-toggle"
 						>
@@ -127,12 +129,14 @@ export function Tree<T = unknown>(props: TreeProps<T>) {
 					</Show>
 					<span class="tree-content">{local.renderNode ? local.renderNode(node, depth) : node.label}</span>
 					<Show when={local.renderActions}>
-						<span class="tree-actions">{local.renderActions!(node, depth)}</span>
+						{(render_actions) => <span class="tree-actions">{render_actions()(node, depth)}</span>}
 					</Show>
 				</div>
 				<Show when={hasChildren() && expanded()}>
 					<For each={node.children}>
-						{(child, i) => renderTreeNode(child, depth + 1, i(), node.children!.length, [...ancestorIsLast, isLast()])}
+						{(child, i) =>
+							renderTreeNode(child, depth + 1, i(), node.children?.length ?? 0, [...ancestor_is_last, isLast()])
+						}
 					</For>
 				</Show>
 			</>

@@ -1,5 +1,5 @@
 import { type JSX, splitProps, Show } from "solid-js";
-import { Button } from "./Button";
+import { Button } from "./button";
 
 export type BadgeVariant = "default" | "success" | "error" | "warning" | "info" | "accent";
 

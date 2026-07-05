@@ -9,10 +9,10 @@ export interface ModalProps extends JSX.DialogHtmlAttributes<HTMLDialogElement> 
 	onClose: () => void;
 }
 
-export interface ModalHeaderProps extends JSX.HTMLAttributes<HTMLDivElement> {}
-export interface ModalTitleProps extends JSX.HTMLAttributes<HTMLHeadingElement> {}
-export interface ModalBodyProps extends JSX.HTMLAttributes<HTMLDivElement> {}
-export interface ModalFooterProps extends JSX.HTMLAttributes<HTMLDivElement> {}
+export type ModalHeaderProps = JSX.HTMLAttributes<HTMLDivElement>;
+export type ModalTitleProps = JSX.HTMLAttributes<HTMLHeadingElement>;
+export type ModalBodyProps = JSX.HTMLAttributes<HTMLDivElement>;
+export type ModalFooterProps = JSX.HTMLAttributes<HTMLDivElement>;
 
 export function Modal(props: ModalProps) {
 	const [local, rest] = splitProps(props, ["open", "onClose", "class", "children"]);
@@ -48,7 +48,9 @@ export function Modal(props: ModalProps) {
 					<div
 						class="overlay"
 						onClick={handleOverlayClick}
-						onKeyDown={(e: KeyboardEvent) => e.key === "Escape" && local.onClose()}
+						onKeyDown={(e: KeyboardEvent) => {
+							if (e.key === "Escape") local.onClose();
+						}}
 						role="presentation"
 					>
 						<dialog class={classes()} open aria-modal="true" {...rest}>

@@ -9,10 +9,10 @@ export interface CheckboxProps extends Omit<JSX.InputHTMLAttributes<HTMLInputEle
 export function Checkbox(props: CheckboxProps) {
 	const [local, rest] = splitProps(props, ["label", "description", "indeterminate", "class", "disabled", "id"]);
 
-	let inputRef: HTMLInputElement | undefined;
+	let input_ref: HTMLInputElement | undefined;
 
 	const setIndeterminate = () => {
-		if (inputRef) inputRef.indeterminate = local.indeterminate ?? false;
+		if (input_ref) input_ref.indeterminate = local.indeterminate ?? false;
 	};
 
 	onMount(setIndeterminate);
@@ -25,7 +25,14 @@ export function Checkbox(props: CheckboxProps) {
 
 	return (
 		<label class={classes()}>
-			<input ref={inputRef} type="checkbox" class="checkbox-input" id={inputId()} disabled={local.disabled} {...rest} />
+			<input
+				ref={(el) => (input_ref = el)}
+				type="checkbox"
+				class="checkbox-input"
+				id={inputId()}
+				disabled={local.disabled}
+				{...rest}
+			/>
 			<span class="checkbox-box" aria-hidden="true">
 				<svg class="checkbox-check" viewBox="0 0 12 12" fill="none">
 					<path
